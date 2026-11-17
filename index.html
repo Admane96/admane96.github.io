@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Amine ADMANE – Consultant QA Data</title>
+<title>Prénom Nom – Consultant QA Data</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -112,6 +112,20 @@ section{padding:5.5rem 0}
 footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
 @media (max-width:640px){.bar nav{gap:1rem}.bar nav a:first-child{display:none}.xp{grid-template-columns:1fr;gap:.8rem}.hero .wrap{padding-bottom:3rem}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.track{animation:none;flex-wrap:wrap;width:auto}.set[aria-hidden]{display:none}h1 .l span{transform:none;transition:none}.lead,.cta{opacity:1;animation:none;transition:none}.tab[aria-selected="true"]::after{animation:none;width:100%}.xp{opacity:1;transform:none;transition:none}}
+
+/* Menu mobile */
+.menu-btn{display:none}
+@media (max-width:760px){
+ .bar{position:fixed;transition:background .3s}
+ .bar.solid{background:rgba(6,11,26,.95);padding-bottom:.75rem}
+ .brand{position:relative;z-index:60}
+ .menu-btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:.4rem 1.15rem;border-radius:999px;border:1px solid rgba(238,241,248,.4);background:rgba(6,11,26,.4);color:#EEF1F8;font:600 .95rem var(--sans);cursor:pointer;position:relative;z-index:60}
+ .bar nav{position:fixed;inset:0;z-index:50;background:#060B1A;flex-direction:column;justify-content:center;align-items:flex-start;gap:1.2rem;padding:5rem 1.75rem 3rem;transform:translateY(-100%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+ .bar.open nav{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+ .bar nav a{display:block!important;font:700 clamp(2rem,9vw,2.9rem)/1.1 var(--serif)!important;opacity:1;border:0;padding:.2rem 0;color:#EEF1F8}
+ .bar nav a[aria-current]{color:#E2B655}
+}
+@media (prefers-reduced-motion:reduce){.bar nav,.bar.open nav{transition:none}}
 </style>
 </head>
 <body>
@@ -120,7 +134,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
   <video id="cover" autoplay muted loop playsinline aria-hidden="true"></video>
   <div class="bar"><div class="wrap">
     <a class="brand" href="#accueil" id="brand"></a>
-    <nav aria-label="Navigation principale"><a href="#competences">Expertise</a><a href="#clients">Clients</a><a href="parcours.html">Parcours</a><a href="#contact">Contact</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav id="mainnav" aria-label="Navigation principale"><a href="#competences">Expertise</a><a href="#clients">Clients</a><a href="parcours.html">Parcours</a><a href="#contact">Contact</a></nav>
   </div></div>
   <div class="wrap">
     <p class="role" id="role"></p>
@@ -170,7 +185,7 @@ const DATA = {
   /* Clients : "logo" = chemin de l’image dans votre dépôt (ex. "logos/client.svg"). Sans logo, le nom s’affiche en texte. */
   clients: [
     { nom: "Edenred", logo: "" }, { nom: "L’Oréal", logo: "" }, { nom: "Disneyland Paris", logo: "" },
-    { nom: "Roland-Garros", logo: "" }, { nom: "Familles de France", logo: "" }
+    { nom: "Fédération Française de Tennis", logo: "" }, { nom: "Familles de France", logo: "" }
   ],
   competences: [
     { groupe: "Tests fonctionnels", liste: ["Plans et cas de test", "Recette, UAT et non-régression", "Ergonomie et compatibilité", "Tricentis qTest, SquashTM"] },
@@ -240,5 +255,12 @@ else {
   size(); draw();
 }
 </script>
+<script>(function(){var b=document.querySelector(".bar");if(!b)return;var t=b.querySelector(".menu-btn"),n=b.querySelector("nav");if(!t||!n)return;
+function set(o){b.classList.toggle("open",o);t.setAttribute("aria-expanded",String(o));t.textContent=o?"Fermer":"Menu";document.documentElement.style.overflow=o?"hidden":""}
+t.addEventListener("click",function(){set(!b.classList.contains("open"))});
+n.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+function sc(){b.classList.toggle("solid",(window.scrollY||document.documentElement.scrollTop)>24)}
+addEventListener("scroll",sc,{passive:true});sc();})();</script>
 </body>
 </html>
