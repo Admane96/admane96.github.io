@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Disneyland Paris – Mission de Amine Admane</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060B1A; --ink:#EEF1F8; --muted:#97A3BF; --line:#1C2848; --gold:#E2B655; --glow:rgba(226,182,85,.18);
+  --serif:"Fraunces",Georgia,serif; --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){--bg:#F4F5F9;--ink:#0E1A36;--muted:#4F5B77;--line:#D6DAE6;--gold:#936A12;--glow:rgba(147,106,18,.12);color-scheme:light}
+}
+:root[data-theme="light"]{--bg:#F4F5F9;--ink:#0E1A36;--muted:#4F5B77;--line:#D6DAE6;--gold:#936A12;--glow:rgba(147,106,18,.12);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.wrap{max-width:70rem;margin:0 auto;padding:0 1.5rem}
+.hero{position:relative;min-height:88svh;display:flex;flex-direction:column;justify-content:flex-end;color:#EEF1F8;background:radial-gradient(60% 80% at 85% 0%,rgba(226,182,85,.2),transparent 65%),radial-gradient(50% 60% at 0% 100%,rgba(70,100,200,.18),transparent 70%),#060B1A}
+.bar{position:absolute;z-index:3;top:0;left:0;right:0;padding-top:calc(1.2rem + env(safe-area-inset-top,0px))}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center}
+.brand{font:700 1.15rem var(--serif);text-decoration:none}
+.bar nav{display:flex;gap:1.6rem}
+.bar nav a{text-decoration:none;font-weight:500;font-size:.95rem;opacity:.8;padding:.2rem 0;border-bottom:2px solid transparent}
+.bar nav a:hover{opacity:1}.bar nav a[aria-current]{opacity:1;border-color:#E2B655}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:4rem}
+.back{display:inline-block;color:#97A3BF;font-weight:500;text-decoration:none;margin-bottom:2rem}.back:hover{color:#E2B655}
+.kicker{color:#E2B655;font-weight:600;font-size:1.1rem;margin:0 0 1.2rem}
+h1{font:900 clamp(2.5rem,7.4vw,6rem)/1 var(--serif);letter-spacing:-.035em;margin:0 0 1.6rem;max-width:17ch}
+.meta{color:#C5CDE0;margin:0;font-size:1.05rem}
+section{padding:6rem 0}
+.lab{font-weight:600;color:var(--gold);margin:0 0 1.4rem}
+.stake{font:500 clamp(1.6rem,3.8vw,2.9rem)/1.28 var(--serif);letter-spacing:-.015em;margin:0;max-width:44rem}
+.ttl{font:700 clamp(1.8rem,4vw,2.8rem)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 .6rem}
+.sub{color:var(--muted);margin:0 0 3rem;max-width:36rem}
+/* Parcours de la donnée */
+.flow{display:flex;align-items:stretch}
+.node{flex:1 1 0;border:1px solid var(--line);border-radius:1rem;padding:1.5rem 1.3rem;opacity:0;transform:translateY(1rem);transition:opacity .7s,transform .7s;transition-delay:calc(var(--i)*.45s)}
+.node b{display:block;font:700 1.3rem/1.2 var(--serif);margin-bottom:.35rem}
+.node span{color:var(--muted);font-size:.95rem}
+.conn{flex:1.1 1 0;min-width:5rem;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 .6rem;text-align:center}
+.conn::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .6s;transition-delay:calc(var(--i)*.45s)}
+.conn i{position:relative;font-style:normal;font-size:.82rem;font-weight:600;color:var(--bg);background:var(--gold);border-radius:999px;padding:.25rem .75rem;opacity:0;transition:opacity .5s;transition-delay:calc(var(--i)*.45s + .4s)}
+.flow.in .node{opacity:1;transform:none}.flow.in .conn::before{transform:none}.flow.in .conn i{opacity:1}
+/* Trois actes */
+.actes{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:2.5rem}
+.acte{border-top:3px solid var(--gold);padding-top:1.3rem}
+.acte h3{font:700 1.5rem/1.2 var(--serif);margin:0 0 .8rem}.acte p{color:var(--muted);margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:.6rem;list-style:none;padding:0;margin:0}
+.tags li{border:1px solid var(--line);border-radius:999px;padding:.4rem 1.1rem;font-weight:500}
+ul.r{list-style:none;margin:0;padding:0;max-width:40rem}ul.r li{font:500 1.5rem/1.35 var(--serif);padding:.7rem 0;border-bottom:1px solid var(--line)}
+.next{display:block;text-decoration:none;border-top:1px solid var(--line);padding:3.5rem 0}
+.next small{display:block;color:var(--muted);margin-bottom:.5rem}
+.next b{font:900 clamp(2rem,6vw,4.6rem)/1.05 var(--serif);letter-spacing:-.03em;overflow-wrap:anywhere}.next:hover b{color:var(--gold)}
+.contact{background:radial-gradient(70% 90% at 80% 100%,var(--glow),transparent 70%)}
+.mail{display:inline-block;font:900 clamp(1.6rem,5.5vw,4rem)/1.05 var(--serif);letter-spacing:-.03em;text-decoration:none;border-bottom:3px solid var(--gold);word-break:break-word;margin-top:.6rem}.mail:hover{color:var(--gold)}
+footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+@media (max-width:760px){.bar nav{gap:1rem}.bar nav a:nth-child(2){display:none}section{padding:4rem 0}.flow{flex-direction:column}.conn{min-height:5rem}.conn::before{left:50%;right:auto;top:0;bottom:0;width:2px;height:auto;transform:scaleY(0);transform-origin:top}.flow.in .conn::before{transform:none}.conn i{margin:.2rem 0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.node,.conn::before,.conn i{transition:none!important;opacity:1;transform:none}}
+.stat{display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:2rem}.stat div{max-width:16rem}.stat b{display:block;font:900 clamp(2.4rem,5vw,3.8rem)/1 var(--serif);color:#E2B655;letter-spacing:-.03em}.stat span{color:#C5CDE0;font-size:.95rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1.2rem}
+.card{border:1px solid var(--line);border-radius:1rem;padding:1.6rem}
+.card h3{font:700 1.35rem/1.2 var(--serif);margin:0 0 .7rem}.card p{margin:0;color:var(--muted)}
+.card dl{margin:0}.card dt{color:var(--gold);font-weight:600;font-size:.9rem;margin-top:.9rem}.card dd{margin:.2rem 0 0}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;max-width:46rem;border-left:2px solid var(--line)}
+.steps li{counter-increment:s;position:relative;padding:0 0 1.6rem 2.6rem}
+.steps li::before{content:counter(s);position:absolute;left:-1.1rem;top:-.1rem;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--gold);color:var(--bg);font-weight:700;display:grid;place-items:center}
+.outcome{margin:1.2rem 0 0;font:500 clamp(1.3rem,2.6vw,1.9rem)/1.35 var(--serif);max-width:42rem;color:var(--gold)}
+.ba{display:grid;gap:1.6rem;max-width:46rem}.ba b{font:900 clamp(1.8rem,4vw,2.8rem)/1 var(--serif)}.ba span{display:block;color:var(--muted)}
+.bar2{height:.9rem;border-radius:999px;background:var(--line);overflow:hidden;margin:.6rem 0 .3rem}.bar2 i{display:block;height:100%;background:var(--gold);width:0;transition:width 1.5s cubic-bezier(.2,.8,.2,1)}.ba.in .bar2 i{width:var(--w)}
+.prose{font-size:1.15rem;max-width:42rem;color:var(--muted);margin:0}
+@media (prefers-reduced-motion:reduce){.bar2 i{transition:none;width:var(--w)}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="bar"><div class="wrap">
+    <a class="brand" href="index.html">Amine Admane</a>
+    <nav aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="index.html#competences">Expertise</a><a href="parcours.html" aria-current="page">Parcours</a><a href="#contact">Contact</a></nav>
+  </div></div>
+  <div class="wrap">
+    <a class="back" href="parcours.html">Retour au parcours</a>
+    <p class="kicker">Disneyland Paris</p>
+    <h1>De 20 tests par jour à 1 000 en une heure.</h1>
+    <p class="meta">Consultant Quality Assurance Data · 12/2021 – 02/2023</p><div class="stat"><div><b>20 → 1 000</b><span>tests d’API : par jour avant, en une heure après</span></div><div><b>1 an</b><span>au cœur de la migration des données vers AWS</span></div></div>
+  </div>
+</header>
+<main>
+  <section><div class="wrap"><p class="lab">L’enjeu</p><p class="stake">Migrer les données de réservation vers AWS, et garantir qu’un site visité dans le monde entier répond juste, même sous de très gros volumes de connexion.</p></div></section>
+  <section><div class="wrap"><h2 class="ttl">Trois terrains</h2><div class="cards"><div class="card"><h3>Data quality sur AWS</h3><p>Sécuriser l’intégrité du patrimoine de données migré : conformité des tables et des datasets sur AWS.</p></div><div class="card"><h3>Tests front-end</h3><p>Le site grand public de réservation d’hôtels et de produits dérivés : un parcours sans faille malgré des volumes de connexion massifs.</p></div><div class="card"><h3>Tests back-end sur les API</h3><p>La validation des flux de réservation côté API, d’abord à la main sur Postman, puis automatisée.</p></div></div></div></section>
+  <section><div class="wrap"><h2 class="ttl">La matrice de prédiction</h2><p class="sub">Côté back-end, les data scientists ont généré par machine learning un CSV qui prévoit la réponse de l’API pour chaque combinaison de réservation.</p><div class="flow" id="flow"><div class="node" style="--i:0"><b>Les inputs</b><span>Dates, parc, hôtel, chambre, nombre de personnes, pays et langue du client</span></div><div class="conn" style="--i:1"><i>Envoi de la requête</i></div><div class="node" style="--i:2"><b>L’API</b><span>La réponse réelle</span></div><div class="conn" style="--i:3"><i>Comparaison avec la matrice</i></div><div class="node" style="--i:4"><b>Les outputs</b><span>Disponibilité des chambres, produits à afficher</span></div></div></div></section>
+  <section><div class="wrap"><h2 class="ttl">Le déclic</h2><p class="sub">Sur Postman, un test consistait à envoyer les inputs dans une requête, puis à vérifier que les outputs étaient les bons pour un scénario donné. Impossible de passer à l’échelle.</p><ol class="steps"><li>Chaque ligne du CSV contient les inputs et les outputs attendus du même scénario.</li><li>Mon script Python envoie les inputs à l’API.</li><li>Il compare la réponse de l’API aux outputs de la matrice.</li><li>Il boucle sur l’ensemble du fichier, scénario après scénario.</li></ol><p class="outcome">J’ai proposé et développé ce framework sur mesure : il a permis de valider la robustesse des API face aux contraintes de charge.</p></div></section>
+  <section><div class="wrap"><h2 class="ttl">Avant, après</h2><div class="ba"><div><b>20 tests par jour</b><div class="bar2"><i style="--w:2%"></i></div><span>Postman, en manuel</span></div><div><b>1 000 scénarios en une heure</b><div class="bar2"><i style="--w:100%"></i></div><span>Framework d’automatisation en Python</span></div></div></div></section>
+  <section><div class="wrap"><h2 class="ttl">Exemples de tests</h2><p class="sub">Quatre situations concrètes, avec ce que je fais et ce que je vérifie.</p><div class="cards"><div class="card"><h3>Conformité des tables</h3><dl><dt>Je fais</dt><dd>Contrôles SQL sur Snowflake, avec Soda SQL.</dd><dt>Je vérifie</dt><dd>Doublons, clés primaires, valeurs NULL, cohérence des dates, formats d’e-mails.</dd></dl></div><div class="card"><h3>Parcours de réservation</h3><dl><dt>Je fais</dt><dd>Tests front-end du site d’hôtels et de produits dérivés.</dd><dt>Je vérifie</dt><dd>Un parcours utilisateur sans faille malgré les volumes de connexion.</dd></dl></div><div class="card"><h3>Un scénario d’API</h3><dl><dt>Je fais</dt><dd>J’envoie une combinaison de paramètres de réservation.</dd><dt>Je vérifie</dt><dd>Que la disponibilité des chambres et les produits affichés correspondent à la ligne de la matrice.</dd></dl></div><div class="card"><h3>Alerte de non-régression</h3><dl><dt>Je fais</dt><dd>Je surveille la migration AWS avec Soda SQL.</dd><dt>Je vérifie</dt><dd>La santé des flux et la cohérence entre source et cible.</dd></dl></div></div></div></section>
+  <section><div class="wrap"><h2 class="ttl">L’atelier</h2><p class="sub">Les outils mobilisés sur cette mission.</p><ul class="tags"><li>Python</li><li>Postman</li><li>Soda SQL</li><li>AWS</li><li>Snowflake</li><li>SQL</li><li>API</li></ul></div></section>
+  <section style="padding:0"><div class="wrap"><a class="next" href="fft.html"><small>Mission suivante</small><b>Fédération Française de Tennis</b></a></div></section>
+
+  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><a class="mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></div></section>
+</main>
+<footer><div class="wrap">© Amine Admane</div></footer>
+<script>const els=document.querySelectorAll("#flow,.ba");if("IntersectionObserver"in window){const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");o.unobserve(x.target)}}),{threshold:.35});els.forEach(n=>o.observe(n))}else els.forEach(n=>n.classList.add("in"))</script>
+</body>
+</html>
