@@ -77,13 +77,28 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 .bar2{height:.9rem;border-radius:999px;background:var(--line);overflow:hidden;margin:.6rem 0 .3rem}.bar2 i{display:block;height:100%;background:var(--gold);width:0;transition:width 1.5s cubic-bezier(.2,.8,.2,1)}.ba.in .bar2 i{width:var(--w)}
 .prose{font-size:1.15rem;max-width:42rem;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:reduce){.bar2 i{transition:none;width:var(--w)}}
+
+/* Menu mobile */
+.menu-btn{display:none}
+@media (max-width:760px){
+ .bar{position:fixed;transition:background .3s}
+ .bar.solid{background:rgba(6,11,26,.95);padding-bottom:.75rem}
+ .brand{position:relative;z-index:60}
+ .menu-btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:.4rem 1.15rem;border-radius:999px;border:1px solid rgba(238,241,248,.4);background:rgba(6,11,26,.4);color:#EEF1F8;font:600 .95rem var(--sans);cursor:pointer;position:relative;z-index:60}
+ .bar nav{position:fixed;inset:0;z-index:50;background:#060B1A;flex-direction:column;justify-content:center;align-items:flex-start;gap:1.2rem;padding:5rem 1.75rem 3rem;transform:translateY(-100%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+ .bar.open nav{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+ .bar nav a{display:block!important;font:700 clamp(2rem,9vw,2.9rem)/1.1 var(--serif)!important;opacity:1;border:0;padding:.2rem 0;color:#EEF1F8}
+ .bar nav a[aria-current]{color:#E2B655}
+}
+@media (prefers-reduced-motion:reduce){.bar nav,.bar.open nav{transition:none}}
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="bar"><div class="wrap">
     <a class="brand" href="index.html">Amine Admane</a>
-    <nav aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="index.html#competences">Expertise</a><a href="parcours.html" aria-current="page">Parcours</a><a href="#contact">Contact</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav id="mainnav" aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="index.html#competences">Expertise</a><a href="parcours.html" aria-current="page">Parcours</a><a href="#contact">Contact</a></nav>
   </div></div>
   <div class="wrap">
     <a class="back" href="parcours.html">Retour au parcours</a>
@@ -106,5 +121,12 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 </main>
 <footer><div class="wrap">© Amine Admane</div></footer>
 <script>const els=document.querySelectorAll("#flow,.ba");if("IntersectionObserver"in window){const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");o.unobserve(x.target)}}),{threshold:.35});els.forEach(n=>o.observe(n))}else els.forEach(n=>n.classList.add("in"))</script>
+<script>(function(){var b=document.querySelector(".bar");if(!b)return;var t=b.querySelector(".menu-btn"),n=b.querySelector("nav");if(!t||!n)return;
+function set(o){b.classList.toggle("open",o);t.setAttribute("aria-expanded",String(o));t.textContent=o?"Fermer":"Menu";document.documentElement.style.overflow=o?"hidden":""}
+t.addEventListener("click",function(){set(!b.classList.contains("open"))});
+n.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+function sc(){b.classList.toggle("solid",(window.scrollY||document.documentElement.scrollTop)>24)}
+addEventListener("scroll",sc,{passive:true});sc();})();</script>
 </body>
 </html>
