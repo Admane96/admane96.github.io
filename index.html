@@ -91,9 +91,13 @@ section{padding:5.5rem 0}
 .track{display:flex;width:max-content;animation:scroll 40s linear infinite}
 .marquee:hover .track{animation-play-state:paused}
 .set{display:flex;align-items:center;gap:4.5rem;padding-right:4.5rem;list-style:none;margin:0}
-.cl{flex:none;display:flex;align-items:center;height:3.5rem}
+.cl{flex:none;display:flex;align-items:center;height:4.8rem}
 .cl img{max-height:3rem;max-width:10rem;width:auto;filter:brightness(0) invert(1);opacity:.55;transition:opacity .3s}
 .cl:hover img{opacity:1}
+.cl img[alt^="Fédération"]{max-height:4.8rem;max-width:4.8rem;opacity:.8}
+.cl img[alt="Edenred"]{max-height:3.8rem;max-width:7.5rem;opacity:.75}
+.cl img[alt="Familles de France"]{max-height:4.2rem;max-width:9rem;opacity:.75}
+.cl:hover img[alt]{opacity:1}
 .cl .wm{font:700 1.7rem var(--serif);letter-spacing:-.02em;color:var(--muted);white-space:nowrap;transition:color .3s}
 .cl:hover .wm{color:var(--ink)}
 @keyframes scroll{to{transform:translateX(-50%)}}
@@ -181,8 +185,8 @@ const DATA = {
   ],
   /* Clients : "logo" = chemin de l’image dans votre dépôt (ex. "logos/client.svg"). Sans logo, le nom s’affiche en texte. */
   clients: [
-    { nom: "Edenred", logo: "" }, { nom: "L’Oréal", logo: "" }, { nom: "Disneyland Paris", logo: "" },
-    { nom: "Fédération Française de Tennis", logo: "" }, { nom: "Familles de France", logo: "" }
+    { nom: "Edenred", logo: "logos/edenred.png" }, { nom: "L’Oréal", logo: "logos/loreal.png" }, { nom: "Disneyland Paris", logo: "logos/disneyland.png" },
+    { nom: "Fédération Française de Tennis", logo: "logos/fft.png" }, { nom: "Familles de France", logo: "logos/familles-de-france.png" }
   ],
   competences: [
     { groupe: "Tests fonctionnels", liste: ["Plans et cas de test", "Recette, UAT et non-régression", "Ergonomie et compatibilité", "Tricentis qTest, SquashTM"] },
