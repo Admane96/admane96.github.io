@@ -90,6 +90,45 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
  .bar nav a[aria-current]{color:#E2B655}
 }
 @media (prefers-reduced-motion:reduce){.bar nav,.bar.open nav{transition:none}}
+.btn{display:inline-block;padding:.95rem 1.7rem;border-radius:999px;font-weight:600;text-decoration:none;border:1.5px solid currentColor;color:var(--ink);transition:background .25s,color .25s,border-color .25s}
+.btn.primary{background:#E2B655;border-color:#E2B655;color:#0A1228}
+.btn:hover{background:#EEF1F8;border-color:#EEF1F8;color:#0A1228}
+/* Prise de rendez-vous */
+.rdv{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin:0 0 2.2rem}
+.rdv span{color:var(--muted)}
+.rdv button.btn{font:600 1.05rem var(--sans);cursor:pointer}
+.rdv .btn.primary{color:#0A1228}.rdv .btn.primary:hover{color:#0A1228;background:#EEF1F8}
+#rdvModal{position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(3,6,16,.8)}
+#rdvModal[hidden]{display:none}
+.rdvbox{width:min(36rem,100%);max-height:100%;overflow:auto;background:#0B1430;border:1px solid var(--line);border-radius:1.2rem;padding:1.6rem}
+.rdvbox header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.3rem}
+.rdvbox h3{font:700 1.6rem/1.15 var(--serif);margin:0}
+.rdvbox header p{margin:.3rem 0 0;color:var(--muted);font-size:.95rem}
+.rdvbox .x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;width:2.4rem;height:2.4rem;font-size:1.1rem;cursor:pointer;flex:none}
+.rdvbox [hidden]{display:none!important}
+.durs{display:flex;gap:.6rem;margin-bottom:1.1rem}.dur{flex:1;padding:.7rem;border-radius:.8rem;border:1px solid var(--line);background:none;color:var(--ink);font:600 1rem var(--sans);cursor:pointer}.dur:hover{border-color:var(--gold)}.dur[aria-pressed="true"]{background:#E2B655;border-color:#E2B655;color:#0A1228}
+.drow{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.6rem;margin-bottom:1rem}
+.dchip{flex:none;padding:.55rem .9rem;border-radius:.7rem;border:1px solid var(--line);background:none;color:var(--ink);font:500 .92rem var(--sans);cursor:pointer;text-transform:capitalize;white-space:nowrap}
+.dchip:hover{border-color:var(--gold)}.dchip[aria-pressed="true"]{border-color:var(--gold);background:rgba(226,182,85,.14);color:#F3E2B3;font-weight:600}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:.5rem}
+.slot{padding:.6rem;border-radius:.6rem;border:1px solid var(--line);background:none;color:var(--ink);font:500 .98rem var(--sans);cursor:pointer}
+.slot:hover{background:#E2B655;border-color:#E2B655;color:#0A1228;font-weight:600}
+.rsum{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:.8rem 1rem;border:1px solid var(--gold);border-radius:.8rem;background:rgba(226,182,85,.08);margin-bottom:1.1rem}
+.rsum span::first-letter,.rok strong::first-letter{text-transform:uppercase}
+.rsum button{background:none;border:0;color:var(--gold);font:600 .9rem var(--sans);cursor:pointer;text-decoration:underline;text-transform:none}
+.rdvbox label{display:block;margin:0 0 .9rem;font-weight:600;font-size:.92rem}
+.rdvbox input,.rdvbox textarea{display:block;width:100%;margin-top:.35rem;padding:.7rem .85rem;border-radius:.6rem;border:1px solid var(--line);background:#060B1A;color:var(--ink);font:400 1rem var(--sans)}
+.rdvbox input:focus,.rdvbox textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.rdvbox textarea{min-height:5rem;resize:vertical}
+.rdvbox .btn{font:600 1.02rem var(--sans);cursor:pointer;width:100%;color:#0A1228}
+.rdvbox .btn:disabled{opacity:.6;cursor:default}
+.rmsg{margin:.9rem 0 0;color:var(--muted);font-size:.9rem}
+.rerr{margin:.9rem 0 0;padding:.8rem 1rem;border-radius:.7rem;background:rgba(255,122,107,.12);color:#FFB4A9;font-size:.93rem}
+.rerr a{color:#FFD6CF;font-weight:600}
+.rok{text-align:center;padding:1rem 0}
+.rok .tick{width:3.4rem;height:3.4rem;border-radius:50%;background:#E2B655;color:#0A1228;display:grid;place-items:center;font-size:1.7rem;font-weight:700;margin:0 auto 1rem}
+.rok h4{font:700 1.5rem var(--serif);margin:0 0 .4rem}.rok p{margin:.2rem 0;color:var(--muted)}.rok strong{color:var(--ink);display:inline-block}
+.demo{margin:0 0 1rem;padding:.55rem .8rem;border-radius:.6rem;background:rgba(226,182,85,.1);color:#F3E2B3;font-size:.85rem}
 </style>
 </head>
 <body>
@@ -116,7 +155,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
   <section><div class="wrap"><h2 class="ttl">L’atelier</h2><p class="sub">Les outils mobilisés sur cette mission.</p><ul class="tags"><li>Databricks</li><li>Unity Catalog</li><li>Braze</li><li>HubSpot</li><li>Genie Code</li><li>Power BI</li><li>SQL</li></ul></div></section>
   <section style="padding:0"><div class="wrap"><a class="next" href="loreal.html"><small>Mission suivante</small><b>L’Oréal</b></a></div></section>
 
-  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><a class="mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></div></section>
+  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><div class="rdv"><button type="button" class="btn primary" id="rdvBtn">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
+    <a class="mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></div></section>
 </main>
 <footer><div class="wrap">© Amine Admane</div></footer>
 <script>const els=document.querySelectorAll("#flow,.ba");if("IntersectionObserver"in window){const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");o.unobserve(x.target)}}),{threshold:.35});els.forEach(n=>o.observe(n))}else els.forEach(n=>n.classList.add("in"))</script>
@@ -127,5 +167,72 @@ n.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
 addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
 function sc(){b.classList.toggle("solid",(window.scrollY||document.documentElement.scrollTop)>24)}
 addEventListener("scroll",sc,{passive:true});sc();})();</script>
+<div id="rdvModal" role="dialog" aria-modal="true" aria-labelledby="rdvT" hidden>
+  <div class="rdvbox">
+    <header><div><h3 id="rdvT">Prendre rendez-vous</h3><p id="rdvSub"></p></div><button type="button" class="x" id="rdvX" aria-label="Fermer">✕</button></header>
+    <p class="demo" id="rdvDemo" hidden>Mode aperçu : aucun rendez-vous n’est réellement créé.</p>
+    <div id="rdvS1"><div class="durs" id="rdvDur" role="group" aria-label="Durée du rendez-vous"></div><div class="drow" id="rdvDays" role="group" aria-label="Jours disponibles"></div><div class="tgrid" id="rdvTimes"></div><p class="rmsg" id="rdvLoad">Chargement des disponibilités…</p></div>
+    <form id="rdvS2" hidden novalidate>
+      <div class="rsum"><span id="rdvPick"></span><button type="button" id="rdvBack">Modifier</button></div>
+      <label>Nom<input id="rdvN" name="name" autocomplete="name" required></label>
+      <label>E-mail<input id="rdvE" name="email" type="email" autocomplete="email" required></label>
+      <label>Un mot sur votre besoin (facultatif)<textarea id="rdvM" name="notes"></textarea></label>
+      <button type="submit" class="btn primary" id="rdvOk">Confirmer le rendez-vous</button>
+      <p class="rmsg">Vos coordonnées servent uniquement à organiser cet échange. Vous recevrez un e-mail de confirmation.</p>
+    </form>
+    <div id="rdvS3" class="rok" hidden><div class="tick" aria-hidden="true">✓</div><h4>Rendez-vous confirmé</h4><p><strong id="rdvDone"></strong></p><p>Un e-mail de confirmation vous est envoyé.</p><p><button type="button" class="btn" id="rdvEnd" style="margin-top:1.2rem;background:none;color:var(--ink);border:1.5px solid currentColor">Fermer</button></p></div>
+    <p class="rerr" id="rdvErr" role="alert" hidden></p>
+  </div>
+</div>
+<script>
+/* ====== RÉGLAGES RENDEZ-VOUS ======
+   username : votre identifiant Cal.com. events : fin du lien de chaque type de rendez-vous.
+   demo: true = mode aperçu (créneaux fictifs, rien n'est créé). */
+const RDV = { username: "amine-admane-6xfl8a", events: [{ slug: "15min", label: "15 minutes" }, { slug: "30min", label: "30 minutes" }], texte: "Échange de 15 ou 30 minutes", demo: false, jours: 14 };
+(function(){
+const $=id=>document.getElementById(id),tz=Intl.DateTimeFormat().resolvedOptions().timeZone,demo=!!RDV.demo;
+let ev=RDV.events[0];const fb=()=>"https://cal.com/"+RDV.username+"/"+ev.slug;
+const fmtD=d=>new Date(d).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}),fmtDs=d=>new Date(d).toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"}),fmtT=d=>new Date(d).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+const tzl=tz==="Europe/Paris"?"heure de Paris":tz;
+let slots={},pick=null;
+RDV.events.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.className="dur";b.textContent=e.label;b.setAttribute("aria-pressed",String(i===0));b.onclick=()=>{ev=e;[...$("rdvDur").children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));load()};$("rdvDur").append(b)});
+$("rdvInfo").textContent=RDV.texte;$("rdvSub").textContent=RDV.texte+" · "+tzl;$("rdvDemo").hidden=!demo;
+function err(h){const e=$("rdvErr");if(!h){e.hidden=true;return}e.innerHTML=h;e.hidden=false}
+function fail(msg){err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
+async function load(keep){
+ $("rdvLoad").hidden=false;$("rdvLoad").textContent="Chargement des disponibilités…";$("rdvDays").replaceChildren();$("rdvTimes").replaceChildren();if(!keep)err();
+ try{slots=demo?fake():await api();}catch(e){$("rdvLoad").hidden=true;fail("Le calendrier est momentanément indisponible.");return}
+ const keys=Object.keys(slots).sort();$("rdvLoad").hidden=true;
+ if(!keys.length){$("rdvLoad").hidden=false;$("rdvLoad").textContent="Aucune disponibilité dans les prochains jours. Écrivez-moi directement par e-mail.";return}
+ keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="dchip";b.textContent=fmtDs(slots[k][0]);b.setAttribute("aria-pressed","false");b.onclick=()=>day(k);$("rdvDays").append(b)});day(keys[0])}
+function day(k){[...$("rdvDays").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(Object.keys(slots).sort()[i]===k)));
+ const g=$("rdvTimes");g.replaceChildren();slots[k].sort().forEach(iso=>{const b=document.createElement("button");b.type="button";b.className="slot";b.textContent=fmtT(iso);b.onclick=()=>choose(iso);g.append(b)})}
+function choose(iso){pick=iso;err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
+function fake(){const o={};let d=new Date(),n=0;while(n<8){d.setDate(d.getDate()+1);if(d.getDay()%6===0)continue;n++;[10,11.5,14,16.5].forEach(h=>{const x=new Date(d);x.setHours(Math.floor(h),(h%1)*60,0,0);const k=x.toLocaleDateString("sv-SE");(o[k]=o[k]||[]).push(x.toISOString())})}return o}
+async function api(){
+ const s=new Date(),e=new Date(Date.now()+RDV.jours*864e5),U=RDV.username,E=ev.slug;
+ const tries=[{v:"2024-08-13",q:{username:U,eventSlug:E,startTime:s.toISOString(),endTime:e.toISOString(),timeZone:tz}},{v:"2024-09-04",q:{username:U,eventTypeSlug:E,start:s.toISOString(),end:e.toISOString(),timeZone:tz}}];
+ let last;for(const t of tries){try{const r=await fetch("https://api.cal.com/v2/slots?"+new URLSearchParams(t.q),{headers:{"cal-api-version":t.v}});if(!r.ok){last=r.status;continue}
+  const j=await r.json(),d=j.data&&j.data.slots?j.data.slots:j.data,out={};
+  for(const k in d){(d[k]||[]).map(x=>typeof x==="string"?x:(x.time||x.start)).filter(Boolean).forEach(iso=>{const kk=new Date(iso).toLocaleDateString("sv-SE");(out[kk]=out[kk]||[]).push(iso)})}return out}catch(x){last=x}}
+ throw last||new Error("slots")}
+$("rdvS2").addEventListener("submit",async evt=>{evt.preventDefault();err();const n=$("rdvN").value.trim(),m=$("rdvE").value.trim(),note=$("rdvM").value.trim();
+ if(!n||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m)){err("Merci d’indiquer votre nom et une adresse e-mail valide.");return}
+ const b=$("rdvOk");b.disabled=true;b.textContent="Confirmation…";
+ try{if(demo){await new Promise(r=>setTimeout(r,700))}else{
+   const body={eventTypeSlug:ev.slug,username:RDV.username,start:pick,attendee:{name:n,email:m,timeZone:tz,language:"fr"}};if(note)body.bookingFieldsResponses={notes:note};
+   const r=await fetch("https://api.cal.com/v2/bookings",{method:"POST",headers:{"Content-Type":"application/json","cal-api-version":"2024-08-13"},body:JSON.stringify(body)});
+   if(!r.ok){const e=new Error("book");e.status=r.status;throw e}}
+  $("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
+ catch(e){b.disabled=false;b.textContent="Confirmer le rendez-vous";
+  if(e.status===400||e.status===409){err("Ce créneau vient d’être pris. Choisissez-en un autre.");$("rdvS2").hidden=true;$("rdvS1").hidden=false;load(true)}
+  else fail("La réservation n’a pas pu aboutir.")}});
+$("rdvBack").onclick=()=>{err();$("rdvS2").hidden=true;$("rdvS1").hidden=false};
+const mod=$("rdvModal"),btn=$("rdvBtn");
+function open(){mod.hidden=false;$("rdvS1").hidden=false;$("rdvS2").hidden=true;$("rdvS3").hidden=true;$("rdvOk").disabled=false;$("rdvOk").textContent="Confirmer le rendez-vous";$("rdvX").focus();load()}
+function close(){mod.hidden=true;btn.focus()}
+btn.onclick=open;$("rdvX").onclick=close;$("rdvEnd").onclick=close;mod.addEventListener("click",e=>{if(e.target===mod)close()});addEventListener("keydown",e=>{if(e.key==="Escape"&&!mod.hidden)close()});
+})();
+</script>
 </body>
 </html>
