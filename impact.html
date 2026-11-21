@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#060B1A">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Impact : ce que coûte l’absence de QA – Amine Admane</title>
+<meta name="description" content="Des cas réels et documentés où l’absence de tests ou de contrôle des données a coûté des millions et dégradé l’expérience utilisateur.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060B1A; --ink:#EEF1F8; --muted:#97A3BF; --line:#1C2848; --gold:#E2B655; --glow:rgba(226,182,85,.18);
+  --serif:"Fraunces",Georgia,serif; --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.wrap{max-width:70rem;margin:0 auto;padding:0 1.5rem}
+
+/* En-tête sombre */
+.hero{position:relative;min-height:62svh;display:flex;flex-direction:column;justify-content:flex-end;color:#EEF1F8;background:radial-gradient(70% 90% at 85% 10%,rgba(226,182,85,.16),transparent 65%),#060B1A;overflow:hidden}
+.bar{position:absolute;z-index:3;top:0;left:0;right:0;padding-top:calc(1.2rem + env(safe-area-inset-top,0px))}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center}
+.brand{font:700 1.15rem var(--serif);text-decoration:none}
+.bar nav{display:flex;gap:1.6rem}
+.bar nav a{text-decoration:none;font-weight:500;font-size:.95rem;opacity:.8;padding:.2rem 0;border-bottom:2px solid transparent}
+.bar nav a:hover{opacity:1}
+.bar nav a[aria-current]{opacity:1;border-color:#E2B655}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:3.5rem}
+h1{font:900 clamp(2.6rem,8vw,6.2rem)/.98 var(--serif);letter-spacing:-.035em;margin:0 0 1.4rem}
+.lead{font-size:clamp(1.05rem,2vw,1.3rem);max-width:38rem;color:#C5CDE0;margin:0}
+
+h2{font:700 clamp(1.9rem,4.5vw,3rem)/1.08 var(--serif);letter-spacing:-.02em;margin:0 0 2.5rem}
+section{padding:4.5rem 0}
+
+/* Missions */
+.xp{display:grid;grid-template-columns:minmax(7rem,15rem) 1fr;gap:2rem;padding:3rem 0;border-top:1px solid var(--line);opacity:0;transform:translateY(2rem);transition:opacity .9s,transform .9s}
+.xp.in{opacity:1;transform:none}
+.yr{font:900 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:transparent;-webkit-text-stroke:1.5px var(--gold);letter-spacing:-.02em}
+.dates{color:var(--muted);font-size:.92rem;margin-top:.6rem}
+.xp h3{font:700 clamp(1.7rem,3.4vw,2.5rem)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 .3rem}
+.poste{color:var(--gold);font-weight:600;margin:0 0 1rem}
+.ctx{color:var(--muted);font-style:italic;max-width:42rem;margin:0 0 1.2rem}
+.xp ul.r{margin:0 0 1.4rem;padding-left:1.1rem;max-width:42rem}
+.xp ul.r li{margin:.4rem 0}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;list-style:none;padding:0;margin:0}
+.tags li{border:1px solid var(--line);border-radius:999px;font-size:.85rem;padding:.2rem .8rem;color:var(--muted)}
+.more{display:inline-block;margin-top:1.3rem;font-weight:600;color:var(--gold);text-decoration:none;border-bottom:2px solid var(--gold)}
+
+/* Formation */
+.edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:2.5rem 3rem}
+.edu h3{font:600 1rem var(--sans);color:var(--gold);margin:0 0 .9rem}
+.edu ul{list-style:none;margin:0;padding:0}
+.edu li{padding:.35rem 0;border-bottom:1px solid var(--line)}
+.edu small{display:block;color:var(--muted)}
+
+/* Contact */
+.contact{border-top:1px solid var(--line);background:radial-gradient(70% 90% at 80% 100%,var(--glow),transparent 70%)}
+.big{display:inline-block;font:900 clamp(1.7rem,6.2vw,4.6rem)/1.05 var(--serif);letter-spacing:-.03em;text-decoration:none;border-bottom:3px solid var(--gold);word-break:break-word;margin-bottom:1.5rem}
+.big:hover{color:var(--gold)}
+.contact p{color:var(--muted);max-width:34rem}
+footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+@media (max-width:640px){.bar nav{gap:1rem}.bar nav a:nth-child(2){display:none}.xp{grid-template-columns:1fr;gap:.8rem}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.xp{opacity:1;transform:none;transition:none}}
+
+/* Menu mobile */
+.menu-btn{display:none}
+@media (max-width:760px){
+ .bar{position:fixed;transition:background .3s}
+ .bar.solid{background:rgba(6,11,26,.95);padding-bottom:.75rem}
+ .hero{padding-top:calc(5.5rem + env(safe-area-inset-top,0px))}
+ .brand{position:relative;z-index:60}
+ .menu-btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:.4rem 1.15rem;border-radius:999px;border:1px solid rgba(238,241,248,.4);background:rgba(6,11,26,.4);color:#EEF1F8;font:600 .95rem var(--sans);cursor:pointer;position:relative;z-index:60}
+ .bar nav{position:fixed;inset:0;z-index:50;background:#060B1A;flex-direction:column;justify-content:center;align-items:flex-start;gap:1.2rem;padding:5rem 1.75rem 3rem;transform:translateY(-100%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+ .bar.open nav{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+ .bar nav a{display:block!important;font:700 clamp(2rem,9vw,2.9rem)/1.1 var(--serif)!important;opacity:1;border:0;padding:.2rem 0;color:#EEF1F8}
+ .bar nav a[aria-current]{color:#E2B655}
+}
+@media (prefers-reduced-motion:reduce){.bar nav,.bar.open nav{transition:none}}
+.btn{display:inline-block;padding:.95rem 1.7rem;border-radius:999px;font-weight:600;text-decoration:none;border:1.5px solid currentColor;color:var(--ink);transition:background .25s,color .25s,border-color .25s}
+.btn.primary{background:#E2B655;border-color:#E2B655;color:#0A1228}
+.btn:hover{background:#EEF1F8;border-color:#EEF1F8;color:#0A1228}
+/* Prise de rendez-vous */
+.rdv{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin:0 0 2.2rem}
+.rdv span{color:var(--muted)}
+.rdv button.btn{font:600 1.05rem var(--sans);cursor:pointer}
+.rdv .btn.primary{color:#0A1228}.rdv .btn.primary:hover{color:#0A1228;background:#EEF1F8}
+#rdvModal{position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(3,6,16,.8)}
+#rdvModal[hidden]{display:none}
+.rdvbox{width:min(36rem,100%);max-height:100%;overflow:auto;background:#0B1430;border:1px solid var(--line);border-radius:1.2rem;padding:1.6rem}
+.rdvbox header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.3rem}
+.rdvbox h3{font:700 1.6rem/1.15 var(--serif);margin:0}
+.rdvbox header p{margin:.3rem 0 0;color:var(--muted);font-size:.95rem}
+.rdvbox .x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;width:2.4rem;height:2.4rem;font-size:1.1rem;cursor:pointer;flex:none}
+.rdvbox [hidden]{display:none!important}
+.durs{display:flex;gap:.6rem;margin-bottom:1.1rem}.dur{flex:1;padding:.7rem;border-radius:.8rem;border:1px solid var(--line);background:none;color:var(--ink);font:600 1rem var(--sans);cursor:pointer}.dur:hover{border-color:var(--gold)}.dur[aria-pressed="true"]{background:#E2B655;border-color:#E2B655;color:#0A1228}
+.drow{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.6rem;margin-bottom:1rem}
+.dchip{flex:none;padding:.55rem .9rem;border-radius:.7rem;border:1px solid var(--line);background:none;color:var(--ink);font:500 .92rem var(--sans);cursor:pointer;text-transform:capitalize;white-space:nowrap}
+.dchip:hover{border-color:var(--gold)}.dchip[aria-pressed="true"]{border-color:var(--gold);background:rgba(226,182,85,.14);color:#F3E2B3;font-weight:600}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:.5rem}
+.slot{padding:.6rem;border-radius:.6rem;border:1px solid var(--line);background:none;color:var(--ink);font:500 .98rem var(--sans);cursor:pointer}
+.slot:hover{background:#E2B655;border-color:#E2B655;color:#0A1228;font-weight:600}
+.rsum{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:.8rem 1rem;border:1px solid var(--gold);border-radius:.8rem;background:rgba(226,182,85,.08);margin-bottom:1.1rem}
+.rsum span::first-letter,.rok strong::first-letter{text-transform:uppercase}
+.rsum button{background:none;border:0;color:var(--gold);font:600 .9rem var(--sans);cursor:pointer;text-decoration:underline;text-transform:none}
+.rdvbox label{display:block;margin:0 0 .9rem;font-weight:600;font-size:.92rem}
+.rdvbox input,.rdvbox textarea{display:block;width:100%;margin-top:.35rem;padding:.7rem .85rem;border-radius:.6rem;border:1px solid var(--line);background:#060B1A;color:var(--ink);font:400 1rem var(--sans)}
+.rdvbox input:focus,.rdvbox textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.rdvbox textarea{min-height:5rem;resize:vertical}
+.rdvbox .btn{font:600 1.02rem var(--sans);cursor:pointer;width:100%;color:#0A1228}
+.rdvbox .btn:disabled{opacity:.6;cursor:default}
+.rmsg{margin:.9rem 0 0;color:var(--muted);font-size:.9rem}
+.rerr{margin:.9rem 0 0;padding:.8rem 1rem;border-radius:.7rem;background:rgba(255,122,107,.12);color:#FFB4A9;font-size:.93rem}
+.rerr a{color:#FFD6CF;font-weight:600}
+.rok{text-align:center;padding:1rem 0}
+.rok .tick{width:3.4rem;height:3.4rem;border-radius:50%;background:#E2B655;color:#0A1228;display:grid;place-items:center;font-size:1.7rem;font-weight:700;margin:0 auto 1rem}
+.rok h4{font:700 1.5rem var(--serif);margin:0 0 .4rem}.rok p{margin:.2rem 0;color:var(--muted)}.rok strong{color:var(--ink);display:inline-block}
+.demo{margin:0 0 1rem;padding:.55rem .8rem;border-radius:.6rem;background:rgba(226,182,85,.1);color:#F3E2B3;font-size:.85rem}
+/* ====== Cas réels : ce que coûte l'absence de QA ====== */
+.cas{border-top:1px solid var(--line);background:radial-gradient(60% 50% at 100% 0%,rgba(226,182,85,.07),transparent 70%)}
+.cas .lab{color:var(--gold);font-weight:600;margin:0 0 1rem}
+.cas h2{margin-bottom:1.4rem;max-width:20ch}
+.cas-intro{color:var(--muted);font-size:1.12rem;max-width:40rem;margin:0 0 3rem}
+.cas-big{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem;padding:0 0 3rem;margin:0 0 2.5rem;border-bottom:1px solid var(--line)}
+.cas-big b{display:block;font:900 clamp(2.6rem,6vw,4.4rem)/1 var(--serif);color:var(--gold);letter-spacing:-.03em}
+.cas-big span{display:block;color:#C5CDE0;margin-top:.5rem;max-width:22rem}
+.cas-big small{display:block;color:var(--muted);font-size:.82rem;margin-top:.3rem}
+.cas-filters{display:flex;flex-wrap:wrap;gap:.55rem;margin:0 0 2rem}
+.cas-f{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.5rem 1.1rem;font:500 .92rem var(--sans);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.cas-f:hover{border-color:var(--gold);color:var(--ink)}
+.cas-f[aria-pressed="true"]{background:#E2B655;border-color:#E2B655;color:#0A1228;font-weight:600}
+.cas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1.2rem}
+.cas-card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:1.1rem;padding:1.6rem;background:rgba(11,20,48,.45);transition:border-color .25s,transform .25s,background .25s}
+.cas-card:hover,.cas-card:focus-within{border-color:var(--gold);transform:translateY(-3px);background:rgba(11,20,48,.8)}
+.cas-card[hidden]{display:none}
+.cas-meta{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;color:var(--muted);font-size:.85rem;margin:0 0 1.1rem}
+.cas-tag{color:var(--gold);font-weight:600}
+.cas-num{font:900 clamp(2.2rem,4vw,2.9rem)/1 var(--serif);color:var(--ink);letter-spacing:-.03em}
+.cas-numl{color:var(--muted);font-size:.9rem;margin:.35rem 0 1.1rem}
+.cas-card h3{font:700 1.3rem/1.25 var(--serif);margin:0 0 .6rem}
+.cas-card p.cas-acc{color:var(--muted);margin:0 0 1.4rem;font-size:.98rem}
+.cas-open{margin-top:auto;align-self:flex-start;background:none;border:0;padding:0;color:var(--gold);font:600 .98rem var(--sans);cursor:pointer;border-bottom:2px solid var(--gold)}
+.cas-open::after{content:"";position:absolute;inset:0;border-radius:1.1rem}
+.cas-open:focus-visible{outline:none}.cas-card:focus-within{outline:3px solid var(--gold);outline-offset:3px}
+@media (min-width:900px){.cas-grid.all .cas-card.feat{grid-column:span 2;padding:2.2rem}.cas-grid.all .cas-card.feat .cas-num{font-size:clamp(3rem,5vw,4.2rem)}.cas-grid.all .cas-card.feat h3{font-size:1.75rem;max-width:24ch}.cas-grid.all .cas-card.feat p.cas-acc{font-size:1.08rem;max-width:36rem}}
+.cas-grid .cas-end{margin-top:0;grid-column:1/-1}
+@media (min-width:1100px){.cas-grid.all .cas-end{grid-column:span 2;flex-direction:column;align-items:flex-start;justify-content:center}}
+.cas-end{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;margin-top:3rem;padding:2rem;border:1px solid var(--line);border-radius:1.1rem}
+.cas-end p{margin:0;font:500 clamp(1.25rem,2.4vw,1.7rem)/1.3 var(--serif);max-width:30rem}
+.cas-end div{display:flex;gap:.8rem;flex-wrap:wrap}
+.cas-end .btn{color:var(--ink);font:600 1rem var(--sans);cursor:pointer;background:none}
+.cas-end .btn.primary{color:#0A1228;background:#E2B655}
+.cas-end .btn:hover{color:#0A1228;background:#EEF1F8}
+
+/* Pop-up de l'article */
+#artModal{position:fixed;inset:0;z-index:9990;overflow-y:auto;overscroll-behavior:contain;background:rgba(3,6,16,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:4vh 1.2rem;display:flex;justify-content:center;align-items:flex-start;opacity:0;transition:opacity .3s}
+#artModal[hidden]{display:none}
+#artModal.on{opacity:1}
+.artbox{position:relative;width:min(50rem,100%);background:#0B1430;border:1px solid var(--line);border-radius:1.4rem;transform:translateY(1.5rem);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+#artModal.on .artbox{transform:none}
+.art-top{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.4rem;background:rgba(11,20,48,.94);border-bottom:1px solid var(--line);border-radius:1.4rem 1.4rem 0 0}
+.art-top span{color:var(--muted);font-size:.88rem}
+.art-x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;min-height:2.6rem;padding:0 1rem;font:600 .92rem var(--sans);cursor:pointer;flex:none}
+.art-x:hover{border-color:var(--gold);color:var(--gold)}
+.art-head{padding:2.2rem 2.2rem 1.6rem;background:radial-gradient(70% 100% at 100% 0%,rgba(226,182,85,.14),transparent 70%)}
+.art-head .cas-meta{margin-bottom:1rem}
+.art-head h3{font:900 clamp(1.8rem,4.2vw,2.8rem)/1.08 var(--serif);letter-spacing:-.025em;margin:0 0 1rem}
+.art-head p{color:#C5CDE0;font-size:1.12rem;margin:0;max-width:38rem}
+.art-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.4rem;padding:1.6rem 2.2rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.art-stats b{display:block;font:900 clamp(1.7rem,3.4vw,2.3rem)/1 var(--serif);color:var(--gold);letter-spacing:-.02em}
+.art-stats span{display:block;color:var(--muted);font-size:.9rem;margin-top:.35rem}
+.art-body{padding:1.8rem 2.2rem 2.2rem}
+.art-body h4{font:700 1.3rem/1.2 var(--serif);margin:2rem 0 .8rem}
+.art-body h4:first-child{margin-top:0}
+.art-body p{margin:0 0 1rem;color:#D3D9E8}
+.art-body ul{margin:0;padding-left:1.15rem;color:#D3D9E8}
+.art-body li{margin:.45rem 0}
+.art-body ul.chk{list-style:none;padding:0}
+.art-body ul.chk li{position:relative;padding-left:2rem}
+.art-body ul.chk li::before{content:"✓";position:absolute;left:0;top:.05rem;width:1.35rem;height:1.35rem;border-radius:50%;background:#E2B655;color:#0A1228;font-size:.78rem;font-weight:700;display:grid;place-items:center}
+.art-me{margin-top:2rem;padding:1.4rem 1.5rem;border:1px solid var(--gold);border-radius:1rem;background:rgba(226,182,85,.07)}
+.art-me h4{margin:0 0 .6rem!important;color:var(--gold);font:600 .95rem var(--sans)!important}
+.art-me p{margin:0 0 1rem}
+.art-me a{color:var(--gold);font-weight:600;text-decoration:none;border-bottom:2px solid var(--gold)}
+.art-src{margin-top:2rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.art-src ul{padding-left:1rem;color:var(--muted)}
+.art-src a{color:#C5CDE0}
+.art-cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem}
+.art-cta .btn{font:600 1rem var(--sans);cursor:pointer;color:var(--ink);background:none}
+.art-cta .btn.primary{color:#0A1228;background:#E2B655}
+.art-cta .btn:hover{color:#0A1228;background:#EEF1F8}
+.art-nav{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 2.2rem 1.6rem;border-top:1px solid var(--line)}
+.art-nav button{background:none;border:0;color:var(--muted);font:500 .92rem var(--sans);cursor:pointer;text-align:left;padding:.4rem 0;max-width:48%}
+.art-nav button:last-child{text-align:right}
+.art-nav button b{display:block;color:var(--ink);font:700 1.02rem/1.25 var(--serif);margin-top:.2rem}
+.art-nav button:hover b{color:var(--gold)}
+@media (max-width:640px){
+ #artModal{padding:0}
+ .artbox{border-radius:0;min-height:100%;border:0}
+ .art-top{border-radius:0}
+ .art-head,.art-stats,.art-body,.art-nav{padding-left:1.3rem;padding-right:1.3rem}
+ .cas-end{padding:1.4rem}
+}
+@media (prefers-reduced-motion:reduce){#artModal,.artbox,.cas-card{transition:none}}
+
+.hero .cas-big{border:0;padding:0;margin:2.6rem 0 0}
+.cas-main{padding-top:3.5rem}
+@media (min-width:761px){.hero{padding-top:7.5rem}.hero h1{max-width:18ch}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="bar"><div class="wrap">
+    <a class="brand" href="index.html">Amine Admane</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav id="mainnav" aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="index.html#competences">Expertise</a><a href="parcours.html">Parcours</a><a href="impact.html" aria-current="page">Impact</a><a href="#contact">Contact</a></nav>
+  </div></div>
+  <div class="wrap">
+    <p style="color:#E2B655;font-weight:600;margin:0 0 1.2rem">Pourquoi la QA</p>
+    <h1>Ce que coûte un test qui n’a pas été fait.</h1>
+    <p class="lead">On ne remarque la qualité que lorsqu’elle manque. Voici des cas réels et documentés où un test, un contrôle de données ou une vérification de non-régression a fait défaut, et ce que cela a coûté en argent, en confiance et en expérience utilisateur.</p>
+    <div class="cas-big">
+      <div><b>2 410 Md$</b><span>coût estimé de la mauvaise qualité logicielle aux États-Unis en 2022</span><small>Source : CISQ, rapport 2022</small></div>
+      <div><b>12,9 M$</b><span>coût annuel moyen de la mauvaise qualité des données pour une organisation</span><small>Source : Gartner</small></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="cas cas-main" id="cas"><div class="wrap">
+    <div class="cas-filters" id="casFilters" role="group" aria-label="Filtrer les cas par thème"></div>
+    <div class="cas-grid all" id="casGrid"></div>
+    <div class="cas-end"><p>Le point commun de tous ces cas : l’erreur était testable.</p></div>
+  </div></section>
+
+  <section class="contact" id="contact"><div class="wrap">
+    <h2>Éviter le prochain cas ?</h2>
+    <div class="rdv"><button type="button" class="btn primary" id="rdvBtn">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
+    <a class="big" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a>
+    <p>Parlez-moi de votre contexte et de vos enjeux, je vous réponds sous 48 heures.</p>
+  </div></section>
+</main>
+<footer><div class="wrap" id="footer"></div></footer>
+
+<script>document.getElementById("footer").textContent = "© " + new Date().getFullYear() + " Amine Admane";</script>
+<script>(function(){var b=document.querySelector(".bar");if(!b)return;var t=b.querySelector(".menu-btn"),n=b.querySelector("nav");if(!t||!n)return;
+function set(o){b.classList.toggle("open",o);t.setAttribute("aria-expanded",String(o));t.textContent=o?"Fermer":"Menu";document.documentElement.style.overflow=o?"hidden":""}
+t.addEventListener("click",function(){set(!b.classList.contains("open"))});
+n.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+function sc(){b.classList.toggle("solid",(window.scrollY||document.documentElement.scrollTop)>24)}
+addEventListener("scroll",sc,{passive:true});sc();})();</script>
+<div id="rdvModal" role="dialog" aria-modal="true" aria-labelledby="rdvT" hidden>
+  <div class="rdvbox">
+    <header><div><h3 id="rdvT">Prendre rendez-vous</h3><p id="rdvSub"></p></div><button type="button" class="x" id="rdvX" aria-label="Fermer">✕</button></header>
+    <p class="demo" id="rdvDemo" hidden>Mode aperçu : aucun rendez-vous n’est réellement créé.</p>
+    <div id="rdvS1"><div class="durs" id="rdvDur" role="group" aria-label="Durée du rendez-vous"></div><div class="drow" id="rdvDays" role="group" aria-label="Jours disponibles"></div><div class="tgrid" id="rdvTimes"></div><p class="rmsg" id="rdvLoad">Chargement des disponibilités…</p></div>
+    <form id="rdvS2" hidden novalidate>
+      <div class="rsum"><span id="rdvPick"></span><button type="button" id="rdvBack">Modifier</button></div>
+      <label>Nom<input id="rdvN" name="name" autocomplete="name" required></label>
+      <label>E-mail<input id="rdvE" name="email" type="email" autocomplete="email" required></label>
+      <label>Un mot sur votre besoin (facultatif)<textarea id="rdvM" name="notes"></textarea></label>
+      <button type="submit" class="btn primary" id="rdvOk">Confirmer le rendez-vous</button>
+      <p class="rmsg">Vos coordonnées servent uniquement à organiser cet échange. Vous recevrez un e-mail de confirmation.</p>
+    </form>
+    <div id="rdvS3" class="rok" hidden><div class="tick" aria-hidden="true">✓</div><h4>Rendez-vous confirmé</h4><p><strong id="rdvDone"></strong></p><p>Un e-mail de confirmation vous est envoyé.</p><p><button type="button" class="btn" id="rdvEnd" style="margin-top:1.2rem;background:none;color:var(--ink);border:1.5px solid currentColor">Fermer</button></p></div>
+    <p class="rerr" id="rdvErr" role="alert" hidden></p>
+  </div>
+</div>
+<script>
+/* ====== RÉGLAGES RENDEZ-VOUS ======
+   username : votre identifiant Cal.com. events : fin du lien de chaque type de rendez-vous.
+   demo: true = mode aperçu (créneaux fictifs, rien n'est créé). */
+const RDV = { username: "amine-admane-6xfl8a", events: [{ slug: "15min", label: "15 minutes" }, { slug: "30min", label: "30 minutes" }], texte: "Échange de 15 ou 30 minutes", demo: false, jours: 14 };
+(function(){
+const $=id=>document.getElementById(id),tz=Intl.DateTimeFormat().resolvedOptions().timeZone,demo=!!RDV.demo;
+let ev=RDV.events[0];const fb=()=>"https://cal.com/"+RDV.username+"/"+ev.slug;
+const fmtD=d=>new Date(d).toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}),fmtDs=d=>new Date(d).toLocaleDateString("fr-FR",{weekday:"short",day:"numeric",month:"short"}),fmtT=d=>new Date(d).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+const tzl=tz==="Europe/Paris"?"heure de Paris":tz;
+let slots={},pick=null;
+RDV.events.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.className="dur";b.textContent=e.label;b.setAttribute("aria-pressed",String(i===0));b.onclick=()=>{ev=e;[...$("rdvDur").children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));load()};$("rdvDur").append(b)});
+$("rdvInfo").textContent=RDV.texte;$("rdvSub").textContent=RDV.texte+" · "+tzl;$("rdvDemo").hidden=!demo;
+function err(h){const e=$("rdvErr");if(!h){e.hidden=true;return}e.innerHTML=h;e.hidden=false}
+function fail(msg){err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
+async function load(keep){
+ $("rdvLoad").hidden=false;$("rdvLoad").textContent="Chargement des disponibilités…";$("rdvDays").replaceChildren();$("rdvTimes").replaceChildren();if(!keep)err();
+ try{slots=demo?fake():await api();}catch(e){$("rdvLoad").hidden=true;fail("Le calendrier est momentanément indisponible.");return}
+ const keys=Object.keys(slots).sort();$("rdvLoad").hidden=true;
+ if(!keys.length){$("rdvLoad").hidden=false;$("rdvLoad").textContent="Aucune disponibilité dans les prochains jours. Écrivez-moi directement par e-mail.";return}
+ keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="dchip";b.textContent=fmtDs(slots[k][0]);b.setAttribute("aria-pressed","false");b.onclick=()=>day(k);$("rdvDays").append(b)});day(keys[0])}
+function day(k){[...$("rdvDays").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(Object.keys(slots).sort()[i]===k)));
+ const g=$("rdvTimes");g.replaceChildren();slots[k].sort().forEach(iso=>{const b=document.createElement("button");b.type="button";b.className="slot";b.textContent=fmtT(iso);b.onclick=()=>choose(iso);g.append(b)})}
+function choose(iso){pick=iso;err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
+function fake(){const o={};let d=new Date(),n=0;while(n<8){d.setDate(d.getDate()+1);if(d.getDay()%6===0)continue;n++;[10,11.5,14,16.5].forEach(h=>{const x=new Date(d);x.setHours(Math.floor(h),(h%1)*60,0,0);const k=x.toLocaleDateString("sv-SE");(o[k]=o[k]||[]).push(x.toISOString())})}return o}
+async function api(){
+ const s=new Date(),e=new Date(Date.now()+RDV.jours*864e5),U=RDV.username,E=ev.slug;
+ const tries=[{v:"2024-08-13",q:{username:U,eventSlug:E,startTime:s.toISOString(),endTime:e.toISOString(),timeZone:tz}},{v:"2024-09-04",q:{username:U,eventTypeSlug:E,start:s.toISOString(),end:e.toISOString(),timeZone:tz}}];
+ let last;for(const t of tries){try{const r=await fetch("https://api.cal.com/v2/slots?"+new URLSearchParams(t.q),{headers:{"cal-api-version":t.v}});if(!r.ok){last=r.status;continue}
+  const j=await r.json(),d=j.data&&j.data.slots?j.data.slots:j.data,out={};
+  for(const k in d){(d[k]||[]).map(x=>typeof x==="string"?x:(x.time||x.start)).filter(Boolean).forEach(iso=>{const kk=new Date(iso).toLocaleDateString("sv-SE");(out[kk]=out[kk]||[]).push(iso)})}return out}catch(x){last=x}}
+ throw last||new Error("slots")}
+$("rdvS2").addEventListener("submit",async evt=>{evt.preventDefault();err();const n=$("rdvN").value.trim(),m=$("rdvE").value.trim(),note=$("rdvM").value.trim();
+ if(!n||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m)){err("Merci d’indiquer votre nom et une adresse e-mail valide.");return}
+ const b=$("rdvOk");b.disabled=true;b.textContent="Confirmation…";
+ try{if(demo){await new Promise(r=>setTimeout(r,700))}else{
+   const body={eventTypeSlug:ev.slug,username:RDV.username,start:pick,attendee:{name:n,email:m,timeZone:tz,language:"fr"}};if(note)body.bookingFieldsResponses={notes:note};
+   const r=await fetch("https://api.cal.com/v2/bookings",{method:"POST",headers:{"Content-Type":"application/json","cal-api-version":"2024-08-13"},body:JSON.stringify(body)});
+   if(!r.ok){const e=new Error("book");e.status=r.status;throw e}}
+  $("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
+ catch(e){b.disabled=false;b.textContent="Confirmer le rendez-vous";
+  if(e.status===400||e.status===409){err("Ce créneau vient d’être pris. Choisissez-en un autre.");$("rdvS2").hidden=true;$("rdvS1").hidden=false;load(true)}
+  else fail("La réservation n’a pas pu aboutir.")}});
+$("rdvBack").onclick=()=>{err();$("rdvS2").hidden=true;$("rdvS1").hidden=false};
+const mod=$("rdvModal"),btn=$("rdvBtn");
+function open(){mod.hidden=false;$("rdvS1").hidden=false;$("rdvS2").hidden=true;$("rdvS3").hidden=true;$("rdvOk").disabled=false;$("rdvOk").textContent="Confirmer le rendez-vous";$("rdvX").focus();load()}
+function close(){mod.hidden=true;btn.focus()}
+btn.onclick=open;$("rdvX").onclick=close;$("rdvEnd").onclick=close;mod.addEventListener("click",e=>{if(e.target===mod)close()});addEventListener("keydown",e=>{if(e.key==="Escape"&&!mod.hidden)close()});
+})();
+</script>
+<script>
+const $ = id => document.getElementById(id);
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+</script>
+<div id="artModal" role="dialog" aria-modal="true" aria-labelledby="artT" hidden>
+  <article class="artbox" id="artBox">
+    <div class="art-top"><span id="artPos"></span><button type="button" class="art-x" id="artX">Fermer ✕</button></div>
+    <div class="art-head"><div class="cas-meta" id="artMeta"></div><h3 id="artT"></h3><p id="artAcc"></p></div>
+    <div class="art-stats" id="artStats"></div>
+    <div class="art-body" id="artBody"></div>
+    <nav class="art-nav" aria-label="Autres cas"><button type="button" id="artPrev"></button><button type="button" id="artNext"></button></nav>
+  </article>
+</div>
+
+<script>
+/* ====== CAS RÉELS : seule cette partie est à modifier ======
+   cats : les thèmes des filtres. Chaque article peut avoir un ou plusieurs thèmes.
+   Le premier article de la liste est mis en avant. "page" : la mission liée sur le site. */
+const CAS = {
+  cats: { data: "Qualité des données", migration: "Migration", prod: "Mise en production", calc: "Règles de calcul", ux: "Parcours & interfaces" },
+  articles: [
+    { id: "tsb", cats: ["migration"], annee: "2018", lieu: "Royaume-Uni · Banque",
+      titre: "TSB : la migration d’un week-end qui a duré huit mois",
+      chiffre: "330 M£", chiffreLib: "de coût total annoncé par la banque",
+      accroche: "5,2 millions de clients basculés d’un coup vers une nouvelle plateforme. Des comptes inaccessibles, d’autres visibles par des inconnus.",
+      stats: [["5,2 M", "clients concernés par la bascule"], ["48,65 M£", "d’amende des régulateurs en 2022"], ["8 mois", "avant le retour à la normale"]],
+      faits: ["En avril 2018, la banque britannique TSB transfère les données de tous ses clients depuis l’informatique de son ancien groupe, Lloyds, vers une nouvelle plateforme. La bascule est prévue sur un seul week-end, en « big bang » : tout le monde migre en même temps."],
+      consequences: ["Des clients bloqués hors de leurs comptes pendant des semaines, en agence, en ligne et sur mobile.", "Des soldes erronés, des paiements disparus, et des clients qui voyaient les comptes d’autres clients.", "Le directeur général démissionne ; 32,7 M£ de dédommagements sont versés aux clients.", "En 2022, la FCA et la PRA sanctionnent une migration mal organisée et mal contrôlée."],
+      tests: ["Des répétitions de migration à blanc, sur des volumes réels, avant la date de bascule.", "Une réconciliation source vs cible : nombre de comptes, soldes et historiques, ligne à ligne.", "Des tests de cloisonnement : un client ne doit voir que ses propres comptes.", "Des tests de charge sur l’application et la banque en ligne au redémarrage.", "Des critères de go / no-go objectifs, plutôt qu’une date imposée."],
+      moi: "C’est le cœur de mon travail sur une migration. Chez Disneyland Paris, j’ai validé la conformité des données de réservation migrées vers AWS, table par table, avant qu’elles ne servent en production.",
+      page: "disneyland.html", pageLib: "Voir la mission Disneyland Paris",
+      sources: [["FCA : TSB fined £48.65m for operational resilience failings", "https://www.fca.org.uk/news/press-releases/tsb-fined-48m-operational-resilience-failings"], ["Bank of England : TSB fined for operational resilience failings", "https://www.bankofengland.co.uk/news/2022/december/tsb-fined-for-operational-resilience-failings"]] },
+
+    { id: "phe", cats: ["data"], annee: "2020", lieu: "Royaume-Uni · Santé publique",
+      titre: "15 841 cas de Covid-19 perdus dans un tableur",
+      chiffre: "15 841", chiffreLib: "cas positifs absents du suivi",
+      accroche: "Un fichier trop long, des lignes coupées sans alerte, et des milliers de contacts à risque prévenus trop tard.",
+      stats: [["15 841", "cas positifs non transmis"], ["8 jours", "de résultats concernés, du 25 sept. au 2 oct."], ["125 000+", "infections supplémentaires estimées par une étude"]],
+      faits: ["Les laboratoires transmettaient leurs résultats en fichiers CSV. Pour les charger, l’agence de santé publique anglaise passait par un modèle Excel à l’ancien format .xls, limité à 65 536 lignes. Au-delà, les lignes en trop étaient ignorées, sans aucun message d’erreur."],
+      consequences: ["Près de 16 000 personnes positives n’ont pas été transmises au traçage des contacts pendant plusieurs jours.", "Leurs contacts à risque ont continué à circuler sans consigne d’isolement.", "Une étude de l’université de Warwick estime que ce retard a provoqué plus de 125 000 infections supplémentaires."],
+      tests: ["Un contrôle de volumétrie : autant de lignes chargées que de lignes reçues.", "Une alerte bloquante dès qu’une ligne est rejetée ou tronquée.", "Une validation du schéma et des formats à chaque étape du flux.", "Un test aux limites : que se passe-t-il quand le fichier double de taille ?"],
+      moi: "« Autant de lignes en sortie qu’en entrée » est l’un des premiers contrôles que je mets en place. Chez Edenred, je vérifiais la parité et la complétude des données entre la vue source et la table exposée au marketing.",
+      page: "edenred.html", pageLib: "Voir la mission Edenred",
+      sources: [["GOV.UK : PHE statement on delayed reporting of COVID-19 cases", "https://gov.uk/government/news/phe-statement-on-delayed-reporting-of-covid-19-cases"], ["University of Warwick : the data glitch caused more than 125,000 additional infections", "https://warwick.ac.uk/fac/soc/economics/research/centres/cage/news/23-11-20-nhs_test_and_trace_works_new_research_finds_but_the_data_glitch_which_led_to_over_15000_late_referrals_caused_more_than_125000_additional_covid_19_infections/"]] },
+
+    { id: "crowdstrike", cats: ["prod"], annee: "2024", lieu: "Monde · Cybersécurité",
+      titre: "CrowdStrike : une mise à jour, 8,5 millions d’écrans bleus",
+      chiffre: "5,4 Md$", chiffreLib: "de pertes directes pour le Fortune 500",
+      accroche: "Un fichier de configuration défectueux envoyé à tous les clients en même temps. Aéroports, hôpitaux et banques à l’arrêt.",
+      stats: [["8,5 M", "d’ordinateurs Windows bloqués"], ["1 sur 4", "entreprises du Fortune 500 touchées"], ["1,94 Md$", "de pertes pour le seul secteur de la santé"]],
+      faits: ["Le 19 juillet 2024, l’éditeur de sécurité CrowdStrike diffuse une mise à jour de contenu de son logiciel Falcon. Le fichier contient une erreur que le logiciel ne sait pas gérer : les ordinateurs Windows qui le reçoivent plantent au démarrage, en boucle. La mise à jour part vers tout le parc à la fois."],
+      consequences: ["Des vols annulés dans le monde entier, des hôpitaux et des banques perturbés pendant plusieurs jours.", "Selon l’assureur Parametrix, 5,4 milliards de dollars de pertes directes pour les grandes entreprises américaines, dont seulement 10 à 20 % couverts par les assurances.", "Les compagnies aériennes ont perdu en moyenne 143 millions de dollars chacune."],
+      tests: ["Une validation automatique du contenu de chaque fichier de configuration avant diffusion.", "Des tests sur un parc de machines représentatif, pas seulement en laboratoire.", "Un déploiement progressif (canary release) : 1 % du parc, puis 10 %, puis tout le monde.", "Un plan de retour arrière testé à l’avance."],
+      moi: "Une donnée de configuration est une donnée comme une autre : elle se teste. Chez Edenred, je rejouais mes contrôles de non-régression à chaque montée de version, avant que la nouvelle version ne touche les utilisateurs.",
+      page: "edenred.html", pageLib: "Voir la mission Edenred",
+      sources: [["Axios : Fortune 500 lost an estimated $5.4B in CrowdStrike outage", "https://www.axios.com/2024/07/24/fortune-500-crowdstrike-outage-impact"], ["SecurityWeek : CrowdStrike faces lawsuits from customers, investors", "https://www.securityweek.com/crowdstrike-faces-lawsuits-from-customers-investors/"]] },
+
+    { id: "knight", cats: ["prod"], annee: "2012", lieu: "États-Unis · Finance",
+      titre: "Knight Capital : 460 millions de dollars perdus en 45 minutes",
+      chiffre: "460 M$", chiffreLib: "perdus en 45 minutes",
+      accroche: "Un serveur oublié lors d’un déploiement, un vieux code réveillé par erreur, et une entreprise qui ne s’en remet pas.",
+      stats: [["45 min", "d’ordres erratiques envoyés sur les marchés"], ["1 sur 8", "serveurs non mis à jour"], ["12 M$", "d’amende infligée par la SEC"]],
+      faits: ["Le 1er août 2012, Knight Capital, l’un des plus gros intermédiaires de la Bourse américaine, déploie une nouvelle version de son logiciel de passage d’ordres. Sur les huit serveurs concernés, un seul n’est pas mis à jour. Un indicateur réutilisé par la nouvelle version y réveille une ancienne fonction abandonnée depuis des années."],
+      consequences: ["Pendant 45 minutes, le système envoie des millions d’ordres non voulus sur le marché.", "La perte atteint 460 millions de dollars ; l’entreprise, au bord de la faillite, est rachetée par Getco quelques mois plus tard.", "La SEC relève l’absence de contrôles adaptés et de revue de leur efficacité."],
+      tests: ["Une vérification après déploiement sur chaque serveur : la bonne version est-elle partout ?", "La suppression du code mort, plutôt que sa mise en sommeil.", "Des tests de non-régression sur les fonctions existantes avant chaque mise en production.", "Un contrôle automatique des ordres sortants, avec arrêt d’urgence en cas d’écart."],
+      moi: "Chez L’Oréal, j’ai mis en place des tests de non-régression automatisés, planifiés chaque jour et chaque semaine : une anomalie apparue après une livraison est repérée avant que les utilisateurs ne la voient.",
+      page: "loreal.html", pageLib: "Voir la mission L’Oréal",
+      sources: [["SEC : SEC Charges Knight Capital With Violations of Market Access Rule", "https://www.sec.gov/news/press-release/2013-222"], ["AP via KSL : Knight Capital will pay $12M for trading glitch", "https://www.ksl.com/article/27266638"]] },
+
+    { id: "citi", cats: ["ux"], annee: "2020", lieu: "États-Unis · Banque",
+      titre: "Citibank : 900 millions de dollars envoyés à cause d’une case mal cochée",
+      chiffre: "900 M$", chiffreLib: "virés au lieu de 7,8 M$",
+      accroche: "Une interface confuse, trois validations humaines, et personne ne voit que le virement rembourse un prêt entier.",
+      stats: [["7,8 M$", "le montant qui devait partir"], ["≈ 900 M$", "le montant réellement viré"], ["3", "personnes ont validé l’opération"]],
+      faits: ["En août 2020, Citibank doit verser, pour le compte du groupe Revlon, 7,8 millions de dollars d’intérêts à ses prêteurs. Dans le logiciel utilisé, il fallait cocher plusieurs options précises pour que le capital ne parte pas avec. L’opérateur ne coche pas la bonne combinaison, et les deux validateurs suivants ne voient pas l’erreur."],
+      consequences: ["Près de 900 millions de dollars sont virés : la totalité d’un prêt qui n’arrivait à échéance qu’en 2023.", "Une partie des prêteurs refuse de rendre l’argent. Un juge fédéral leur donne d’abord raison en 2021, avant que la décision ne soit annulée en appel.", "La banque parle d’« erreur humaine », mais l’interface du logiciel est au cœur du dossier."],
+      tests: ["Des tests d’ergonomie sur les parcours critiques : l’utilisateur comprend-il ce que fait chaque option ?", "Des cas de test sur les valeurs par défaut et les combinaisons d’options dangereuses.", "Un contrôle de cohérence : un montant cent fois supérieur à l’habituel déclenche une alerte bloquante.", "Un écran de confirmation qui affiche clairement le montant total réellement envoyé."],
+      moi: "Une grande partie de mon métier consiste à dérouler les parcours comme un vrai utilisateur, issue par issue. À la FFT, je testais chaque issue du paiement de la boutique Roland-Garros : succès, échec, annulation.",
+      page: "fft.html", pageLib: "Voir la mission FFT",
+      sources: [["NPR Planet Money : How Citibank accidentally paid Revlon’s $900 million loan", "https://www.npr.org/transcripts/1019909860"], ["Al Jazeera : $900m gaffe, US judge says Citigroup can’t recoup Revlon payout", "https://www.aljazeera.com/economy/2021/2/16/900m-gaffe-citigroup-cant-recoup-payout-to-revlon-judge-rules"]] },
+
+    { id: "louvois", cats: ["calc", "migration"], annee: "2011", lieu: "France · Ministère de la Défense",
+      titre: "Louvois : le logiciel de paie des armées qui payait au hasard",
+      chiffre: "358 M€", chiffreLib: "versés en trop aux militaires",
+      accroche: "Soldes amputées ou gonflées, familles en difficulté : en France, un calculateur de paie mal recetté a coûté des centaines de millions d’euros.",
+      stats: [["≈ 160 000", "militaires de l’armée de terre aux fiches de paie erronées"], ["180", "primes et indemnités à calculer"], ["150 à 200 M€", "par an pour corriger les erreurs à la main"]],
+      faits: ["Mis en service en 2011, Louvois (Logiciel unique à vocation interarmées de la solde) devait calculer la paie de près de 180 000 militaires. Très vite, les erreurs se multiplient : certains reçoivent une solde fortement amputée, d’autres beaucoup trop. La Cour des comptes parle de « logiciel fou »."],
+      consequences: ["358 millions d’euros versés en trop et 47 millions en moins depuis 2011, selon la Cour des comptes.", "Des familles de militaires en difficulté financière ; une cellule d’assistance dédiée doit être créée.", "Le logiciel est abandonné et remplacé par Source Solde, généralisé à toutes les armées en 2021."],
+      tests: ["Une recette exhaustive des règles de gestion : chaque prime, chaque indemnité, chaque cas particulier.", "Des jeux de données représentatifs des vraies situations : mutations, opérations extérieures, changements de grade.", "Un fonctionnement en parallèle de l’ancien et du nouveau calcul, avec analyse des écarts avant la bascule.", "Un contrôle de la qualité des données injectées dans le nouveau calculateur."],
+      moi: "Recetter des règles de calcul, c’est ce que je faisais chez Edenred sur les KPI clients : agrégats de commandes, montants, récurrence, statuts. Un chiffre faux, même de quelques euros, finit toujours par se voir.",
+      page: "edenred.html", pageLib: "Voir la mission Edenred",
+      sources: [["Assemblée nationale : question écrite n° 93784 (montants versés en trop)", "https://www.assemblee-nationale.fr/dyn/14/questions/QANR5L14QE93784.pdf"], ["Assemblée nationale : question écrite n° 29282 (coût des corrections)", "https://www.assemblee-nationale.fr/dyn/15/questions/QANR5L15QE29282.pdf"], ["Acteurs publics : le ministère des Armées tire un trait définitif sur l’échec Louvois", "https://acteurspublics.fr/articles/le-ministere-des-armees-tire-un-trait-definitif-sur-lechec-louvois/"]] },
+
+    { id: "unity", cats: ["data"], annee: "2022", lieu: "États-Unis · Jeu vidéo & publicité",
+      titre: "Unity : 110 millions de dollars perdus à cause de données corrompues",
+      chiffre: "110 M$", chiffreLib: "de chiffre d’affaires perdu en 2022",
+      accroche: "Des données défectueuses d’un gros client ingérées sans contrôle, et l’algorithme publicitaire se met à viser à côté.",
+      stats: [["110 M$", "d’impact sur le chiffre d’affaires annuel"], ["≈ 8 %", "du chiffre d’affaires prévu pour l’année"], ["−39 %", "pour l’action en une semaine"]],
+      faits: ["Unity, éditeur du moteur de jeu du même nom, tire une grande partie de ses revenus de la publicité dans les jeux. Son outil Audience Pinpointer s’appuie sur l’apprentissage automatique pour cibler les joueurs. Début 2022, la plateforme ingère des données défectueuses provenant d’un gros client, et perd la valeur d’une partie de ses données d’entraînement."],
+      consequences: ["Les publicités sont moins bien ciblées, les annonceurs dépensent moins, les revenus chutent.", "L’entreprise doit reconstruire ses jeux de données, réentraîner ses modèles et retarder d’autres projets.", "Unity annonce ensuite des systèmes de surveillance, d’alerte et de reprise sur ses données : les contrôles qui manquaient."],
+      tests: ["Des contrôles de qualité à l’ingestion : valeurs nulles, doublons, formats, valeurs aberrantes.", "Une surveillance de la distribution des données dans le temps, pour repérer toute dérive brutale.", "Un contrat de données avec chaque source : ce qui ne respecte pas le schéma est mis en quarantaine.", "Des alertes avant que les données n’alimentent un modèle en production."],
+      moi: "Surveiller la santé des flux, c’est ce que je faisais avec Soda SQL chez Disneyland Paris : doublons, clés primaires, valeurs NULL, cohérence des dates, avec des alertes de non-régression.",
+      page: "disneyland.html", pageLib: "Voir la mission Disneyland Paris",
+      sources: [["Briefing.com : Unity Software’s main segments going on separate paths", "https://www.briefing.com/in-depth-analysis/story-stocks/2022/5/11/unity-softwares-main-segments-going-on-separate-paths-leading-to-soft-outlook-(u)"], ["The Motley Fool : Why Unity Software tanked 39% this week", "https://www.fool.com/investing/2022/05/12/why-unity-software-tanked-39-this-week"]] },
+
+    { id: "healthcare", cats: ["prod", "ux"], annee: "2013", lieu: "États-Unis · Service public",
+      titre: "HealthCare.gov : six inscriptions le jour du lancement",
+      chiffre: "6", chiffreLib: "personnes inscrites le premier jour",
+      accroche: "Un portail national lancé sans test de charge réaliste. Il tombe deux heures après son ouverture.",
+      stats: [["250 000", "utilisateurs simultanés, bien au-delà de la capacité prévue"], ["2 h", "avant les premières pannes"], ["18", "alertes documentées avant le lancement"]],
+      faits: ["Le 1er octobre 2013, le gouvernement américain ouvre HealthCare.gov, le site qui doit permettre à des millions de personnes de souscrire une assurance santé. Le projet est éclaté entre de nombreux prestataires ; les tests d’intégration de bout en bout et les tests de charge arrivent trop tard."],
+      consequences: ["Pannes dans les deux heures, pages blanches, comptes impossibles à créer.", "Seules six personnes parviennent à choisir une offre et à déposer leur dossier le premier jour.", "L’inspection générale recense 18 alertes documentées sur le projet entre 2011 et 2013.", "Le coût total du site est estimé, selon le périmètre, entre 840 millions et plus de 2 milliards de dollars."],
+      tests: ["Des tests de charge au niveau du trafic attendu, et au-delà.", "Des tests d’intégration de bout en bout entre les modules des différents prestataires.", "Une recette du parcours complet : création de compte, vérification d’identité, choix d’une offre.", "Une mise en production décidée sur les résultats des tests, pas sur une date."],
+      moi: "J’ai travaillé sur des plateformes à très fort trafic : la billetterie et la boutique de Roland-Garros à la FFT, puis le site de réservation de Disneyland Paris, où j’ai automatisé les tests d’API face aux contraintes de charge.",
+      page: "fft.html", pageLib: "Voir la mission FFT",
+      sources: [["HHS OIG : HealthCare.gov, Case Study of CMS Management of the Federal Marketplace", "https://oig.hhs.gov/oei/reports/oei-06-14-00350.asp"], ["IBTimes : coût du site selon les estimations", "https://www.ibtimes.com/obamacare-website-failure-analysis-why-site-crashed-so-often-during-2013-launch-2097354"]] },
+
+    { id: "horizon", cats: ["data", "calc"], annee: "1999 – 2015", lieu: "Royaume-Uni · Service postal",
+      titre: "Post Office Horizon : quand des données fausses envoient des innocents en prison",
+      chiffre: "900+", chiffreLib: "gérants de bureaux de poste poursuivis",
+      accroche: "Le logiciel affichait des trous de caisse qui n’existaient pas. On a cru ses chiffres plutôt que les personnes.",
+      stats: [["900+", "personnes poursuivies entre 1999 et 2015"], ["236", "personnes envoyées en prison"], ["16 ans", "de poursuites fondées sur ces données"]],
+      faits: ["À partir de 1999, la Poste britannique équipe ses bureaux du système comptable Horizon, développé par Fujitsu. Rapidement, des gérants signalent des écarts de caisse qu’ils ne s’expliquent pas. Le système contenait des anomalies, mais ses données sont présentées comme fiables devant les tribunaux."],
+      consequences: ["Plus de 900 gérants poursuivis pour vol ou fausse comptabilité, 236 envoyés en prison.", "Beaucoup d’autres ruinés après avoir remboursé de leur poche des pertes qui n’existaient pas.", "Considéré comme la plus vaste erreur judiciaire de l’histoire britannique ; une loi de 2024 annule les condamnations."],
+      tests: ["Une réconciliation systématique entre les transactions enregistrées et les montants réels.", "Une traçabilité de chaque anomalie signalée, jusqu’à sa correction et son retest.", "Des tests de non-régression à chaque évolution du système.", "Une règle simple : une donnée non vérifiée ne sert jamais de preuve."],
+      moi: "Mon rôle est justement de prouver qu’un chiffre est juste avant qu’on ne s’en serve pour décider. Chez L’Oréal, la vue crédit clients servait à bloquer ou débloquer des commandes : chaque KPI était comparé à la base avant d’être montré.",
+      page: "loreal.html", pageLib: "Voir la mission L’Oréal",
+      sources: [["Wikipedia : British Post Office scandal", "https://en.wikipedia.org/wiki/British_Post_Office_scandal"], ["Computer Weekly : Post Office Horizon scandal explained", "https://www.computerweekly.com/feature/Post-Office-Horizon-scandal-explained-everything-you-need-to-know"]] },
+
+    { id: "uber", cats: ["calc"], annee: "2017", lieu: "États-Unis · Mobilité",
+      titre: "Uber : une formule de commission fausse pendant deux ans et demi",
+      chiffre: "≈ 900 $", chiffreLib: "à rembourser en moyenne par chauffeur",
+      accroche: "Une commission calculée sur le mauvais montant, des dizaines de milliers de chauffeurs sous-payés, et une confiance entamée.",
+      stats: [["2,5 ans", "d’erreur avant sa découverte"], ["Des dizaines de M$", "à reverser aux chauffeurs"], ["50 000+", "chauffeurs Uber à New York"]],
+      faits: ["À New York, Uber devait prélever sa commission sur le prix de la course hors taxes et frais. Pendant deux ans et demi, elle a été calculée sur le montant brut, taxes comprises. L’erreur n’a été repérée qu’à la création d’un nouveau modèle de reçu."],
+      consequences: ["Des dizaines de millions de dollars à reverser, intérêts compris, à des dizaines de milliers de chauffeurs.", "Le syndicat des chauffeurs conteste le montant, jugé insuffisant.", "Une relation déjà tendue avec les chauffeurs encore abîmée."],
+      tests: ["Une recette de la règle avec des cas chiffrés : pour une course de 20 $ dont 2 $ de taxes, la commission porte sur 18 $.", "Une comparaison entre le calcul du système et un calcul de référence, sur un échantillon de vraies courses.", "Une réconciliation régulière entre les montants versés et le contrat signé avec les chauffeurs."],
+      moi: "Vérifier un montant calculé contre une référence indépendante est un réflexe que j’applique partout. Chez Edenred, je recettais les règles de calcul des KPI clients, dont les montants et les statuts de commande.",
+      page: "edenred.html", pageLib: "Voir la mission Edenred",
+      sources: [["CBC : Uber stiffed New York City drivers by millions of dollars", "https://www.cbc.ca/1.4129390"], ["CBS New York : Uber admits stiffing NYC drivers", "https://www.cbsnews.com/newyork/news/uber-reimbursing-drivers"]] },
+
+    { id: "mars", cats: ["data"], annee: "1999", lieu: "États-Unis · Spatial",
+      titre: "Mars Climate Orbiter : une sonde perdue pour une unité de mesure",
+      chiffre: "125 M$", chiffreLib: "le coût de la sonde détruite",
+      accroche: "Un logiciel envoyait des livres-force, l’autre attendait des newtons. Personne n’avait vérifié.",
+      stats: [["× 4,45", "l’écart entre les deux unités"], ["9 mois", "de trajectoire faussée sans que l’erreur soit repérée"], ["125 M$", "le coût de la sonde"]],
+      faits: ["En 1999, la sonde de la NASA arrive à Mars après neuf mois de voyage. Le logiciel au sol du constructeur, Lockheed Martin, exprimait la poussée des moteurs en livres-force ; le logiciel de navigation de la NASA attendait des newtons. À chaque correction de trajectoire, l’erreur s’accumule."],
+      consequences: ["La sonde passe beaucoup trop bas dans l’atmosphère martienne et est détruite le 23 septembre 1999.", "La mission scientifique est perdue, ainsi que son rôle de relais pour l’atterrisseur suivant.", "L’enquête pointe aussi des échanges trop informels entre les équipes."],
+      tests: ["Un contrat d’interface qui précise l’unité de chaque champ échangé.", "Un test d’intégration entre les deux logiciels, avec des valeurs connues à l’avance.", "Un contrôle de vraisemblance : des écarts répétés entre trajectoire prévue et observée doivent déclencher une alerte."],
+      moi: "Le respect des contrats d’interface entre domaines faisait partie de mes contrôles chez Edenred, à chaque migration de catalogue : mêmes schémas, mêmes formats, mêmes définitions.",
+      page: "edenred.html", pageLib: "Voir la mission Edenred",
+      sources: [["CNN (via NCES) : NASA’s metric confusion caused Mars orbiter loss", "https://nces.ed.gov/pubs2009/metadata/exhibit1_1.asp"]] },
+
+    { id: "panama", cats: ["ux"], annee: "2000 – 2001", lieu: "Panama · Santé",
+      titre: "Panama : un logiciel de radiothérapie qui acceptait une saisie imprévue",
+      chiffre: "28", chiffreLib: "patients surexposés aux radiations",
+      accroche: "Une façon de saisir les données que personne n’avait testée, et un logiciel qui calculait une dose fausse sans protester.",
+      stats: [["28", "patients surexposés"], ["20 à 100 %", "de dose en plus de la prescription"], ["8", "décès, dont 5 attribués aux radiations par l’AIEA"]],
+      faits: ["À l’Institut national d’oncologie du Panama, un logiciel calcule les temps d’irradiation en tenant compte des caches qui protègent les tissus sains. Il limitait le nombre de caches saisissables. Pour contourner cette limite, l’équipe se met en 2000 à saisir plusieurs caches comme un seul. Le logiciel accepte la saisie, mais calcule des temps de traitement faux."],
+      consequences: ["28 patients traités pour des cancers pelviens reçoivent des doses de 20 à 100 % supérieures à la prescription.", "Au moins huit décès ; l’AIEA en attribue cinq aux radiations, et d’autres patients gardent des séquelles graves.", "L’éditeur reconnaît ensuite que certaines saisies incorrectes étaient acceptées sans alerte."],
+      tests: ["Des tests aux limites : que fait le logiciel quand on dépasse le nombre de caches prévu ?", "Des tests de saisies non standard : une saisie non prévue doit être refusée, pas interprétée.", "Une vérification indépendante du résultat calculé avant chaque usage critique."],
+      moi: "Les tests aux limites et les parcours non standards sont au cœur de ma méthode, depuis la FFT où j’ai appris à écrire le test avant le code et à anticiper les cas d’erreur.",
+      page: "fft.html", pageLib: "Voir la mission FFT",
+      sources: [["AIEA : radiological emergency in Panama", "https://www.iaea.org/NewsCenter/PressReleases/2001/panam_adv_info2.shtml"], ["US NRC : Information Notice 2001-08, Supplement 2", "https://scp.nrc.gov/special/in200108s2.pdf"]] }
+  ]
+};
+/* ====== FIN DES CAS RÉELS ====== */
+
+(function () {
+  const A = CAS.articles, grid = $("casGrid"), fbox = $("casFilters"), modal = $("artModal");
+  const catLib = c => CAS.cats[c] || c;
+  const meta = (box, a) => { box.replaceChildren(el("span", "cas-tag", a.cats.map(catLib).join(" · ")), el("span", null, a.annee), el("span", null, a.lieu)); };
+
+  /* Cartes */
+  A.forEach((a, i) => {
+    const c = el("article", "cas-card" + (i === 0 ? " feat" : "")); c.dataset.cats = a.cats.join(" ");
+    const m = el("div", "cas-meta"); meta(m, a);
+    const b = el("button", "cas-open", "Lire le cas"); b.type = "button"; b.setAttribute("aria-label", "Lire le cas : " + a.titre); b.onclick = () => open(i, b);
+    c.append(m, el("div", "cas-num", a.chiffre), el("div", "cas-numl", a.chiffreLib), el("h3", null, a.titre), el("p", "cas-acc", a.accroche), b);
+    grid.append(c);
+  });
+
+  const end = document.querySelector(".cas-end"); if (end) grid.append(end);
+  /* Filtres */
+  const keys = ["all", ...Object.keys(CAS.cats).filter(k => A.some(a => a.cats.includes(k)))];
+  keys.forEach(k => {
+    const b = el("button", "cas-f", k === "all" ? "Tous les cas" : catLib(k)); b.type = "button"; b.setAttribute("aria-pressed", String(k === "all"));
+    b.onclick = () => {
+      [...fbox.children].forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      grid.classList.toggle("all", k === "all");
+      grid.querySelectorAll(".cas-card").forEach(c => { c.hidden = k !== "all" && !c.dataset.cats.split(" ").includes(k); });
+    };
+    fbox.append(b);
+  });
+
+  /* Pop-up */
+  let cur = -1, opener = null;
+  const sec = (t, items, cls) => { const f = document.createDocumentFragment(); f.append(el("h4", null, t)); const u = el("ul", cls); items.forEach(s => u.append(el("li", null, s))); f.append(u); return f; };
+  function fill(i) {
+    const a = A[i]; cur = i;
+    $("artPos").textContent = "Cas " + (i + 1) + " sur " + A.length;
+    meta($("artMeta"), a); $("artT").textContent = a.titre; $("artAcc").textContent = a.accroche;
+    $("artStats").replaceChildren(...a.stats.map(([v, l]) => { const d = el("div"); d.append(el("b", null, v), el("span", null, l)); return d; }));
+    const body = $("artBody"); body.replaceChildren(el("h4", null, "Ce qui s’est passé"));
+    a.faits.forEach(p => body.append(el("p", null, p)));
+    body.append(sec("Les conséquences", a.consequences), sec("Ce qu’un test aurait vérifié", a.tests, "chk"));
+    const me = el("div", "art-me"); me.append(el("h4", null, "Le lien avec mon travail"), el("p", null, a.moi));
+    if (a.page) { const l = el("a", null, a.pageLib + " →"); l.href = a.page; me.append(l); }
+    const cta = el("div", "art-cta"); const r = el("button", "btn primary", "Prendre rendez-vous"); r.type = "button"; r.onclick = toRdv;
+    const n = el("button", "btn", "Cas suivant"); n.type = "button"; n.onclick = () => go(1); cta.append(r, n);
+    const src = el("div", "art-src"); src.append(el("p", null, "Sources publiques. Montants dans la devise d’origine."));
+    const su = el("ul"); a.sources.forEach(([t, u]) => { const li = el("li"); const l = el("a", null, t); l.href = u; l.target = "_blank"; l.rel = "noopener"; li.append(l); su.append(li); }); src.append(su);
+    body.append(me, cta, src);
+    const p = A[(i - 1 + A.length) % A.length], nx = A[(i + 1) % A.length];
+    $("artPrev").replaceChildren("← Cas précédent", el("b", null, p.titre)); $("artNext").replaceChildren("Cas suivant →", el("b", null, nx.titre));
+    modal.scrollTop = 0;
+    try { history.replaceState(null, "", "#cas-" + a.id); } catch (e) {}
+  }
+  function open(i, from) {
+    opener = from || document.activeElement; fill(i);
+    modal.hidden = false; document.documentElement.style.overflow = "hidden";
+    requestAnimationFrame(() => modal.classList.add("on")); $("artX").focus();
+  }
+  function close(keepHash) {
+    if (modal.hidden) return;
+    modal.classList.remove("on"); modal.hidden = true; document.documentElement.style.overflow = ""; cur = -1;
+    if (!keepHash) try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+  function go(d) { fill((cur + d + A.length) % A.length); $("artX").focus(); }
+  function toRdv() { close(); const b = $("rdvBtn"); if (b) b.click(); }
+  $("artX").onclick = () => close(); $("artPrev").onclick = () => go(-1); $("artNext").onclick = () => go(1);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.querySelectorAll("[data-rdv]").forEach(b => b.onclick = () => { const r = $("rdvBtn"); if (r) r.click(); });
+  addEventListener("keydown", e => {
+    if (modal.hidden) return;
+    if (e.key === "Escape") { e.stopPropagation(); close(); }
+    else if (e.key === "ArrowRight" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) go(1);
+    else if (e.key === "ArrowLeft" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) go(-1);
+    else if (e.key === "Tab") {
+      const f = [...modal.querySelectorAll("button,a[href]")].filter(x => x.offsetParent !== null);
+      if (!f.length) return; const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  /* Lien direct vers un cas : impact.html#cas-tsb */
+  const fromHash = () => { const m = location.hash.match(/^#cas-(.+)$/); if (!m) return; const i = A.findIndex(a => a.id === m[1]); if (i > -1 && i !== cur) open(i); };
+  addEventListener("hashchange", fromHash); fromHash();
+})();
+</script>
+</body>
+</html>
