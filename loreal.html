@@ -151,6 +151,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 .ft .ft-note{font-size:.85rem;margin-top:.9rem}
 .ft .btn{font:600 .95rem var(--sans);cursor:pointer;padding:.8rem 1.4rem;margin-top:1.3rem}
 .ft-pitch{margin-bottom:0}
+.ft #rdvInfo{margin-top:.6rem}
 .ft .btn.primary{color:#0A1228}
 .ft .btn.primary:hover{background:#EEF1F8;border-color:#EEF1F8}
 .ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
@@ -183,11 +184,8 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
   <section><div class="wrap"><h2 class="ttl">Exemples de tests</h2><p class="sub">Quatre situations concrètes, avec ce que je fais et ce que je vérifie.</p><div class="cards"><div class="card"><h3>Test d’un champ ou d’un KPI</h3><dl><dt>Je fais</dt><dd>Je construis la requête SQL qu’il faut sur la table de données.</dd><dt>Je vérifie</dt><dd>Que la valeur du champ ou du KPI est bien celle attendue.</dd></dl></div><div class="card"><h3>Test d’un graphique ou d’une page de KPI</h3><dl><dt>Je fais</dt><dd>Je compare les chiffres affichés dans Power BI avec ceux de la base.</dd><dt>Je vérifie</dt><dd>Que la forme et le fond sont alignés : ce que l’on voit est ce que la base contient.</dd></dl></div><div class="card"><h3>Non-régression source vs production</h3><dl><dt>Je fais</dt><dd>Avec Tosca, je compare la donnée source à celle de la production.</dd><dt>Je vérifie</dt><dd>Qu’aucune évolution n’a modifié un chiffre existant.</dd></dl></div><div class="card"><h3>Power BI vs Google Cloud Platform</h3><dl><dt>Je fais</dt><dd>Tosca scanne la page du rapport et récupère les chiffres des KPI.</dd><dt>Je vérifie</dt><dd>Qu’ils correspondent aux résultats obtenus côté GCP.</dd></dl></div></div></div></section>
   <section><div class="wrap"><h2 class="ttl">L’atelier</h2><p class="sub">Les outils mobilisés sur cette mission.</p><ul class="tags"><li>Tricentis Tosca</li><li>Power BI</li><li>Google Cloud Platform</li><li>BigQuery</li><li>SQL</li><li>UAT</li></ul></div></section>
   <section style="padding:0"><div class="wrap"><a class="next" href="disneyland.html"><small>Mission suivante</small><b>Disneyland Paris</b></a></div></section>
-
-  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
-    <a class="mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a><p class="li-row"><a class="btn" href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">Profil LinkedIn ↗</a></p></div></section>
 </main>
-<footer class="ft"><div class="wrap">
+<footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
     <div>
       <p class="ft-brand">Amine Admane</p>
@@ -203,7 +201,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
     <div><h3>Contact</h3><ul>
       <li><a class="ft-mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></li>
       <li><a href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">LinkedIn ↗</a></li>
-    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" data-open-rdv>Prendre rendez-vous</button></div>
+    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><p class="ft-note" id="rdvInfo"></p></div>
   </div>
   <div class="ft-bottom"><span id="footer">© Amine Admane</span><span><a href="#" data-top>Haut de page ↑</a></span></div>
 </div></footer>

@@ -186,6 +186,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 .ft .ft-note{font-size:.85rem;margin-top:.9rem}
 .ft .btn{font:600 .95rem var(--sans);cursor:pointer;padding:.8rem 1.4rem;margin-top:1.3rem}
 .ft-pitch{margin-bottom:0}
+.ft #rdvInfo{margin-top:.6rem}
 .ft .btn.primary{color:#0A1228}
 .ft .btn.primary:hover{background:#EEF1F8;border-color:#EEF1F8}
 .ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
@@ -219,15 +220,8 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
   <section id="clients"><div class="wrap"><h2>Ils m’ont fait confiance</h2></div>
     <div class="marquee" aria-label="Clients chez qui je suis intervenue"><div class="track" id="track"></div></div>
   </section>
-  <section class="contact" id="contact"><div class="wrap">
-    <h2>Votre prochain projet commence ici.</h2>
-    <div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
-    <a class="big" id="mail" data-umami-event="Clic e-mail" href="#"></a>
-    <p id="contactText"></p>
-    <a class="btn" id="linkedin" data-umami-event="Clic LinkedIn" href="#" target="_blank" rel="noopener">Profil LinkedIn ↗</a>
-  </div></section>
 </main>
-<footer class="ft"><div class="wrap">
+<footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
     <div>
       <p class="ft-brand">Amine Admane</p>
@@ -243,7 +237,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
     <div><h3>Contact</h3><ul>
       <li><a class="ft-mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></li>
       <li><a href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">LinkedIn ↗</a></li>
-    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" data-open-rdv>Prendre rendez-vous</button></div>
+    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><p class="ft-note" id="rdvInfo"></p></div>
   </div>
   <div class="ft-bottom"><span id="footer">© Amine Admane</span><span><a href="#" data-top>Haut de page ↑</a></span></div>
 </div></footer>
@@ -311,9 +305,9 @@ DATA.chiffres.forEach(c => { const d = el("div"); d.append(el("dt", null, c.vale
 DATA.competences.forEach(g => { const b = el("div"); b.append(el("h3", null, g.groupe)); const u = el("ul"); g.liste.forEach(s => u.append(el("li", null, s))); b.append(u); $("skills").append(b); });
 const logos = [...DATA.clients, ...DATA.clients].map(c => { const li = el("li", "cl"); if (c.logo) { const i = el("img"); i.src = c.logo; i.alt = c.nom; i.loading = "lazy"; li.append(i); } else li.append(el("span", "wm", c.nom)); return li; });
 [0, 1].forEach(k => { const ul = el("ul", "set"); if (k) ul.setAttribute("aria-hidden", "true"); logos.forEach(li => ul.append(k ? li.cloneNode(true) : li)); $("track").append(ul); });
-$("mail").textContent = DATA.contact.email; $("mail").href = "mailto:" + DATA.contact.email;
-$("contactText").textContent = DATA.contact.texte;
-if (DATA.contact.linkedin) $("linkedin").href = DATA.contact.linkedin; else $("linkedin").style.display = "none";
+if ($("mail")) { $("mail").textContent = DATA.contact.email; $("mail").href = "mailto:" + DATA.contact.email; }
+if ($("contactText")) $("contactText").textContent = DATA.contact.texte;
+if ($("linkedin")) { if (DATA.contact.linkedin) $("linkedin").href = DATA.contact.linkedin; else $("linkedin").style.display = "none"; }
 $("footer").textContent = "© " + new Date().getFullYear() + " " + DATA.nom;
 
 /* Apparition des expériences au défilement */
