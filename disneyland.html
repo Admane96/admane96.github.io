@@ -130,6 +130,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 .rok h4{font:700 1.5rem var(--serif);margin:0 0 .4rem}.rok p{margin:.2rem 0;color:var(--muted)}.rok strong{color:var(--ink);display:inline-block}
 .demo{margin:0 0 1rem;padding:.55rem .8rem;border-radius:.6rem;background:rgba(226,182,85,.1);color:#F3E2B3;font-size:.85rem}
 </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
+<script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
 </head>
 <body>
 <header class="hero">
@@ -155,8 +157,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
   <section><div class="wrap"><h2 class="ttl">L’atelier</h2><p class="sub">Les outils mobilisés sur cette mission.</p><ul class="tags"><li>Python</li><li>Postman</li><li>Soda SQL</li><li>AWS</li><li>Snowflake</li><li>SQL</li><li>API</li></ul></div></section>
   <section style="padding:0"><div class="wrap"><a class="next" href="fft.html"><small>Mission suivante</small><b>Fédération Française de Tennis</b></a></div></section>
 
-  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><div class="rdv"><button type="button" class="btn primary" id="rdvBtn">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
-    <a class="mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></div></section>
+  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
+    <a class="mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></div></section>
 </main>
 <footer><div class="wrap">© Amine Admane</div></footer>
 <script>const els=document.querySelectorAll("#flow,.ba");if("IntersectionObserver"in window){const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");o.unobserve(x.target)}}),{threshold:.35});els.forEach(n=>o.observe(n))}else els.forEach(n=>n.classList.add("in"))</script>
@@ -198,7 +200,7 @@ let slots={},pick=null;
 RDV.events.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.className="dur";b.textContent=e.label;b.setAttribute("aria-pressed",String(i===0));b.onclick=()=>{ev=e;[...$("rdvDur").children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));load()};$("rdvDur").append(b)});
 $("rdvInfo").textContent=RDV.texte;$("rdvSub").textContent=RDV.texte+" · "+tzl;$("rdvDemo").hidden=!demo;
 function err(h){const e=$("rdvErr");if(!h){e.hidden=true;return}e.innerHTML=h;e.hidden=false}
-function fail(msg){err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
+function fail(msg){uTrack("Erreur calendrier",{message:msg});err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
 async function load(keep){
  $("rdvLoad").hidden=false;$("rdvLoad").textContent="Chargement des disponibilités…";$("rdvDays").replaceChildren();$("rdvTimes").replaceChildren();if(!keep)err();
  try{slots=demo?fake():await api();}catch(e){$("rdvLoad").hidden=true;fail("Le calendrier est momentanément indisponible.");return}
@@ -207,7 +209,7 @@ async function load(keep){
  keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="dchip";b.textContent=fmtDs(slots[k][0]);b.setAttribute("aria-pressed","false");b.onclick=()=>day(k);$("rdvDays").append(b)});day(keys[0])}
 function day(k){[...$("rdvDays").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(Object.keys(slots).sort()[i]===k)));
  const g=$("rdvTimes");g.replaceChildren();slots[k].sort().forEach(iso=>{const b=document.createElement("button");b.type="button";b.className="slot";b.textContent=fmtT(iso);b.onclick=()=>choose(iso);g.append(b)})}
-function choose(iso){pick=iso;err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
+function choose(iso){pick=iso;uTrack("Créneau choisi",{duree:ev.label});err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
 function fake(){const o={};let d=new Date(),n=0;while(n<8){d.setDate(d.getDate()+1);if(d.getDay()%6===0)continue;n++;[10,11.5,14,16.5].forEach(h=>{const x=new Date(d);x.setHours(Math.floor(h),(h%1)*60,0,0);const k=x.toLocaleDateString("sv-SE");(o[k]=o[k]||[]).push(x.toISOString())})}return o}
 async function api(){
  const s=new Date(),e=new Date(Date.now()+RDV.jours*864e5),U=RDV.username,E=ev.slug;
@@ -223,7 +225,7 @@ $("rdvS2").addEventListener("submit",async evt=>{evt.preventDefault();err();cons
    const body={eventTypeSlug:ev.slug,username:RDV.username,start:pick,attendee:{name:n,email:m,timeZone:tz,language:"fr"}};if(note)body.bookingFieldsResponses={notes:note};
    const r=await fetch("https://api.cal.com/v2/bookings",{method:"POST",headers:{"Content-Type":"application/json","cal-api-version":"2024-08-13"},body:JSON.stringify(body)});
    if(!r.ok){const e=new Error("book");e.status=r.status;throw e}}
-  $("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
+  uTrack("Rendez-vous confirmé",{duree:ev.label});$("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
  catch(e){b.disabled=false;b.textContent="Confirmer le rendez-vous";
   if(e.status===400||e.status===409){err("Ce créneau vient d’être pris. Choisissez-en un autre.");$("rdvS2").hidden=true;$("rdvS1").hidden=false;load(true)}
   else fail("La réservation n’a pas pu aboutir.")}});
