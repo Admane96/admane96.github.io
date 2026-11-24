@@ -143,6 +143,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 .ft .ft-note{font-size:.85rem;margin-top:.9rem}
 .ft .btn{font:600 .95rem var(--sans);cursor:pointer;padding:.8rem 1.4rem;margin-top:1.3rem}
 .ft-pitch{margin-bottom:0}
+.ft #rdvInfo{margin-top:.6rem}
 .ft .btn.primary{color:#0A1228}
 .ft .btn.primary:hover{background:#EEF1F8;border-color:#EEF1F8}
 .ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
@@ -173,16 +174,8 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
     <h2>Formation et certifications</h2>
     <div class="edu" id="edu"></div>
   </div></section>
-
-  <section class="contact" id="contact"><div class="wrap">
-    <h2>Une mission similaire ?</h2>
-    <div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
-    <a class="big" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a>
-    <p>Parlez-moi de votre contexte et de vos enjeux, je vous réponds sous 48 heures.</p>
-    <p class="li-row"><a class="btn" href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">Profil LinkedIn ↗</a></p>
-  </div></section>
 </main>
-<footer class="ft"><div class="wrap">
+<footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
     <div>
       <p class="ft-brand">Amine Admane</p>
@@ -198,7 +191,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
     <div><h3>Contact</h3><ul>
       <li><a class="ft-mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></li>
       <li><a href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">LinkedIn ↗</a></li>
-    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" data-open-rdv>Prendre rendez-vous</button></div>
+    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><p class="ft-note" id="rdvInfo"></p></div>
   </div>
   <div class="ft-bottom"><span id="footer">© Amine Admane</span><span><a href="#" data-top>Haut de page ↑</a></span></div>
 </div></footer>

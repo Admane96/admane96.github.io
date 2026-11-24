@@ -151,6 +151,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 .ft .ft-note{font-size:.85rem;margin-top:.9rem}
 .ft .btn{font:600 .95rem var(--sans);cursor:pointer;padding:.8rem 1.4rem;margin-top:1.3rem}
 .ft-pitch{margin-bottom:0}
+.ft #rdvInfo{margin-top:.6rem}
 .ft .btn.primary{color:#0A1228}
 .ft .btn.primary:hover{background:#EEF1F8;border-color:#EEF1F8}
 .ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
@@ -184,11 +185,8 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
   <section><div class="wrap"><h2 class="ttl">Exemples de tests</h2><p class="sub">Quatre situations concrètes, avec ce que je fais et ce que je vérifie.</p><div class="cards"><div class="card"><h3>Conformité des tables</h3><dl><dt>Je fais</dt><dd>Contrôles SQL sur Snowflake, avec Soda SQL.</dd><dt>Je vérifie</dt><dd>Doublons, clés primaires, valeurs NULL, cohérence des dates, formats d’e-mails.</dd></dl></div><div class="card"><h3>Parcours de réservation</h3><dl><dt>Je fais</dt><dd>Tests front-end du site d’hôtels et de produits dérivés.</dd><dt>Je vérifie</dt><dd>Un parcours utilisateur sans faille malgré les volumes de connexion.</dd></dl></div><div class="card"><h3>Un scénario d’API</h3><dl><dt>Je fais</dt><dd>J’envoie une combinaison de paramètres de réservation.</dd><dt>Je vérifie</dt><dd>Que la disponibilité des chambres et les produits affichés correspondent à la ligne de la matrice.</dd></dl></div><div class="card"><h3>Alerte de non-régression</h3><dl><dt>Je fais</dt><dd>Je surveille la migration AWS avec Soda SQL.</dd><dt>Je vérifie</dt><dd>La santé des flux et la cohérence entre source et cible.</dd></dl></div></div></div></section>
   <section><div class="wrap"><h2 class="ttl">L’atelier</h2><p class="sub">Les outils mobilisés sur cette mission.</p><ul class="tags"><li>Python</li><li>Postman</li><li>Soda SQL</li><li>AWS</li><li>Snowflake</li><li>SQL</li><li>API</li></ul></div></section>
   <section style="padding:0"><div class="wrap"><a class="next" href="fft.html"><small>Mission suivante</small><b>Fédération Française de Tennis</b></a></div></section>
-
-  <section class="contact" id="contact"><div class="wrap"><p class="lab">Un projet comparable ?</p><div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
-    <a class="mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a><p class="li-row"><a class="btn" href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">Profil LinkedIn ↗</a></p></div></section>
 </main>
-<footer class="ft"><div class="wrap">
+<footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
     <div>
       <p class="ft-brand">Amine Admane</p>
@@ -204,7 +202,7 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
     <div><h3>Contact</h3><ul>
       <li><a class="ft-mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></li>
       <li><a href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">LinkedIn ↗</a></li>
-    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" data-open-rdv>Prendre rendez-vous</button></div>
+    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><p class="ft-note" id="rdvInfo"></p></div>
   </div>
   <div class="ft-bottom"><span id="footer">© Amine Admane</span><span><a href="#" data-top>Haut de page ↑</a></span></div>
 </div></footer>
