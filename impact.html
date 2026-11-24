@@ -213,6 +213,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 .cas-main{padding-top:3.5rem}
 @media (min-width:761px){.hero{padding-top:7.5rem}.hero h1{max-width:18ch}}
 </style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
+<script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
 </head>
 <body>
 <header class="hero">
@@ -241,8 +243,8 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 
   <section class="contact" id="contact"><div class="wrap">
     <h2>Éviter le prochain cas ?</h2>
-    <div class="rdv"><button type="button" class="btn primary" id="rdvBtn">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
-    <a class="big" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a>
+    <div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
+    <a class="big" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a>
     <p>Parlez-moi de votre contexte et de vos enjeux, je vous réponds sous 48 heures.</p>
   </div></section>
 </main>
@@ -287,7 +289,7 @@ let slots={},pick=null;
 RDV.events.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.className="dur";b.textContent=e.label;b.setAttribute("aria-pressed",String(i===0));b.onclick=()=>{ev=e;[...$("rdvDur").children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));load()};$("rdvDur").append(b)});
 $("rdvInfo").textContent=RDV.texte;$("rdvSub").textContent=RDV.texte+" · "+tzl;$("rdvDemo").hidden=!demo;
 function err(h){const e=$("rdvErr");if(!h){e.hidden=true;return}e.innerHTML=h;e.hidden=false}
-function fail(msg){err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
+function fail(msg){uTrack("Erreur calendrier",{message:msg});err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
 async function load(keep){
  $("rdvLoad").hidden=false;$("rdvLoad").textContent="Chargement des disponibilités…";$("rdvDays").replaceChildren();$("rdvTimes").replaceChildren();if(!keep)err();
  try{slots=demo?fake():await api();}catch(e){$("rdvLoad").hidden=true;fail("Le calendrier est momentanément indisponible.");return}
@@ -296,7 +298,7 @@ async function load(keep){
  keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="dchip";b.textContent=fmtDs(slots[k][0]);b.setAttribute("aria-pressed","false");b.onclick=()=>day(k);$("rdvDays").append(b)});day(keys[0])}
 function day(k){[...$("rdvDays").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(Object.keys(slots).sort()[i]===k)));
  const g=$("rdvTimes");g.replaceChildren();slots[k].sort().forEach(iso=>{const b=document.createElement("button");b.type="button";b.className="slot";b.textContent=fmtT(iso);b.onclick=()=>choose(iso);g.append(b)})}
-function choose(iso){pick=iso;err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
+function choose(iso){pick=iso;uTrack("Créneau choisi",{duree:ev.label});err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
 function fake(){const o={};let d=new Date(),n=0;while(n<8){d.setDate(d.getDate()+1);if(d.getDay()%6===0)continue;n++;[10,11.5,14,16.5].forEach(h=>{const x=new Date(d);x.setHours(Math.floor(h),(h%1)*60,0,0);const k=x.toLocaleDateString("sv-SE");(o[k]=o[k]||[]).push(x.toISOString())})}return o}
 async function api(){
  const s=new Date(),e=new Date(Date.now()+RDV.jours*864e5),U=RDV.username,E=ev.slug;
@@ -312,7 +314,7 @@ $("rdvS2").addEventListener("submit",async evt=>{evt.preventDefault();err();cons
    const body={eventTypeSlug:ev.slug,username:RDV.username,start:pick,attendee:{name:n,email:m,timeZone:tz,language:"fr"}};if(note)body.bookingFieldsResponses={notes:note};
    const r=await fetch("https://api.cal.com/v2/bookings",{method:"POST",headers:{"Content-Type":"application/json","cal-api-version":"2024-08-13"},body:JSON.stringify(body)});
    if(!r.ok){const e=new Error("book");e.status=r.status;throw e}}
-  $("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
+  uTrack("Rendez-vous confirmé",{duree:ev.label});$("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
  catch(e){b.disabled=false;b.textContent="Confirmer le rendez-vous";
   if(e.status===400||e.status===409){err("Ce créneau vient d’être pris. Choisissez-en un autre.");$("rdvS2").hidden=true;$("rdvS1").hidden=false;load(true)}
   else fail("La réservation n’a pas pu aboutir.")}});
@@ -511,6 +513,7 @@ const CAS = {
   keys.forEach(k => {
     const b = el("button", "cas-f", k === "all" ? "Tous les cas" : catLib(k)); b.type = "button"; b.setAttribute("aria-pressed", String(k === "all"));
     b.onclick = () => {
+      uTrack("Filtre Impact", { theme: k === "all" ? "Tous" : catLib(k) });
       [...fbox.children].forEach(x => x.setAttribute("aria-pressed", String(x === b)));
       grid.classList.toggle("all", k === "all");
       grid.querySelectorAll(".cas-card").forEach(c => { c.hidden = k !== "all" && !c.dataset.cats.split(" ").includes(k); });
@@ -522,7 +525,7 @@ const CAS = {
   let cur = -1, opener = null;
   const sec = (t, items, cls) => { const f = document.createDocumentFragment(); f.append(el("h4", null, t)); const u = el("ul", cls); items.forEach(s => u.append(el("li", null, s))); f.append(u); return f; };
   function fill(i) {
-    const a = A[i]; cur = i;
+    const a = A[i]; cur = i; uTrack("Article Impact", { cas: a.id });
     $("artPos").textContent = "Cas " + (i + 1) + " sur " + A.length;
     meta($("artMeta"), a); $("artT").textContent = a.titre; $("artAcc").textContent = a.accroche;
     $("artStats").replaceChildren(...a.stats.map(([v, l]) => { const d = el("div"); d.append(el("b", null, v), el("span", null, l)); return d; }));
@@ -530,7 +533,7 @@ const CAS = {
     a.faits.forEach(p => body.append(el("p", null, p)));
     body.append(sec("Les conséquences", a.consequences), sec("Ce qu’un test aurait vérifié", a.tests, "chk"));
     const me = el("div", "art-me"); me.append(el("h4", null, "Le lien avec mon travail"), el("p", null, a.moi));
-    if (a.page) { const l = el("a", null, a.pageLib + " →"); l.href = a.page; me.append(l); }
+    if (a.page) { const l = el("a", null, a.pageLib + " →"); l.href = a.page; l.setAttribute("data-umami-event", "Impact vers mission"); l.setAttribute("data-umami-event-cas", a.id); me.append(l); }
     const cta = el("div", "art-cta"); const r = el("button", "btn primary", "Prendre rendez-vous"); r.type = "button"; r.onclick = toRdv;
     const n = el("button", "btn", "Cas suivant"); n.type = "button"; n.onclick = () => go(1); cta.append(r, n);
     const src = el("div", "art-src"); src.append(el("p", null, "Sources publiques. Montants dans la devise d’origine."));
