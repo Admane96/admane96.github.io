@@ -212,6 +212,34 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
 .hero .cas-big{border:0;padding:0;margin:2.6rem 0 0}
 .cas-main{padding-top:3.5rem}
 @media (min-width:761px){.hero{padding-top:7.5rem}.hero h1{max-width:18ch}}
+
+/* ====== Contact : adresse e-mail plus sobre ====== */
+.contact .big,.contact .mail{font-size:clamp(1.3rem,3.2vw,2.2rem);border-bottom-width:2px;letter-spacing:-.015em}
+.li-row{margin:1.6rem 0 0}
+.li-row .btn{font:600 1rem var(--sans);color:var(--ink);background:none}
+.li-row .btn:hover{color:#0A1228;background:#EEF1F8}
+/* ====== Footer ====== */
+footer.ft{position:relative;padding:4.5rem 0 2rem;border-top:1px solid var(--line);background:linear-gradient(180deg,#060B1A 0%,#040815 100%);color:var(--muted);font-size:.95rem}
+footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7}
+.ft-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.3fr;gap:2.5rem 2rem}
+.ft-brand{font:900 clamp(1.7rem,3vw,2.2rem)/1.05 var(--serif);color:var(--ink);letter-spacing:-.025em;margin:0 0 .5rem}
+.ft-role{color:var(--gold);font-weight:600;font-size:.92rem;margin:0 0 1rem}
+.ft-pitch{color:#C5CDE0;max-width:23rem;margin:0 0 1.6rem;line-height:1.55}
+.ft h3{font:600 .78rem var(--sans);color:var(--ink);text-transform:uppercase;letter-spacing:.12em;margin:.3rem 0 1.1rem}
+.ft ul{list-style:none;margin:0;padding:0}
+.ft li{margin:.55rem 0}
+.ft a{color:var(--muted);text-decoration:none;transition:color .2s}
+.ft a:hover{color:var(--gold)}
+.ft .ft-mail{color:var(--ink);font-weight:600;word-break:break-word}
+.ft .ft-note{font-size:.85rem;margin-top:.9rem}
+.ft .btn{font:600 .95rem var(--sans);cursor:pointer;padding:.8rem 1.4rem;margin-top:1.3rem}
+.ft-pitch{margin-bottom:0}
+.ft .btn.primary{color:#0A1228}
+.ft .btn.primary:hover{background:#EEF1F8;border-color:#EEF1F8}
+.ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
+.ft-bottom>span:last-child{display:inline-flex;gap:1.5rem;flex-wrap:wrap}
+@media (max-width:900px){.ft-grid{grid-template-columns:1fr 1fr}.ft-grid>div:first-child{grid-column:1/-1}}
+@media (max-width:520px){.ft-grid{grid-template-columns:1fr}footer.ft{padding-top:3.5rem}}
 </style>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
 <script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
@@ -246,9 +274,33 @@ footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid va
     <div class="rdv"><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Prendre rendez-vous</button><span id="rdvInfo"></span></div>
     <a class="big" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a>
     <p>Parlez-moi de votre contexte et de vos enjeux, je vous réponds sous 48 heures.</p>
+    <p class="li-row"><a class="btn" href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">Profil LinkedIn ↗</a></p>
   </div></section>
 </main>
-<footer><div class="wrap" id="footer"></div></footer>
+<footer class="ft"><div class="wrap">
+  <div class="ft-grid">
+    <div>
+      <p class="ft-brand">Amine Admane</p>
+      <p class="ft-role">Consultant QA Data &amp; tests technico-fonctionnels · Freelance</p>
+      <p class="ft-pitch">Des données auxquelles on peut croire, des livraisons sans mauvaise surprise. Huit ans à sécuriser des systèmes à fort enjeu.</p>
+    </div>
+    <nav aria-label="Plan du site"><h3>Navigation</h3><ul>
+      <li><a href="index.html">Accueil</a></li><li><a href="index.html#competences">Expertise</a></li><li><a href="parcours.html">Parcours</a></li><li><a href="impact.html">Impact</a></li><li><a href="#contact">Contact</a></li>
+    </ul></nav>
+    <nav aria-label="Missions"><h3>Missions</h3><ul>
+      <li><a href="edenred.html">Edenred</a></li><li><a href="loreal.html">L’Oréal</a></li><li><a href="disneyland.html">Disneyland Paris</a></li><li><a href="fft.html">Fédération Française de Tennis</a></li>
+    </ul></nav>
+    <div><h3>Contact</h3><ul>
+      <li><a class="ft-mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></li>
+      <li><a href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">LinkedIn ↗</a></li>
+    </ul><p class="ft-note">Réponse sous 48 heures.</p><button type="button" class="btn primary" data-open-rdv>Prendre rendez-vous</button></div>
+  </div>
+  <div class="ft-bottom"><span id="footer">© Amine Admane</span><span><a href="#" data-top>Haut de page ↑</a></span></div>
+</div></footer>
+<script>(function(){var f=document.getElementById("footer");if(f)f.textContent="© "+new Date().getFullYear()+" Amine Admane";
+document.querySelectorAll("[data-open-rdv]").forEach(function(b){b.addEventListener("click",function(){var r=document.getElementById("rdvBtn");if(r)r.click()})});
+document.querySelectorAll("[data-top]").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();window.scrollTo({top:0,behavior:"smooth"})})});})();</script>
+
 
 <script>document.getElementById("footer").textContent = "© " + new Date().getFullYear() + " Amine Admane";</script>
 <script>(function(){var b=document.querySelector(".bar");if(!b)return;var t=b.querySelector(".menu-btn"),n=b.querySelector("nav");if(!t||!n)return;
