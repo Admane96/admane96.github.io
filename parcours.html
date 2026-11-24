@@ -149,7 +149,23 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 .ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
 .ft-bottom>span:last-child{display:inline-flex;gap:1.5rem;flex-wrap:wrap}
 @media (max-width:900px){.ft-grid{grid-template-columns:1fr 1fr}.ft-grid>div:first-child{grid-column:1/-1}}
-@media (max-width:520px){.ft-grid{grid-template-columns:1fr}footer.ft{padding-top:3.5rem}}
+@media (max-width:640px){
+ footer.ft{padding:2.6rem 0 1.4rem;font-size:.92rem}
+ .ft-grid{grid-template-columns:1fr 1fr;gap:1.6rem 1.2rem}
+ .ft-grid>div:first-child,.ft-grid>div:last-child{grid-column:1/-1}
+ .ft-brand{display:none}
+ .ft-role{margin:0;font-size:.85rem}
+ .ft-pitch{display:none}
+ .ft h3{margin:0 0 .6rem;font-size:.72rem}
+ .ft li{margin:.3rem 0}
+ .ft-grid>div:last-child{padding-top:1.3rem;border-top:1px solid var(--line)}
+ .ft-grid>div:last-child ul{display:flex;flex-wrap:wrap;gap:.2rem 1.2rem}
+ .ft-grid>div:last-child li{margin:.1rem 0}
+ .ft .ft-note{margin-top:.5rem}
+ .ft .btn{display:block;width:100%;text-align:center;margin-top:.9rem}
+ .ft #rdvInfo{text-align:center;margin-top:.45rem}
+ .ft-bottom{margin-top:1.6rem;padding-top:1rem}
+}
 </style>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
 <script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
