@@ -254,7 +254,9 @@ addEventListener("scroll",sc,{passive:true});sc();})();</script>
 /* ====== RÉGLAGES RENDEZ-VOUS ======
    username : votre identifiant Cal.com. events : fin du lien de chaque type de rendez-vous.
    demo: true = mode aperçu (créneaux fictifs, rien n'est créé). */
-const RDV = { username: "amine-admane-6xfl8a", events: [{ slug: "15min", label: "15 minutes" }, { slug: "30min", label: "30 minutes" }], texte: "Échange de 15 ou 30 minutes", demo: false, jours: 14 };
+const RDV = { username: "amine-admane-6xfl8a", events: [{ slug: "15min", label: "15 minutes" }, { slug: "30min", label: "30 minutes" }], texte: "Échange de 15 ou 30 minutes", demo: false, jours: 14,
+  /* Échange de 15 minutes : nombre de créneaux proposés par jour, entre aPartirDe et jusqua (heure de Paris, le dernier créneau se termine à jusqua), tirés au hasard parmi les créneaux libres */
+  limite: { slug: "15min", nombre: 15, aPartirDe: 11, jusqua: 16, fuseau: "Europe/Paris" } };
 (function(){
 const $=id=>document.getElementById(id),tz=Intl.DateTimeFormat().resolvedOptions().timeZone,demo=!!RDV.demo;
 let ev=RDV.events[0];const fb=()=>"https://cal.com/"+RDV.username+"/"+ev.slug;
@@ -265,9 +267,18 @@ RDV.events.forEach((e,i)=>{const b=document.createElement("button");b.type="butt
 $("rdvInfo").textContent=RDV.texte;$("rdvSub").textContent=RDV.texte+" · "+tzl;$("rdvDemo").hidden=!demo;
 function err(h){const e=$("rdvErr");if(!h){e.hidden=true;return}e.innerHTML=h;e.hidden=false}
 function fail(msg){uTrack("Erreur calendrier",{message:msg});err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Ouvrir mon calendrier</a>')}
+function limit(all){const L=RDV.limite;if(!L||ev.slug!==L.slug)return all;
+ const hr=new Intl.DateTimeFormat("fr-FR",{timeZone:L.fuseau,hour:"numeric",hourCycle:"h23"}),out={};
+ for(const k in all){let h=2166136261;for(const c of k+ev.slug){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}
+  const r=()=>{h=Math.imul(h^h>>>15,1|h);h^=h+Math.imul(h^h>>>7,61|h);return((h^h>>>14)>>>0)/4294967296};
+  const l=all[k].filter(iso=>{const h=+hr.formatToParts(new Date(iso)).find(x=>x.type==="hour").value;return h>=L.aPartirDe&&(!L.jusqua||h<L.jusqua)});
+  for(let i=l.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[l[i],l[j]]=[l[j],l[i]]}
+  const p=l.slice(0,L.nombre).sort();if(p.length)out[k]=p}
+ return out}
 async function load(keep){
  $("rdvLoad").hidden=false;$("rdvLoad").textContent="Chargement des disponibilités…";$("rdvDays").replaceChildren();$("rdvTimes").replaceChildren();if(!keep)err();
  try{slots=demo?fake():await api();}catch(e){$("rdvLoad").hidden=true;fail("Le calendrier est momentanément indisponible.");return}
+ slots=limit(slots);
  const keys=Object.keys(slots).sort();$("rdvLoad").hidden=true;
  if(!keys.length){$("rdvLoad").hidden=false;$("rdvLoad").textContent="Aucune disponibilité dans les prochains jours. Écrivez-moi directement par e-mail.";return}
  keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="dchip";b.textContent=fmtDs(slots[k][0]);b.setAttribute("aria-pressed","false");b.onclick=()=>day(k);$("rdvDays").append(b)});day(keys[0])}
