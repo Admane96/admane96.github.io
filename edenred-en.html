@@ -21,7 +21,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(
 a{color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:4px}
 .wrap{max-width:70rem;margin:0 auto;padding:0 1.5rem}
-.hero{position:relative;min-height:88svh;display:flex;flex-direction:column;justify-content:flex-end;color:#EEF1F8;background:radial-gradient(60% 80% at 85% 0%,rgba(226,182,85,.2),transparent 65%),radial-gradient(50% 60% at 0% 100%,rgba(70,100,200,.18),transparent 70%),#060B1A}
+.hero{position:relative;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;color:#EEF1F8;background:radial-gradient(60% 80% at 85% 0%,rgba(226,182,85,.2),transparent 65%),radial-gradient(50% 60% at 0% 100%,rgba(70,100,200,.18),transparent 70%),#060B1A}
 .bar{position:absolute;z-index:3;top:0;left:0;right:0;padding-top:calc(1.2rem + env(safe-area-inset-top,0px))}
 .bar .wrap{display:flex;justify-content:space-between;align-items:center}
 .brand{font:700 1.15rem var(--serif);text-decoration:none}
@@ -29,6 +29,8 @@ a{color:inherit}
 .bar nav a{text-decoration:none;font-weight:500;font-size:.95rem;opacity:.8;padding:.2rem 0;border-bottom:2px solid transparent}
 .bar nav a:hover{opacity:1}.bar nav a[aria-current]{opacity:1;border-color:#E2B655}
 .hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:4rem}
+.hero>.wrap{padding-top:8.5rem}
+@media (max-width:760px){.hero>.wrap{padding-top:3rem}}
 .back{display:inline-block;color:#97A3BF;font-weight:500;text-decoration:none;margin-bottom:2rem}.back:hover{color:#E2B655}
 .kicker{color:#E2B655;font-weight:600;font-size:1.1rem;margin:0 0 1.2rem}
 h1{font:900 clamp(2.5rem,7.4vw,6rem)/1 var(--serif);letter-spacing:-.035em;margin:0 0 1.6rem;max-width:17ch}
