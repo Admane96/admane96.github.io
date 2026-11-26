@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#060B1A">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Impact: the cost of skipping QA – Amine Admane</title>
+<meta name="description" content="Real, documented cases where missing tests or data checks cost millions and damaged the user experience.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060B1A; --ink:#EEF1F8; --muted:#97A3BF; --line:#1C2848; --gold:#E2B655; --glow:rgba(226,182,85,.18);
+  --serif:"Fraunces",Georgia,serif; --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.wrap{max-width:70rem;margin:0 auto;padding:0 1.5rem}
+
+/* En-tête sombre */
+.hero{position:relative;min-height:62svh;display:flex;flex-direction:column;justify-content:flex-end;color:#EEF1F8;background:radial-gradient(70% 90% at 85% 10%,rgba(226,182,85,.16),transparent 65%),#060B1A;overflow:hidden}
+.bar{position:absolute;z-index:3;top:0;left:0;right:0;padding-top:calc(1.2rem + env(safe-area-inset-top,0px))}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center}
+.brand{font:700 1.15rem var(--serif);text-decoration:none}
+.bar nav{display:flex;gap:1.6rem}
+.bar nav a{text-decoration:none;font-weight:500;font-size:.95rem;opacity:.8;padding:.2rem 0;border-bottom:2px solid transparent}
+.bar nav a:hover{opacity:1}
+.bar nav a[aria-current]{opacity:1;border-color:#E2B655}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:3.5rem}
+h1{font:900 clamp(2.6rem,8vw,6.2rem)/.98 var(--serif);letter-spacing:-.035em;margin:0 0 1.4rem}
+.lead{font-size:clamp(1.05rem,2vw,1.3rem);max-width:38rem;color:#C5CDE0;margin:0}
+
+h2{font:700 clamp(1.9rem,4.5vw,3rem)/1.08 var(--serif);letter-spacing:-.02em;margin:0 0 2.5rem}
+section{padding:4.5rem 0}
+
+/* Missions */
+.xp{display:grid;grid-template-columns:minmax(7rem,15rem) 1fr;gap:2rem;padding:3rem 0;border-top:1px solid var(--line);opacity:0;transform:translateY(2rem);transition:opacity .9s,transform .9s}
+.xp.in{opacity:1;transform:none}
+.yr{font:900 clamp(2.4rem,5vw,4rem)/1 var(--serif);color:transparent;-webkit-text-stroke:1.5px var(--gold);letter-spacing:-.02em}
+.dates{color:var(--muted);font-size:.92rem;margin-top:.6rem}
+.xp h3{font:700 clamp(1.7rem,3.4vw,2.5rem)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 .3rem}
+.poste{color:var(--gold);font-weight:600;margin:0 0 1rem}
+.ctx{color:var(--muted);font-style:italic;max-width:42rem;margin:0 0 1.2rem}
+.xp ul.r{margin:0 0 1.4rem;padding-left:1.1rem;max-width:42rem}
+.xp ul.r li{margin:.4rem 0}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;list-style:none;padding:0;margin:0}
+.tags li{border:1px solid var(--line);border-radius:999px;font-size:.85rem;padding:.2rem .8rem;color:var(--muted)}
+.more{display:inline-block;margin-top:1.3rem;font-weight:600;color:var(--gold);text-decoration:none;border-bottom:2px solid var(--gold)}
+
+/* Formation */
+.edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:2.5rem 3rem}
+.edu h3{font:600 1rem var(--sans);color:var(--gold);margin:0 0 .9rem}
+.edu ul{list-style:none;margin:0;padding:0}
+.edu li{padding:.35rem 0;border-bottom:1px solid var(--line)}
+.edu small{display:block;color:var(--muted)}
+
+/* Contact */
+.contact{border-top:1px solid var(--line);background:radial-gradient(70% 90% at 80% 100%,var(--glow),transparent 70%)}
+.big{display:inline-block;font:900 clamp(1.7rem,6.2vw,4.6rem)/1.05 var(--serif);letter-spacing:-.03em;text-decoration:none;border-bottom:3px solid var(--gold);word-break:break-word;margin-bottom:1.5rem}
+.big:hover{color:var(--gold)}
+.contact p{color:var(--muted);max-width:34rem}
+footer{padding:2rem 0;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+@media (max-width:640px){.bar nav{gap:1rem}.bar nav a:nth-child(2){display:none}.xp{grid-template-columns:1fr;gap:.8rem}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.xp{opacity:1;transform:none;transition:none}}
+
+/* Menu mobile */
+.menu-btn{display:none}
+@media (max-width:760px){
+ .bar{position:fixed;transition:background .3s}
+ .bar.solid{background:rgba(6,11,26,.95);padding-bottom:.75rem}
+ .hero{padding-top:calc(5.5rem + env(safe-area-inset-top,0px))}
+ .brand{position:relative;z-index:60}
+ .menu-btn{display:inline-flex;align-items:center;min-height:2.75rem;padding:.4rem 1.15rem;border-radius:999px;border:1px solid rgba(238,241,248,.4);background:rgba(6,11,26,.4);color:#EEF1F8;font:600 .95rem var(--sans);cursor:pointer;position:relative;z-index:60}
+ .bar nav{position:fixed;inset:0;z-index:50;background:#060B1A;flex-direction:column;justify-content:center;align-items:flex-start;gap:1.2rem;padding:5rem 1.75rem 3rem;transform:translateY(-100%);visibility:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
+ .bar.open nav{transform:none;visibility:visible;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+ .bar nav a{display:block!important;font:700 clamp(2rem,9vw,2.9rem)/1.1 var(--serif)!important;opacity:1;border:0;padding:.2rem 0;color:#EEF1F8}
+ .bar nav a[aria-current]{color:#E2B655}
+}
+@media (prefers-reduced-motion:reduce){.bar nav,.bar.open nav{transition:none}}
+.btn{display:inline-block;padding:.95rem 1.7rem;border-radius:999px;font-weight:600;text-decoration:none;border:1.5px solid currentColor;color:var(--ink);transition:background .25s,color .25s,border-color .25s}
+.btn.primary{background:#E2B655;border-color:#E2B655;color:#0A1228}
+.btn:hover{background:#EEF1F8;border-color:#EEF1F8;color:#0A1228}
+/* Prise de rendez-vous */
+.rdv{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin:0 0 2.2rem}
+.rdv span{color:var(--muted)}
+.rdv button.btn{font:600 1.05rem var(--sans);cursor:pointer}
+.rdv .btn.primary{color:#0A1228}.rdv .btn.primary:hover{color:#0A1228;background:#EEF1F8}
+#rdvModal{position:fixed;inset:0;z-index:9998;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(3,6,16,.8)}
+#rdvModal[hidden]{display:none}
+.rdvbox{width:min(36rem,100%);max-height:100%;overflow:auto;background:#0B1430;border:1px solid var(--line);border-radius:1.2rem;padding:1.6rem}
+.rdvbox header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.3rem}
+.rdvbox h3{font:700 1.6rem/1.15 var(--serif);margin:0}
+.rdvbox header p{margin:.3rem 0 0;color:var(--muted);font-size:.95rem}
+.rdvbox .x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;width:2.4rem;height:2.4rem;font-size:1.1rem;cursor:pointer;flex:none}
+.rdvbox [hidden]{display:none!important}
+.durs{display:flex;gap:.6rem;margin-bottom:1.1rem}.dur{flex:1;padding:.7rem;border-radius:.8rem;border:1px solid var(--line);background:none;color:var(--ink);font:600 1rem var(--sans);cursor:pointer}.dur:hover{border-color:var(--gold)}.dur[aria-pressed="true"]{background:#E2B655;border-color:#E2B655;color:#0A1228}
+.drow{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.6rem;margin-bottom:1rem}
+.dchip{flex:none;padding:.55rem .9rem;border-radius:.7rem;border:1px solid var(--line);background:none;color:var(--ink);font:500 .92rem var(--sans);cursor:pointer;text-transform:capitalize;white-space:nowrap}
+.dchip:hover{border-color:var(--gold)}.dchip[aria-pressed="true"]{border-color:var(--gold);background:rgba(226,182,85,.14);color:#F3E2B3;font-weight:600}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:.5rem}
+.slot{padding:.6rem;border-radius:.6rem;border:1px solid var(--line);background:none;color:var(--ink);font:500 .98rem var(--sans);cursor:pointer}
+.slot:hover{background:#E2B655;border-color:#E2B655;color:#0A1228;font-weight:600}
+.rsum{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:.8rem 1rem;border:1px solid var(--gold);border-radius:.8rem;background:rgba(226,182,85,.08);margin-bottom:1.1rem}
+.rsum span::first-letter,.rok strong::first-letter{text-transform:uppercase}
+.rsum button{background:none;border:0;color:var(--gold);font:600 .9rem var(--sans);cursor:pointer;text-decoration:underline;text-transform:none}
+.rdvbox label{display:block;margin:0 0 .9rem;font-weight:600;font-size:.92rem}
+.rdvbox input,.rdvbox textarea{display:block;width:100%;margin-top:.35rem;padding:.7rem .85rem;border-radius:.6rem;border:1px solid var(--line);background:#060B1A;color:var(--ink);font:400 1rem var(--sans)}
+.rdvbox input:focus,.rdvbox textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.rdvbox textarea{min-height:5rem;resize:vertical}
+.rdvbox .btn{font:600 1.02rem var(--sans);cursor:pointer;width:100%;color:#0A1228}
+.rdvbox .btn:disabled{opacity:.6;cursor:default}
+.rmsg{margin:.9rem 0 0;color:var(--muted);font-size:.9rem}
+.rerr{margin:.9rem 0 0;padding:.8rem 1rem;border-radius:.7rem;background:rgba(255,122,107,.12);color:#FFB4A9;font-size:.93rem}
+.rerr a{color:#FFD6CF;font-weight:600}
+.rok{text-align:center;padding:1rem 0}
+.rok .tick{width:3.4rem;height:3.4rem;border-radius:50%;background:#E2B655;color:#0A1228;display:grid;place-items:center;font-size:1.7rem;font-weight:700;margin:0 auto 1rem}
+.rok h4{font:700 1.5rem var(--serif);margin:0 0 .4rem}.rok p{margin:.2rem 0;color:var(--muted)}.rok strong{color:var(--ink);display:inline-block}
+.demo{margin:0 0 1rem;padding:.55rem .8rem;border-radius:.6rem;background:rgba(226,182,85,.1);color:#F3E2B3;font-size:.85rem}
+/* ====== Cas réels : ce que coûte l'absence de QA ====== */
+.cas{border-top:1px solid var(--line);background:radial-gradient(60% 50% at 100% 0%,rgba(226,182,85,.07),transparent 70%)}
+.cas .lab{color:var(--gold);font-weight:600;margin:0 0 1rem}
+.cas h2{margin-bottom:1.4rem;max-width:20ch}
+.cas-intro{color:var(--muted);font-size:1.12rem;max-width:40rem;margin:0 0 3rem}
+.cas-big{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem;padding:0 0 3rem;margin:0 0 2.5rem;border-bottom:1px solid var(--line)}
+.cas-big b{display:block;font:900 clamp(2.6rem,6vw,4.4rem)/1 var(--serif);color:var(--gold);letter-spacing:-.03em}
+.cas-big span{display:block;color:#C5CDE0;margin-top:.5rem;max-width:22rem}
+.cas-big small{display:block;color:var(--muted);font-size:.82rem;margin-top:.3rem}
+.cas-filters{display:flex;flex-wrap:wrap;gap:.55rem;margin:0 0 2rem}
+.cas-f{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.5rem 1.1rem;font:500 .92rem var(--sans);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.cas-f:hover{border-color:var(--gold);color:var(--ink)}
+.cas-f[aria-pressed="true"]{background:#E2B655;border-color:#E2B655;color:#0A1228;font-weight:600}
+.cas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1.2rem}
+.cas-card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:1.1rem;padding:1.6rem;background:rgba(11,20,48,.45);transition:border-color .25s,transform .25s,background .25s}
+.cas-card:hover,.cas-card:focus-within{border-color:var(--gold);transform:translateY(-3px);background:rgba(11,20,48,.8)}
+.cas-card[hidden]{display:none}
+.cas-meta{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;color:var(--muted);font-size:.85rem;margin:0 0 1.1rem}
+.cas-tag{color:var(--gold);font-weight:600}
+.cas-num{font:900 clamp(2.2rem,4vw,2.9rem)/1 var(--serif);color:var(--ink);letter-spacing:-.03em}
+.cas-numl{color:var(--muted);font-size:.9rem;margin:.35rem 0 1.1rem}
+.cas-card h3{font:700 1.3rem/1.25 var(--serif);margin:0 0 .6rem}
+.cas-card p.cas-acc{color:var(--muted);margin:0 0 1.4rem;font-size:.98rem}
+.cas-open{margin-top:auto;align-self:flex-start;background:none;border:0;padding:0;color:var(--gold);font:600 .98rem var(--sans);cursor:pointer;border-bottom:2px solid var(--gold)}
+.cas-open::after{content:"";position:absolute;inset:0;border-radius:1.1rem}
+.cas-open:focus-visible{outline:none}.cas-card:focus-within{outline:3px solid var(--gold);outline-offset:3px}
+@media (min-width:900px){.cas-grid.all .cas-card.feat{grid-column:span 2;padding:2.2rem}.cas-grid.all .cas-card.feat .cas-num{font-size:clamp(3rem,5vw,4.2rem)}.cas-grid.all .cas-card.feat h3{font-size:1.75rem;max-width:24ch}.cas-grid.all .cas-card.feat p.cas-acc{font-size:1.08rem;max-width:36rem}}
+.cas-grid .cas-end{margin-top:0;grid-column:1/-1}
+@media (min-width:1100px){.cas-grid.all .cas-end{grid-column:span 2;flex-direction:column;align-items:flex-start;justify-content:center}}
+.cas-end{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;margin-top:3rem;padding:2rem;border:1px solid var(--line);border-radius:1.1rem}
+.cas-end p{margin:0;font:500 clamp(1.25rem,2.4vw,1.7rem)/1.3 var(--serif);max-width:30rem}
+.cas-end div{display:flex;gap:.8rem;flex-wrap:wrap}
+.cas-end .btn{color:var(--ink);font:600 1rem var(--sans);cursor:pointer;background:none}
+.cas-end .btn.primary{color:#0A1228;background:#E2B655}
+.cas-end .btn:hover{color:#0A1228;background:#EEF1F8}
+
+/* Pop-up de l'article */
+#artModal{position:fixed;inset:0;z-index:9990;overflow-y:auto;overscroll-behavior:contain;background:rgba(3,6,16,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:4vh 1.2rem;display:flex;justify-content:center;align-items:flex-start;opacity:0;transition:opacity .3s}
+#artModal[hidden]{display:none}
+#artModal.on{opacity:1}
+.artbox{position:relative;width:min(50rem,100%);background:#0B1430;border:1px solid var(--line);border-radius:1.4rem;transform:translateY(1.5rem);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+#artModal.on .artbox{transform:none}
+.art-top{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.4rem;background:rgba(11,20,48,.94);border-bottom:1px solid var(--line);border-radius:1.4rem 1.4rem 0 0}
+.art-top span{color:var(--muted);font-size:.88rem}
+.art-x{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;min-height:2.6rem;padding:0 1rem;font:600 .92rem var(--sans);cursor:pointer;flex:none}
+.art-x:hover{border-color:var(--gold);color:var(--gold)}
+.art-head{padding:2.2rem 2.2rem 1.6rem;background:radial-gradient(70% 100% at 100% 0%,rgba(226,182,85,.14),transparent 70%)}
+.art-head .cas-meta{margin-bottom:1rem}
+.art-head h3{font:900 clamp(1.8rem,4.2vw,2.8rem)/1.08 var(--serif);letter-spacing:-.025em;margin:0 0 1rem}
+.art-head p{color:#C5CDE0;font-size:1.12rem;margin:0;max-width:38rem}
+.art-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.4rem;padding:1.6rem 2.2rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.art-stats b{display:block;font:900 clamp(1.7rem,3.4vw,2.3rem)/1 var(--serif);color:var(--gold);letter-spacing:-.02em}
+.art-stats span{display:block;color:var(--muted);font-size:.9rem;margin-top:.35rem}
+.art-body{padding:1.8rem 2.2rem 2.2rem}
+.art-body h4{font:700 1.3rem/1.2 var(--serif);margin:2rem 0 .8rem}
+.art-body h4:first-child{margin-top:0}
+.art-body p{margin:0 0 1rem;color:#D3D9E8}
+.art-body ul{margin:0;padding-left:1.15rem;color:#D3D9E8}
+.art-body li{margin:.45rem 0}
+.art-body ul.chk{list-style:none;padding:0}
+.art-body ul.chk li{position:relative;padding-left:2rem}
+.art-body ul.chk li::before{content:"✓";position:absolute;left:0;top:.05rem;width:1.35rem;height:1.35rem;border-radius:50%;background:#E2B655;color:#0A1228;font-size:.78rem;font-weight:700;display:grid;place-items:center}
+.art-me{margin-top:2rem;padding:1.4rem 1.5rem;border:1px solid var(--gold);border-radius:1rem;background:rgba(226,182,85,.07)}
+.art-me h4{margin:0 0 .6rem!important;color:var(--gold);font:600 .95rem var(--sans)!important}
+.art-me p{margin:0 0 1rem}
+.art-me a{color:var(--gold);font-weight:600;text-decoration:none;border-bottom:2px solid var(--gold)}
+.art-src{margin-top:2rem;padding-top:1.2rem;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.art-src ul{padding-left:1rem;color:var(--muted)}
+.art-src a{color:#C5CDE0}
+.art-cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem}
+.art-cta .btn{font:600 1rem var(--sans);cursor:pointer;color:var(--ink);background:none}
+.art-cta .btn.primary{color:#0A1228;background:#E2B655}
+.art-cta .btn:hover{color:#0A1228;background:#EEF1F8}
+.art-nav{display:flex;justify-content:space-between;gap:1rem;padding:1.2rem 2.2rem 1.6rem;border-top:1px solid var(--line)}
+.art-nav button{background:none;border:0;color:var(--muted);font:500 .92rem var(--sans);cursor:pointer;text-align:left;padding:.4rem 0;max-width:48%}
+.art-nav button:last-child{text-align:right}
+.art-nav button b{display:block;color:var(--ink);font:700 1.02rem/1.25 var(--serif);margin-top:.2rem}
+.art-nav button:hover b{color:var(--gold)}
+@media (max-width:640px){
+ #artModal{padding:0}
+ .artbox{border-radius:0;min-height:100%;border:0}
+ .art-top{border-radius:0}
+ .art-head,.art-stats,.art-body,.art-nav{padding-left:1.3rem;padding-right:1.3rem}
+ .cas-end{padding:1.4rem}
+}
+@media (prefers-reduced-motion:reduce){#artModal,.artbox,.cas-card{transition:none}}
+
+.hero .cas-big{border:0;padding:0;margin:2.6rem 0 0}
+.cas-main{padding-top:3.5rem}
+@media (min-width:761px){.hero{padding-top:7.5rem}.hero h1{max-width:18ch}}
+
+/* ====== Contact : adresse e-mail plus sobre ====== */
+.contact .big,.contact .mail{font-size:clamp(1.3rem,3.2vw,2.2rem);border-bottom-width:2px;letter-spacing:-.015em}
+.li-row{margin:1.6rem 0 0}
+.li-row .btn{font:600 1rem var(--sans);color:var(--ink);background:none}
+.li-row .btn:hover{color:#0A1228;background:#EEF1F8}
+/* ====== Footer ====== */
+footer.ft{position:relative;padding:4.5rem 0 2rem;border-top:1px solid var(--line);background:linear-gradient(180deg,#060B1A 0%,#040815 100%);color:var(--muted);font-size:.95rem}
+footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7}
+.ft-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.3fr;gap:2.5rem 2rem}
+.ft-brand{font:900 clamp(1.7rem,3vw,2.2rem)/1.05 var(--serif);color:var(--ink);letter-spacing:-.025em;margin:0 0 .5rem}
+.ft-role{color:var(--gold);font-weight:600;font-size:.92rem;margin:0 0 1rem}
+.ft-pitch{color:#C5CDE0;max-width:23rem;margin:0 0 1.6rem;line-height:1.55}
+.ft h3{font:600 .78rem var(--sans);color:var(--ink);text-transform:uppercase;letter-spacing:.12em;margin:.3rem 0 1.1rem}
+.ft ul{list-style:none;margin:0;padding:0}
+.ft li{margin:.55rem 0}
+.ft a{color:var(--muted);text-decoration:none;transition:color .2s}
+.ft a:hover{color:var(--gold)}
+.ft .ft-mail{color:var(--ink);font-weight:600;word-break:break-word}
+.ft .ft-note{font-size:.85rem;margin-top:.9rem}
+.ft .btn{font:600 .95rem var(--sans);cursor:pointer;padding:.8rem 1.4rem;margin-top:1.3rem}
+.ft-pitch{margin-bottom:0}
+.ft #rdvInfo{margin-top:.6rem}
+.ft .btn.primary{color:#0A1228}
+.ft .btn.primary:hover{background:#EEF1F8;border-color:#EEF1F8}
+.ft-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem 1.5rem;margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--line);font-size:.85rem}
+.ft-bottom>span:last-child{display:inline-flex;gap:1.5rem;flex-wrap:wrap}
+@media (max-width:900px){.ft-grid{grid-template-columns:1fr 1fr}.ft-grid>div:first-child{grid-column:1/-1}}
+@media (max-width:640px){
+ footer.ft{padding:2.6rem 0 1.4rem;font-size:.92rem}
+ .ft-grid{grid-template-columns:1fr 1fr;gap:1.6rem 1.2rem}
+ .ft-grid>div:first-child,.ft-grid>div:last-child{grid-column:1/-1}
+ .ft-brand{display:none}
+ .ft-role{margin:0;font-size:.85rem}
+ .ft-pitch{display:none}
+ .ft h3{margin:0 0 .6rem;font-size:.72rem}
+ .ft li{margin:.3rem 0}
+ .ft-grid>div:last-child{padding-top:1.3rem;border-top:1px solid var(--line)}
+ .ft-grid>div:last-child ul{display:flex;flex-wrap:wrap;gap:.2rem 1.2rem}
+ .ft-grid>div:last-child li{margin:.1rem 0}
+ .ft .ft-note{margin-top:.5rem}
+ .ft .btn{display:block;width:100%;text-align:center;margin-top:.9rem}
+ .ft #rdvInfo{text-align:center;margin-top:.45rem}
+ .ft-bottom{margin-top:1.6rem;padding-top:1rem}
+}
+
+/* ====== Choix de la langue ====== */
+.lang{display:inline-flex;align-items:center;gap:.15rem;margin-left:1.6rem;padding:.2rem;border:1px solid rgba(238,241,248,.25);border-radius:999px;font:600 .78rem var(--sans);letter-spacing:.06em;position:relative;z-index:60;background:rgba(6,11,26,.4)}
+.lang a{display:block;padding:.3rem .65rem;border-radius:999px;text-decoration:none;color:#97A3BF;line-height:1.2}
+.lang a[aria-current]{background:#E2B655;color:#0A1228}
+.lang a:not([aria-current]):hover{color:#EEF1F8}
+.bar nav{margin-left:auto}
+@media (max-width:760px){.lang{order:2;margin-left:auto;margin-right:.6rem}.menu-btn{order:3}.bar nav{margin-left:0}}
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
+<script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
+<link rel="alternate" hreflang="fr" href="impact.html"><link rel="alternate" hreflang="en" href="impact-en.html">
+</head>
+<body>
+<header class="hero">
+  <div class="bar"><div class="wrap">
+    <a class="brand" href="index-en.html">Amine Admane</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    <nav id="mainnav" aria-label="Main navigation"><a href="index-en.html">Home</a><a href="index-en.html#competences">Expertise</a><a href="parcours-en.html">Experience</a><a href="impact-en.html" aria-current="page">Impact</a><a href="#contact">Contact</a></nav><div class="lang" role="group" aria-label="Language"><a href="impact.html" lang="fr" hreflang="fr">FR</a><a href="impact-en.html" aria-current="true" lang="en">EN</a></div><script>document.querySelectorAll(".lang a").forEach(function(a){a.addEventListener("click",function(){if(location.hash)a.href=a.getAttribute("href").split("#")[0]+location.hash})});</script>
+  </div></div>
+  <div class="wrap">
+    <p style="color:#E2B655;font-weight:600;margin:0 0 1.2rem">Why QA matters</p>
+    <h1>The cost of a test that was never run.</h1>
+    <p class="lead">Quality only gets noticed when it is missing. Here are real, documented cases where a test, a data check or a regression check was missing, and what it cost in money, trust and user experience.</p>
+    <div class="cas-big">
+      <div><b>$2.41T</b><span>estimated cost of poor software quality in the United States in 2022</span><small>Source: CISQ, 2022 report</small></div>
+      <div><b>$12.9M</b><span>average annual cost of poor data quality for an organisation</span><small>Source: Gartner</small></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="cas cas-main" id="cas"><div class="wrap">
+    <div class="cas-filters" id="casFilters" role="group" aria-label="Filter cases by theme"></div>
+    <div class="cas-grid all" id="casGrid"></div>
+    <div class="cas-end"><p>What all these cases have in common: the error was testable.</p></div>
+  </div></section>
+</main>
+<footer class="ft" id="contact"><div class="wrap">
+  <div class="ft-grid">
+    <div>
+      <p class="ft-brand">Amine Admane</p>
+      <p class="ft-role">Freelance QA Data &amp; Technical-Functional Testing Consultant</p>
+      <p class="ft-pitch">Data you can trust, releases without nasty surprises. Eight years securing high-stakes systems.</p>
+    </div>
+    <nav aria-label="Site map"><h3>Navigation</h3><ul>
+      <li><a href="index-en.html">Home</a></li><li><a href="index-en.html#competences">Expertise</a></li><li><a href="parcours-en.html">Experience</a></li><li><a href="impact-en.html">Impact</a></li><li><a href="#contact">Contact</a></li>
+    </ul></nav>
+    <nav aria-label="Projects"><h3>Projects</h3><ul>
+      <li><a href="edenred-en.html">Edenred</a></li><li><a href="loreal-en.html">L’Oréal</a></li><li><a href="disneyland-en.html">Disneyland Paris</a></li><li><a href="fft-en.html">Fédération Française de Tennis</a></li>
+    </ul></nav>
+    <div><h3>Contact</h3><ul>
+      <li><a class="ft-mail" data-umami-event="Clic e-mail" href="mailto:amineadmane@hotmail.fr">amineadmane@hotmail.fr</a></li>
+      <li><a href="https://www.linkedin.com/in/amineadmane/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn">LinkedIn ↗</a></li>
+    </ul><p class="ft-note">Reply within 48 hours.</p><button type="button" class="btn primary" id="rdvBtn" data-umami-event="Clic Prendre rendez-vous">Book a call</button><p class="ft-note" id="rdvInfo"></p></div>
+  </div>
+  <div class="ft-bottom"><span id="footer">© Amine Admane</span><span><a href="#" data-top>Back to top ↑</a></span></div>
+</div></footer>
+<script>(function(){var f=document.getElementById("footer");if(f)f.textContent="© "+new Date().getFullYear()+" Amine Admane";
+document.querySelectorAll("[data-open-rdv]").forEach(function(b){b.addEventListener("click",function(){var r=document.getElementById("rdvBtn");if(r)r.click()})});
+document.querySelectorAll("[data-top]").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();window.scrollTo({top:0,behavior:"smooth"})})});})();</script>
+
+
+<script>document.getElementById("footer").textContent = "© " + new Date().getFullYear() + " Amine Admane";</script>
+<script>(function(){var b=document.querySelector(".bar");if(!b)return;var t=b.querySelector(".menu-btn"),n=b.querySelector("nav");if(!t||!n)return;
+function set(o){b.classList.toggle("open",o);t.setAttribute("aria-expanded",String(o));t.textContent=o?"Close":"Menu";document.documentElement.style.overflow=o?"hidden":""}
+t.addEventListener("click",function(){set(!b.classList.contains("open"))});
+n.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+function sc(){b.classList.toggle("solid",(window.scrollY||document.documentElement.scrollTop)>24)}
+addEventListener("scroll",sc,{passive:true});sc();})();</script>
+<div id="rdvModal" role="dialog" aria-modal="true" aria-labelledby="rdvT" hidden>
+  <div class="rdvbox">
+    <header><div><h3 id="rdvT">Book a call</h3><p id="rdvSub"></p></div><button type="button" class="x" id="rdvX" aria-label="Close">✕</button></header>
+    <p class="demo" id="rdvDemo" hidden>Preview mode: no booking is actually created.</p>
+    <div id="rdvS1"><div class="durs" id="rdvDur" role="group" aria-label="Call length"></div><div class="drow" id="rdvDays" role="group" aria-label="Available days"></div><div class="tgrid" id="rdvTimes"></div><p class="rmsg" id="rdvLoad">Loading availability…</p></div>
+    <form id="rdvS2" hidden novalidate>
+      <div class="rsum"><span id="rdvPick"></span><button type="button" id="rdvBack">Change</button></div>
+      <label>Name<input id="rdvN" name="name" autocomplete="name" required></label>
+      <label>Email<input id="rdvE" name="email" type="email" autocomplete="email" required></label>
+      <label>A word about your needs (optional)<textarea id="rdvM" name="notes"></textarea></label>
+      <button type="submit" class="btn primary" id="rdvOk">Confirm booking</button>
+      <p class="rmsg">Your details are only used to arrange this call. You will receive a confirmation email.</p>
+    </form>
+    <div id="rdvS3" class="rok" hidden><div class="tick" aria-hidden="true">✓</div><h4>Booking confirmed</h4><p><strong id="rdvDone"></strong></p><p>A confirmation email is on its way.</p><p><button type="button" class="btn" id="rdvEnd" style="margin-top:1.2rem;background:none;color:var(--ink);border:1.5px solid currentColor">Close</button></p></div>
+    <p class="rerr" id="rdvErr" role="alert" hidden></p>
+  </div>
+</div>
+<script>
+/* ====== RÉGLAGES RENDEZ-VOUS ======
+   username : votre identifiant Cal.com. events : fin du lien de chaque type de rendez-vous.
+   demo: true = mode aperçu (créneaux fictifs, rien n'est créé). */
+const RDV = { username: "amine-admane-6xfl8a", events: [{ slug: "15min", label: "15 minutes" }, { slug: "30min", label: "30 minutes" }], texte: "15- or 30-minute call", demo: false, jours: 14,
+  /* Échange de 15 minutes : nombre de créneaux proposés par jour, entre aPartirDe et jusqua (heure de Paris, le dernier créneau se termine à jusqua), tirés au hasard parmi les créneaux libres */
+  limite: { slug: "15min", nombre: 15, aPartirDe: 11, jusqua: 16, fuseau: "Europe/Paris" } };
+(function(){
+const $=id=>document.getElementById(id),tz=Intl.DateTimeFormat().resolvedOptions().timeZone,demo=!!RDV.demo;
+let ev=RDV.events[0];const fb=()=>"https://cal.com/"+RDV.username+"/"+ev.slug;
+const fmtD=d=>new Date(d).toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"}),fmtDs=d=>new Date(d).toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}),fmtT=d=>new Date(d).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+const tzl=tz==="Europe/Paris"?"Paris time":tz;
+let slots={},pick=null;
+RDV.events.forEach((e,i)=>{const b=document.createElement("button");b.type="button";b.className="dur";b.textContent=e.label;b.setAttribute("aria-pressed",String(i===0));b.onclick=()=>{ev=e;[...$("rdvDur").children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));load()};$("rdvDur").append(b)});
+$("rdvInfo").textContent=RDV.texte;$("rdvSub").textContent=RDV.texte+" · "+tzl;$("rdvDemo").hidden=!demo;
+function err(h){const e=$("rdvErr");if(!h){e.hidden=true;return}e.innerHTML=h;e.hidden=false}
+function fail(msg){uTrack("Erreur calendrier",{message:msg});err(msg+' <a href="'+fb()+'" target="_blank" rel="noopener">Open my calendar</a>')}
+function limit(all){const L=RDV.limite;if(!L||ev.slug!==L.slug)return all;
+ const hr=new Intl.DateTimeFormat("en-GB",{timeZone:L.fuseau,hour:"numeric",hourCycle:"h23"}),out={};
+ for(const k in all){let h=2166136261;for(const c of k+ev.slug){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}
+  const r=()=>{h=Math.imul(h^h>>>15,1|h);h^=h+Math.imul(h^h>>>7,61|h);return((h^h>>>14)>>>0)/4294967296};
+  const l=all[k].filter(iso=>{const h=+hr.formatToParts(new Date(iso)).find(x=>x.type==="hour").value;return h>=L.aPartirDe&&(!L.jusqua||h<L.jusqua)});
+  for(let i=l.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[l[i],l[j]]=[l[j],l[i]]}
+  const p=l.slice(0,L.nombre).sort();if(p.length)out[k]=p}
+ return out}
+async function load(keep){
+ $("rdvLoad").hidden=false;$("rdvLoad").textContent="Loading availability…";$("rdvDays").replaceChildren();$("rdvTimes").replaceChildren();if(!keep)err();
+ try{slots=demo?fake():await api();}catch(e){$("rdvLoad").hidden=true;fail("The calendar is temporarily unavailable.");return}
+ slots=limit(slots);
+ const keys=Object.keys(slots).sort();$("rdvLoad").hidden=true;
+ if(!keys.length){$("rdvLoad").hidden=false;$("rdvLoad").textContent="No availability in the coming days. Please email me directly.";return}
+ keys.forEach((k,i)=>{const b=document.createElement("button");b.type="button";b.className="dchip";b.textContent=fmtDs(slots[k][0]);b.setAttribute("aria-pressed","false");b.onclick=()=>day(k);$("rdvDays").append(b)});day(keys[0])}
+function day(k){[...$("rdvDays").children].forEach((b,i)=>b.setAttribute("aria-pressed",String(Object.keys(slots).sort()[i]===k)));
+ const g=$("rdvTimes");g.replaceChildren();slots[k].sort().forEach(iso=>{const b=document.createElement("button");b.type="button";b.className="slot";b.textContent=fmtT(iso);b.onclick=()=>choose(iso);g.append(b)})}
+function choose(iso){pick=iso;uTrack("Créneau choisi",{duree:ev.label});err();$("rdvPick").textContent=fmtD(iso)+" · "+fmtT(iso)+" · "+ev.label;$("rdvS1").hidden=true;$("rdvS2").hidden=false;$("rdvN").focus()}
+function fake(){const o={};let d=new Date(),n=0;while(n<8){d.setDate(d.getDate()+1);if(d.getDay()%6===0)continue;n++;[10,11.5,14,16.5].forEach(h=>{const x=new Date(d);x.setHours(Math.floor(h),(h%1)*60,0,0);const k=x.toLocaleDateString("sv-SE");(o[k]=o[k]||[]).push(x.toISOString())})}return o}
+async function api(){
+ const s=new Date(),e=new Date(Date.now()+RDV.jours*864e5),U=RDV.username,E=ev.slug;
+ const tries=[{v:"2024-08-13",q:{username:U,eventSlug:E,startTime:s.toISOString(),endTime:e.toISOString(),timeZone:tz}},{v:"2024-09-04",q:{username:U,eventTypeSlug:E,start:s.toISOString(),end:e.toISOString(),timeZone:tz}}];
+ let last;for(const t of tries){try{const r=await fetch("https://api.cal.com/v2/slots?"+new URLSearchParams(t.q),{headers:{"cal-api-version":t.v}});if(!r.ok){last=r.status;continue}
+  const j=await r.json(),d=j.data&&j.data.slots?j.data.slots:j.data,out={};
+  for(const k in d){(d[k]||[]).map(x=>typeof x==="string"?x:(x.time||x.start)).filter(Boolean).forEach(iso=>{const kk=new Date(iso).toLocaleDateString("sv-SE");(out[kk]=out[kk]||[]).push(iso)})}return out}catch(x){last=x}}
+ throw last||new Error("slots")}
+$("rdvS2").addEventListener("submit",async evt=>{evt.preventDefault();err();const n=$("rdvN").value.trim(),m=$("rdvE").value.trim(),note=$("rdvM").value.trim();
+ if(!n||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m)){err("Please enter your name and a valid email address.");return}
+ const b=$("rdvOk");b.disabled=true;b.textContent="Confirming…";
+ try{if(demo){await new Promise(r=>setTimeout(r,700))}else{
+   const body={eventTypeSlug:ev.slug,username:RDV.username,start:pick,attendee:{name:n,email:m,timeZone:tz,language:"en"}};if(note)body.bookingFieldsResponses={notes:note};
+   const r=await fetch("https://api.cal.com/v2/bookings",{method:"POST",headers:{"Content-Type":"application/json","cal-api-version":"2024-08-13"},body:JSON.stringify(body)});
+   if(!r.ok){const e=new Error("book");e.status=r.status;throw e}}
+  uTrack("Rendez-vous confirmé",{duree:ev.label});$("rdvDone").textContent=fmtD(pick)+" · "+fmtT(pick)+" ("+tzl+") · "+ev.label;$("rdvS2").hidden=true;$("rdvS3").hidden=false;$("rdvEnd").focus()}
+ catch(e){b.disabled=false;b.textContent="Confirm booking";
+  if(e.status===400||e.status===409){err("This slot has just been taken. Please choose another one.");$("rdvS2").hidden=true;$("rdvS1").hidden=false;load(true)}
+  else fail("The booking could not be completed.")}});
+$("rdvBack").onclick=()=>{err();$("rdvS2").hidden=true;$("rdvS1").hidden=false};
+const mod=$("rdvModal"),btn=$("rdvBtn");
+function open(){mod.hidden=false;$("rdvS1").hidden=false;$("rdvS2").hidden=true;$("rdvS3").hidden=true;$("rdvOk").disabled=false;$("rdvOk").textContent="Confirm booking";$("rdvX").focus();load()}
+function close(){mod.hidden=true;btn.focus()}
+btn.onclick=open;$("rdvX").onclick=close;$("rdvEnd").onclick=close;mod.addEventListener("click",e=>{if(e.target===mod)close()});addEventListener("keydown",e=>{if(e.key==="Escape"&&!mod.hidden)close()});
+})();
+</script>
+<script>
+const $ = id => document.getElementById(id);
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+</script>
+<div id="artModal" role="dialog" aria-modal="true" aria-labelledby="artT" hidden>
+  <article class="artbox" id="artBox">
+    <div class="art-top"><span id="artPos"></span><button type="button" class="art-x" id="artX">Close ✕</button></div>
+    <div class="art-head"><div class="cas-meta" id="artMeta"></div><h3 id="artT"></h3><p id="artAcc"></p></div>
+    <div class="art-stats" id="artStats"></div>
+    <div class="art-body" id="artBody"></div>
+    <nav class="art-nav" aria-label="Other cases"><button type="button" id="artPrev"></button><button type="button" id="artNext"></button></nav>
+  </article>
+</div>
+
+<script>
+/* ====== CAS RÉELS : seule cette partie est à modifier ======
+   cats : les thèmes des filtres. Chaque article peut avoir un ou plusieurs thèmes.
+   Le premier article de la liste est mis en avant. "page" : la mission liée sur le site. */
+const CAS = {
+  cats: { data: "Data quality", migration: "Migration", prod: "Go-live", calc: "Calculation rules", ux: "Journeys & interfaces" },
+  articles: [
+    { id: "tsb", cats: ["migration"], annee: "2018", lieu: "United Kingdom · Banking",
+      titre: "TSB: the weekend migration that lasted eight months",
+      chiffre: "£330M", chiffreLib: "total cost announced by the bank",
+      accroche: "5.2 million customers switched over in one go to a new platform. Accounts out of reach, others visible to strangers.",
+      stats: [["5.2M", "customers affected by the switchover"], ["£48.65M", "in regulatory fines in 2022"], ["8 months", "before things were back to normal"]],
+      faits: ["In April 2018, the British bank TSB moved the data of all its customers from the IT systems of its former group, Lloyds, to a new platform. The switchover was planned over a single weekend, as a “big bang”: everyone migrated at the same time."],
+      consequences: ["Customers locked out of their accounts for weeks, in branches, online and on mobile.", "Wrong balances, missing payments, and customers who could see other customers’ accounts.", "The CEO resigned; £32.7M in compensation was paid to customers.", "In 2022, the FCA and the PRA penalised a poorly organised, poorly controlled migration."],
+      tests: ["Dry-run migrations on real data volumes before the switchover date.", "Source-to-target reconciliation: number of accounts, balances and histories, row by row.", "Segregation tests: a customer must only see their own accounts.", "Load tests on the app and online banking at restart.", "Objective go / no-go criteria, rather than an imposed date."],
+      moi: "This is the core of my work on a migration. At Disneyland Paris, I validated the compliance of booking data migrated to AWS, table by table, before it was used in production.",
+      page: "disneyland-en.html", pageLib: "See the Disneyland Paris project",
+      sources: [["FCA: TSB fined £48.65m for operational resilience failings", "https://www.fca.org.uk/news/press-releases/tsb-fined-48m-operational-resilience-failings"], ["Bank of England: TSB fined for operational resilience failings", "https://www.bankofengland.co.uk/news/2022/december/tsb-fined-for-operational-resilience-failings"]] },
+
+    { id: "phe", cats: ["data"], annee: "2020", lieu: "United Kingdom · Public health",
+      titre: "15,841 Covid-19 cases lost in a spreadsheet",
+      chiffre: "15,841", chiffreLib: "positive cases missing from contact tracing",
+      accroche: "A file that was too long, rows cut off without warning, and thousands of at-risk contacts alerted too late.",
+      stats: [["15,841", "positive cases not passed on"], ["8 days", "of results affected, 25 Sept. to 2 Oct."], ["125,000+", "extra infections estimated by a study"]],
+      faits: ["Laboratories sent their results as CSV files. To load them, England’s public health agency used an Excel template in the old .xls format, limited to 65,536 rows. Beyond that, the extra rows were simply ignored, without any error message."],
+      consequences: ["Almost 16,000 people who tested positive were not passed on to contact tracing for several days.", "Their at-risk contacts kept moving around with no instruction to self-isolate.", "A University of Warwick study estimates that the delay caused more than 125,000 additional infections."],
+      tests: ["A volume check: as many rows loaded as rows received.", "A blocking alert as soon as a row is rejected or truncated.", "Schema and format validation at every step of the pipeline.", "A boundary test: what happens when the file doubles in size?"],
+      moi: "“As many rows out as rows in” is one of the first checks I put in place. At Edenred, I checked the parity and completeness of data between the source view and the table exposed to marketing.",
+      page: "edenred-en.html", pageLib: "See the Edenred project",
+      sources: [["GOV.UK: PHE statement on delayed reporting of COVID-19 cases", "https://gov.uk/government/news/phe-statement-on-delayed-reporting-of-covid-19-cases"], ["University of Warwick: the data glitch caused more than 125,000 additional infections", "https://warwick.ac.uk/fac/soc/economics/research/centres/cage/news/23-11-20-nhs_test_and_trace_works_new_research_finds_but_the_data_glitch_which_led_to_over_15000_late_referrals_caused_more_than_125000_additional_covid_19_infections/"]] },
+
+    { id: "crowdstrike", cats: ["prod"], annee: "2024", lieu: "Worldwide · Cybersecurity",
+      titre: "CrowdStrike: one update, 8.5 million blue screens",
+      chiffre: "$5.4B", chiffreLib: "in direct losses for the Fortune 500",
+      accroche: "A faulty configuration file sent to every customer at once. Airports, hospitals and banks brought to a halt.",
+      stats: [["8.5M", "Windows computers crashed"], ["1 in 4", "Fortune 500 companies affected"], ["$1.94B", "in losses for the healthcare sector alone"]],
+      faits: ["On 19 July 2024, security vendor CrowdStrike pushed a content update for its Falcon software. The file contained an error the software could not handle: Windows computers that received it crashed at startup, in a loop. The update went out to the entire installed base at once."],
+      consequences: ["Flights cancelled around the world, hospitals and banks disrupted for several days.", "According to insurer Parametrix, $5.4 billion in direct losses for large US companies, of which only 10 to 20% was covered by insurance.", "Airlines lost an average of $143 million each."],
+      tests: ["Automatic validation of the content of every configuration file before release.", "Tests on a representative fleet of machines, not just in the lab.", "A gradual rollout (canary release): 1% of the fleet, then 10%, then everyone.", "A rollback plan tested in advance."],
+      moi: "Configuration data is data like any other: it can be tested. At Edenred, I reran my regression checks at every release, before the new version reached users.",
+      page: "edenred-en.html", pageLib: "See the Edenred project",
+      sources: [["Axios: Fortune 500 lost an estimated $5.4B in CrowdStrike outage", "https://www.axios.com/2024/07/24/fortune-500-crowdstrike-outage-impact"], ["SecurityWeek: CrowdStrike faces lawsuits from customers, investors", "https://www.securityweek.com/crowdstrike-faces-lawsuits-from-customers-investors/"]] },
+
+    { id: "knight", cats: ["prod"], annee: "2012", lieu: "United States · Finance",
+      titre: "Knight Capital: $460 million lost in 45 minutes",
+      chiffre: "$460M", chiffreLib: "lost in 45 minutes",
+      accroche: "A server forgotten during a deployment, old code woken up by mistake, and a company that never recovered.",
+      stats: [["45 min", "of erratic orders sent to the markets"], ["1 in 8", "servers not updated"], ["$12M", "fine imposed by the SEC"]],
+      faits: ["On 1 August 2012, Knight Capital, one of the largest brokers on the US stock market, deployed a new version of its order routing software. Of the eight servers involved, one was not updated. A flag reused by the new version reactivated, on that server, an old function abandoned years earlier."],
+      consequences: ["For 45 minutes, the system sent millions of unintended orders to the market.", "The loss reached $460 million; the company, on the brink of bankruptcy, was taken over by Getco a few months later.", "The SEC found a lack of adequate controls and of reviews of their effectiveness."],
+      tests: ["A post-deployment check on every server: is the right version everywhere?", "Removing dead code, rather than leaving it dormant.", "Regression tests on existing functions before every go-live.", "An automatic check on outgoing orders, with an emergency stop if anything deviates."],
+      moi: "At L’Oréal, I set up automated regression tests, scheduled daily and weekly: an anomaly introduced by a release is caught before users ever see it.",
+      page: "loreal-en.html", pageLib: "See the L’Oréal project",
+      sources: [["SEC: SEC Charges Knight Capital With Violations of Market Access Rule", "https://www.sec.gov/news/press-release/2013-222"], ["AP via KSL: Knight Capital will pay $12M for trading glitch", "https://www.ksl.com/article/27266638"]] },
+
+    { id: "citi", cats: ["ux"], annee: "2020", lieu: "United States · Banking",
+      titre: "Citibank: $900 million sent because of a wrongly ticked box",
+      chiffre: "$900M", chiffreLib: "wired instead of $7.8M",
+      accroche: "A confusing interface, three human approvals, and nobody notices that the transfer repays an entire loan.",
+      stats: [["$7.8M", "the amount meant to be sent"], ["≈ $900M", "the amount actually wired"], ["3", "people approved the transaction"]],
+      faits: ["In August 2020, Citibank had to pay $7.8 million in interest to lenders on behalf of the Revlon group. In the software used, several specific options had to be ticked so that the principal would not go out too. The operator did not tick the right combination, and the two approvers after him did not spot the error."],
+      consequences: ["Almost $900 million was wired: the entire loan, which was not due until 2023.", "Some lenders refused to give the money back. A federal judge first ruled in their favour in 2021, before the decision was overturned on appeal.", "The bank spoke of “human error”, but the software interface was at the heart of the case."],
+      tests: ["Usability tests on critical journeys: does the user understand what each option does?", "Test cases on default values and dangerous combinations of options.", "A consistency check: an amount a hundred times higher than usual triggers a blocking alert.", "A confirmation screen that clearly shows the total amount actually being sent."],
+      moi: "A large part of my job is to walk through journeys like a real user, outcome by outcome. At the FFT, I tested every payment outcome on the Roland-Garros online shop: success, failure, cancellation.",
+      page: "fft-en.html", pageLib: "See the FFT project",
+      sources: [["NPR Planet Money: How Citibank accidentally paid Revlon’s $900 million loan", "https://www.npr.org/transcripts/1019909860"], ["Al Jazeera: $900m gaffe, US judge says Citigroup can’t recoup Revlon payout", "https://www.aljazeera.com/economy/2021/2/16/900m-gaffe-citigroup-cant-recoup-payout-to-revlon-judge-rules"]] },
+
+    { id: "louvois", cats: ["calc", "migration"], annee: "2011", lieu: "France · Ministry of Defence",
+      titre: "Louvois: the military payroll software that paid at random",
+      chiffre: "€358M", chiffreLib: "overpaid to service members",
+      accroche: "Pay slashed or inflated, families in difficulty: in France, a poorly tested payroll engine cost hundreds of millions of euros.",
+      stats: [["≈ 160,000", "army personnel with incorrect payslips"], ["180", "allowances and bonuses to calculate"], ["€150 to 200M", "a year to correct errors by hand"]],
+      faits: ["Launched in 2011, Louvois (the single inter-service military pay software) was meant to calculate the pay of almost 180,000 service members. Errors quickly multiplied: some received drastically reduced pay, others far too much. The French Court of Audit called it “crazy software”."],
+      consequences: ["€358 million overpaid and €47 million underpaid since 2011, according to the Court of Audit.", "Military families in financial difficulty; a dedicated helpdesk had to be set up.", "The software was abandoned and replaced by Source Solde, rolled out to all the armed forces in 2021."],
+      tests: ["Exhaustive testing of business rules: every bonus, every allowance, every special case.", "Datasets representative of real situations: transfers, overseas operations, promotions.", "Running the old and new calculations in parallel, with an analysis of the gaps before the switchover.", "A quality check on the data fed into the new payroll engine."],
+      moi: "Testing calculation rules is what I did at Edenred on client KPIs: order aggregates, amounts, recurrence, statuses. A wrong number, even by a few euros, always ends up being noticed.",
+      page: "edenred-en.html", pageLib: "See the Edenred project",
+      sources: [["French National Assembly: written question no. 93784 (overpayments, in French)", "https://www.assemblee-nationale.fr/dyn/14/questions/QANR5L14QE93784.pdf"], ["French National Assembly: written question no. 29282 (cost of corrections, in French)", "https://www.assemblee-nationale.fr/dyn/15/questions/QANR5L15QE29282.pdf"], ["Acteurs publics: the Ministry of the Armed Forces closes the Louvois chapter (in French)", "https://acteurspublics.fr/articles/le-ministere-des-armees-tire-un-trait-definitif-sur-lechec-louvois/"]] },
+
+    { id: "unity", cats: ["data"], annee: "2022", lieu: "United States · Video games & advertising",
+      titre: "Unity: $110 million lost because of corrupted data",
+      chiffre: "$110M", chiffreLib: "in revenue lost in 2022",
+      accroche: "Faulty data from a large customer ingested without checks, and the advertising algorithm starts missing its target.",
+      stats: [["$110M", "impact on annual revenue"], ["≈ 8%", "of the revenue expected for the year"], ["−39%", "for the share price in one week"]],
+      faits: ["Unity, maker of the game engine of the same name, earns a large share of its revenue from in-game advertising. Its Audience Pinpointer tool uses machine learning to target players. In early 2022, the platform ingested faulty data from a large customer, and lost the value of part of its training data."],
+      consequences: ["Ads were less well targeted, advertisers spent less, revenue dropped.", "The company had to rebuild its datasets, retrain its models and delay other projects.", "Unity then announced data monitoring, alerting and recovery systems: the checks that had been missing."],
+      tests: ["Quality checks at ingestion: null values, duplicates, formats, outliers.", "Monitoring data distribution over time, to spot any sudden drift.", "A data contract with each source: anything that breaks the schema is quarantined.", "Alerts before data feeds a production model."],
+      moi: "Monitoring pipeline health is what I did with Soda SQL at Disneyland Paris: duplicates, primary keys, NULL values, date consistency, with regression alerts.",
+      page: "disneyland-en.html", pageLib: "See the Disneyland Paris project",
+      sources: [["Briefing.com: Unity Software’s main segments going on separate paths", "https://www.briefing.com/in-depth-analysis/story-stocks/2022/5/11/unity-softwares-main-segments-going-on-separate-paths-leading-to-soft-outlook-(u)"], ["The Motley Fool: Why Unity Software tanked 39% this week", "https://www.fool.com/investing/2022/05/12/why-unity-software-tanked-39-this-week"]] },
+
+    { id: "healthcare", cats: ["prod", "ux"], annee: "2013", lieu: "United States · Public service",
+      titre: "HealthCare.gov: six sign-ups on launch day",
+      chiffre: "6", chiffreLib: "people enrolled on the first day",
+      accroche: "A national portal launched without realistic load testing. It went down two hours after opening.",
+      stats: [["250,000", "simultaneous users, far beyond planned capacity"], ["2 h", "before the first outages"], ["18", "documented warnings before launch"]],
+      faits: ["On 1 October 2013, the US government opened HealthCare.gov, the website meant to let millions of people sign up for health insurance. The project was split across many contractors; end-to-end integration tests and load tests came too late."],
+      consequences: ["Outages within two hours, blank pages, accounts impossible to create.", "Only six people managed to choose a plan and submit their application on the first day.", "The Inspector General recorded 18 documented warnings about the project between 2011 and 2013.", "The total cost of the website is estimated, depending on scope, at between $840 million and over $2 billion."],
+      tests: ["Load tests at the expected traffic level, and beyond.", "End-to-end integration tests between the modules of the different contractors.", "Testing the complete journey: account creation, identity verification, choosing a plan.", "A go-live decision based on test results, not on a date."],
+      moi: "I have worked on very high-traffic platforms: the Roland-Garros ticketing platform and online shop at the FFT, then the Disneyland Paris booking site, where I automated API tests under load constraints.",
+      page: "fft-en.html", pageLib: "See the FFT project",
+      sources: [["HHS OIG: HealthCare.gov, Case Study of CMS Management of the Federal Marketplace", "https://oig.hhs.gov/oei/reports/oei-06-14-00350.asp"], ["IBTimes: estimated cost of the website", "https://www.ibtimes.com/obamacare-website-failure-analysis-why-site-crashed-so-often-during-2013-launch-2097354"]] },
+
+    { id: "horizon", cats: ["data", "calc"], annee: "1999 – 2015", lieu: "United Kingdom · Postal service",
+      titre: "Post Office Horizon: when false data sends innocent people to prison",
+      chiffre: "900+", chiffreLib: "sub-postmasters prosecuted",
+      accroche: "The software showed cash shortfalls that did not exist. Its numbers were believed over the people.",
+      stats: [["900+", "people prosecuted between 1999 and 2015"], ["236", "people sent to prison"], ["16 years", "of prosecutions based on this data"]],
+      faits: ["From 1999, the British Post Office equipped its branches with the Horizon accounting system, developed by Fujitsu. Sub-postmasters soon reported cash discrepancies they could not explain. The system contained defects, but its data was presented as reliable in court."],
+      consequences: ["More than 900 sub-postmasters prosecuted for theft or false accounting, 236 sent to prison.", "Many others ruined after paying back, out of their own pockets, losses that did not exist.", "Considered the most widespread miscarriage of justice in British history; a 2024 law quashed the convictions."],
+      tests: ["Systematic reconciliation between recorded transactions and actual amounts.", "Traceability of every reported defect, through to its fix and retest.", "Regression tests at every change to the system.", "A simple rule: unverified data is never used as evidence."],
+      moi: "My role is precisely to prove that a number is right before it is used to make decisions. At L’Oréal, the customer credit view was used to block or release orders: every KPI was compared with the database before being shown.",
+      page: "loreal-en.html", pageLib: "See the L’Oréal project",
+      sources: [["Wikipedia: British Post Office scandal", "https://en.wikipedia.org/wiki/British_Post_Office_scandal"], ["Computer Weekly: Post Office Horizon scandal explained", "https://www.computerweekly.com/feature/Post-Office-Horizon-scandal-explained-everything-you-need-to-know"]] },
+
+    { id: "uber", cats: ["calc"], annee: "2017", lieu: "United States · Mobility",
+      titre: "Uber: a commission formula that was wrong for two and a half years",
+      chiffre: "≈ $900", chiffreLib: "owed on average per driver",
+      accroche: "A commission calculated on the wrong amount, tens of thousands of drivers underpaid, and trust dented.",
+      stats: [["2.5 years", "of errors before it was discovered"], ["Tens of $M", "to pay back to drivers"], ["50,000+", "Uber drivers in New York"]],
+      faits: ["In New York, Uber was supposed to take its commission on the fare excluding taxes and fees. For two and a half years, it was calculated on the gross amount, taxes included. The error was only spotted when a new receipt template was created."],
+      consequences: ["Tens of millions of dollars to pay back, with interest, to tens of thousands of drivers.", "The drivers’ union disputed the amount as insufficient.", "An already strained relationship with drivers damaged further."],
+      tests: ["Testing the rule with worked examples: for a $20 fare including $2 of taxes, the commission applies to $18.", "Comparing the system’s calculation with a reference calculation, on a sample of real trips.", "Regular reconciliation between the amounts paid and the contract signed with drivers."],
+      moi: "Checking a calculated amount against an independent reference is a reflex I apply everywhere. At Edenred, I tested the calculation rules for client KPIs, including amounts and order statuses.",
+      page: "edenred-en.html", pageLib: "See the Edenred project",
+      sources: [["CBC: Uber stiffed New York City drivers by millions of dollars", "https://www.cbc.ca/1.4129390"], ["CBS New York: Uber admits stiffing NYC drivers", "https://www.cbsnews.com/newyork/news/uber-reimbursing-drivers"]] },
+
+    { id: "mars", cats: ["data"], annee: "1999", lieu: "United States · Space",
+      titre: "Mars Climate Orbiter: a probe lost over a unit of measurement",
+      chiffre: "$125M", chiffreLib: "the cost of the destroyed probe",
+      accroche: "One piece of software sent pound-force, the other expected newtons. Nobody had checked.",
+      stats: [["× 4.45", "the gap between the two units"], ["9 months", "of a skewed trajectory without the error being spotted"], ["$125M", "the cost of the probe"]],
+      faits: ["In 1999, the NASA probe reached Mars after nine months of travel. The ground software from the manufacturer, Lockheed Martin, expressed engine thrust in pound-force; NASA’s navigation software expected newtons. With each trajectory correction, the error added up."],
+      consequences: ["The probe passed far too low through the Martian atmosphere and was destroyed on 23 September 1999.", "The science mission was lost, along with its role as a relay for the next lander.", "The investigation also pointed to overly informal communication between teams."],
+      tests: ["An interface contract specifying the unit of every field exchanged.", "An integration test between the two pieces of software, with values known in advance.", "A plausibility check: repeated gaps between planned and observed trajectory should trigger an alert."],
+      moi: "Compliance with interface contracts between domains was part of my checks at Edenred, at every catalog migration: same schemas, same formats, same definitions.",
+      page: "edenred-en.html", pageLib: "See the Edenred project",
+      sources: [["CNN (via NCES): NASA’s metric confusion caused Mars orbiter loss", "https://nces.ed.gov/pubs2009/metadata/exhibit1_1.asp"]] },
+
+    { id: "panama", cats: ["ux"], annee: "2000 – 2001", lieu: "Panama · Healthcare",
+      titre: "Panama: radiotherapy software that accepted an unexpected input",
+      chiffre: "28", chiffreLib: "patients overexposed to radiation",
+      accroche: "A way of entering data that nobody had tested, and software that calculated a wrong dose without complaint.",
+      stats: [["28", "patients overexposed"], ["20 to 100%", "more than the prescribed dose"], ["8", "deaths, 5 attributed to radiation by the IAEA"]],
+      faits: ["At Panama’s National Oncology Institute, software calculated irradiation times taking into account the shielding blocks that protect healthy tissue. It limited the number of blocks that could be entered. To get around this limit, the team began in 2000 to enter several blocks as one. The software accepted the input, but calculated wrong treatment times."],
+      consequences: ["28 patients treated for pelvic cancers received doses 20 to 100% higher than prescribed.", "At least eight deaths; the IAEA attributes five to radiation, and other patients suffered serious after-effects.", "The vendor later acknowledged that certain incorrect inputs were accepted without warning."],
+      tests: ["Boundary tests: what does the software do when the expected number of blocks is exceeded?", "Non-standard input tests: an unexpected input must be rejected, not interpreted.", "Independent verification of the calculated result before any critical use."],
+      moi: "Boundary tests and non-standard journeys are at the heart of my method, ever since the FFT, where I learned to write the test before the code and to anticipate error cases.",
+      page: "fft-en.html", pageLib: "See the FFT project",
+      sources: [["IAEA: radiological emergency in Panama", "https://www.iaea.org/NewsCenter/PressReleases/2001/panam_adv_info2.shtml"], ["US NRC: Information Notice 2001-08, Supplement 2", "https://scp.nrc.gov/special/in200108s2.pdf"]] }
+  ]
+};
+/* ====== FIN DES CAS RÉELS ====== */
+
+(function () {
+  const A = CAS.articles, grid = $("casGrid"), fbox = $("casFilters"), modal = $("artModal");
+  const catLib = c => CAS.cats[c] || c;
+  const meta = (box, a) => { box.replaceChildren(el("span", "cas-tag", a.cats.map(catLib).join(" · ")), el("span", null, a.annee), el("span", null, a.lieu)); };
+
+  /* Cartes */
+  A.forEach((a, i) => {
+    const c = el("article", "cas-card" + (i === 0 ? " feat" : "")); c.dataset.cats = a.cats.join(" ");
+    const m = el("div", "cas-meta"); meta(m, a);
+    const b = el("button", "cas-open", "Read the case"); b.type = "button"; b.setAttribute("aria-label", "Read the case: " + a.titre); b.onclick = () => open(i, b);
+    c.append(m, el("div", "cas-num", a.chiffre), el("div", "cas-numl", a.chiffreLib), el("h3", null, a.titre), el("p", "cas-acc", a.accroche), b);
+    grid.append(c);
+  });
+
+  const end = document.querySelector(".cas-end"); if (end) grid.append(end);
+  /* Filtres */
+  const keys = ["all", ...Object.keys(CAS.cats).filter(k => A.some(a => a.cats.includes(k)))];
+  keys.forEach(k => {
+    const b = el("button", "cas-f", k === "all" ? "All cases" : catLib(k)); b.type = "button"; b.setAttribute("aria-pressed", String(k === "all"));
+    b.onclick = () => {
+      uTrack("Filtre Impact", { theme: k === "all" ? "Tous" : catLib(k) });
+      [...fbox.children].forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      grid.classList.toggle("all", k === "all");
+      grid.querySelectorAll(".cas-card").forEach(c => { c.hidden = k !== "all" && !c.dataset.cats.split(" ").includes(k); });
+    };
+    fbox.append(b);
+  });
+
+  /* Pop-up */
+  let cur = -1, opener = null;
+  const sec = (t, items, cls) => { const f = document.createDocumentFragment(); f.append(el("h4", null, t)); const u = el("ul", cls); items.forEach(s => u.append(el("li", null, s))); f.append(u); return f; };
+  function fill(i) {
+    const a = A[i]; cur = i; uTrack("Article Impact", { cas: a.id });
+    $("artPos").textContent = "Case " + (i + 1) + " of " + A.length;
+    meta($("artMeta"), a); $("artT").textContent = a.titre; $("artAcc").textContent = a.accroche;
+    $("artStats").replaceChildren(...a.stats.map(([v, l]) => { const d = el("div"); d.append(el("b", null, v), el("span", null, l)); return d; }));
+    const body = $("artBody"); body.replaceChildren(el("h4", null, "What happened"));
+    a.faits.forEach(p => body.append(el("p", null, p)));
+    body.append(sec("The consequences", a.consequences), sec("What a test would have checked", a.tests, "chk"));
+    const me = el("div", "art-me"); me.append(el("h4", null, "How it relates to my work"), el("p", null, a.moi));
+    if (a.page) { const l = el("a", null, a.pageLib + " →"); l.href = a.page; l.setAttribute("data-umami-event", "Impact vers mission"); l.setAttribute("data-umami-event-cas", a.id); me.append(l); }
+    const cta = el("div", "art-cta"); const r = el("button", "btn primary", "Book a call"); r.type = "button"; r.onclick = toRdv;
+    const n = el("button", "btn", "Next case"); n.type = "button"; n.onclick = () => go(1); cta.append(r, n);
+    const src = el("div", "art-src"); src.append(el("p", null, "Public sources. Amounts in the original currency."));
+    const su = el("ul"); a.sources.forEach(([t, u]) => { const li = el("li"); const l = el("a", null, t); l.href = u; l.target = "_blank"; l.rel = "noopener"; li.append(l); su.append(li); }); src.append(su);
+    body.append(me, cta, src);
+    const p = A[(i - 1 + A.length) % A.length], nx = A[(i + 1) % A.length];
+    $("artPrev").replaceChildren("← Previous case", el("b", null, p.titre)); $("artNext").replaceChildren("Next case →", el("b", null, nx.titre));
+    modal.scrollTop = 0;
+    try { history.replaceState(null, "", "#cas-" + a.id); } catch (e) {}
+  }
+  function open(i, from) {
+    opener = from || document.activeElement; fill(i);
+    modal.hidden = false; document.documentElement.style.overflow = "hidden";
+    requestAnimationFrame(() => modal.classList.add("on")); $("artX").focus();
+  }
+  function close(keepHash) {
+    if (modal.hidden) return;
+    modal.classList.remove("on"); modal.hidden = true; document.documentElement.style.overflow = ""; cur = -1;
+    if (!keepHash) try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+  function go(d) { fill((cur + d + A.length) % A.length); $("artX").focus(); }
+  function toRdv() { close(); const b = $("rdvBtn"); if (b) b.click(); }
+  $("artX").onclick = () => close(); $("artPrev").onclick = () => go(-1); $("artNext").onclick = () => go(1);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.querySelectorAll("[data-rdv]").forEach(b => b.onclick = () => { const r = $("rdvBtn"); if (r) r.click(); });
+  addEventListener("keydown", e => {
+    if (modal.hidden) return;
+    if (e.key === "Escape") { e.stopPropagation(); close(); }
+    else if (e.key === "ArrowRight" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) go(1);
+    else if (e.key === "ArrowLeft" && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) go(-1);
+    else if (e.key === "Tab") {
+      const f = [...modal.querySelectorAll("button,a[href]")].filter(x => x.offsetParent !== null);
+      if (!f.length) return; const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  /* Lien direct vers un cas : impact-en.html#cas-tsb */
+  const fromHash = () => { const m = location.hash.match(/^#cas-(.+)$/); if (!m) return; const i = A.findIndex(a => a.id === m[1]); if (i > -1 && i !== cur) open(i); };
+  addEventListener("hashchange", fromHash); fromHash();
+})();
+</script>
+</body>
+</html>
