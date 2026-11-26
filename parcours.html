@@ -8,7 +8,7 @@
 <title>Parcours – Amine Admane</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#060B1A; --ink:#EEF1F8; --muted:#97A3BF; --line:#1C2848; --gold:#E2B655; --glow:rgba(226,182,85,.18);
@@ -195,37 +195,81 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 .mb-hint{display:block;text-align:center;font:500 .85rem var(--sans);margin-top:.6rem}
 @media (max-width:760px){.mb-grid{grid-template-columns:1fr;gap:2rem}.mb-box{justify-self:center}.mb-box{width:min(13rem,60vw)}}
 
-/* Post-it */
-.mb-modal{position:fixed;inset:0;z-index:9995;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(3,6,16,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+/* Carte postale */
+.mb-modal{position:fixed;inset:0;z-index:9995;display:flex;padding:1.2rem;overflow-y:auto;background:rgba(3,6,16,.8);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);transition:background .5s,backdrop-filter .5s,-webkit-backdrop-filter .5s}
 .mb-modal[hidden]{display:none}
-.postit{position:relative;width:min(30rem,100%);max-height:100%;overflow:auto;background:linear-gradient(180deg,#FFF07A 0%,#FFE45C 100%);color:#2B2410;padding:2.4rem 2rem 1.8rem;border-radius:2px 2px 4px 30px/2px 2px 4px 14px;box-shadow:0 2px 0 rgba(0,0,0,.05),0 30px 60px rgba(0,0,0,.45);transform:rotate(-1.6deg);animation:pop .45s cubic-bezier(.2,1.3,.4,1)}
-.postit[hidden]{display:none}
-@keyframes pop{from{transform:rotate(-8deg) scale(.6);opacity:0}to{transform:rotate(-1.6deg) scale(1);opacity:1}}
-.tape{position:absolute;top:-14px;left:50%;width:7.5rem;height:1.9rem;transform:translateX(-50%) rotate(2deg);background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.postit h3{font:700 2.1rem/1.05 "Caveat",cursive;margin:0 0 1.1rem;color:#1F3C88}
-.postit-x{position:absolute;top:.7rem;right:.8rem;width:2.2rem;height:2.2rem;border-radius:50%;border:0;background:rgba(43,36,16,.08);color:#2B2410;font-size:1rem;cursor:pointer}
-.postit-x:hover{background:rgba(43,36,16,.16)}
-.pl{display:block;margin:0 0 1rem}
-.pl span{display:block;font:700 1.25rem "Caveat",cursive;color:#5a4a12;margin-bottom:.15rem}
-.pl em{font-style:normal;font-weight:500;opacity:.75}
-.postit textarea,.postit input{display:block;width:100%;border:0;background:transparent;color:#2B2410;font:500 1.35rem/2rem "Caveat",cursive;padding:0 .2rem;outline:none}
-.postit textarea{min-height:8rem;resize:vertical;background-image:repeating-linear-gradient(180deg,transparent 0,transparent calc(2rem - 1px),rgba(31,60,136,.28) calc(2rem - 1px),rgba(31,60,136,.28) 2rem);background-attachment:local}
-.postit input{border-bottom:1px solid rgba(31,60,136,.35);height:2.2rem}
-.postit textarea::placeholder,.postit input::placeholder{color:rgba(43,36,16,.45)}
-.postit textarea:focus,.postit input:focus{background-color:rgba(255,255,255,.18)}
-.prow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-@media (max-width:520px){.prow{grid-template-columns:1fr}}
-.postit-send{display:inline-block;margin-top:.6rem;border:0;border-radius:999px;background:#1F3C88;color:#fff;font:600 1rem var(--sans);padding:.85rem 1.5rem;cursor:pointer;box-shadow:0 4px 0 #142a63}
-.postit-send:hover{background:#28499f}
-.postit-send:active{transform:translateY(2px);box-shadow:0 2px 0 #142a63}
-.postit-err{margin:.8rem 0 0;font:700 1.2rem "Caveat",cursive;color:#a12b1a}
-.postit.thanks p{font:500 1.4rem/1.4 "Caveat",cursive;margin:0 0 1rem}
-.postit.fly{animation:fly .6s cubic-bezier(.6,0,.8,.4) forwards}
-@keyframes fly{to{transform:translateY(40vh) rotate(12deg) scale(.15);opacity:0}}
-@media (prefers-reduced-motion:reduce){.postit,.postit.fly{animation:none}.mb-box svg,.mb-letter{transition:none}}
-
-.postit-send[disabled]{opacity:.6;cursor:wait}
+.mb-modal.mb-clear{background:rgba(3,6,16,0);-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}
+.pc{--paper:#F8E7C4;--ink:#1F3C88;--red:#D8402C;position:relative;margin:auto;width:min(50rem,100%);color:var(--ink);border:12px solid transparent;border-radius:6px;
+ background:radial-gradient(120% 90% at 20% 0%,#FBEFD3 0%,var(--paper) 60%,#F1DCB2 100%) padding-box,repeating-linear-gradient(135deg,var(--red) 0 18px,var(--paper) 18px 30px,var(--ink) 30px 48px,var(--paper) 48px 60px) border-box;
+ box-shadow:0 30px 80px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.08);transform:rotate(-.8deg);animation:pcIn .55s cubic-bezier(.2,.9,.3,1.15)}
+.pc[hidden]{display:none}
+@keyframes pcIn{from{transform:translateY(30px) rotate(-6deg) scale(.7);opacity:0}to{transform:rotate(-.8deg) scale(1);opacity:1}}
+.pc-in{padding:1.4rem 1.8rem 1.6rem}
+.pc-top{display:flex;align-items:center;min-height:1.6rem;margin:0 2.4rem 1rem 0}
+.pc-air{display:flex;align-items:center;gap:.45rem;font:600 .72rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(31,60,136,.55)}
+.pc-air svg{width:1.3rem;height:1.3rem;fill:currentColor}
+.pc-title{font:700 clamp(1.6rem,3.4vw,2.3rem)/1 var(--serif);letter-spacing:.1em;text-transform:uppercase;margin:0;color:var(--ink);text-align:center}
+.pc-x{position:absolute;top:.6rem;right:.6rem;width:2.2rem;height:2.2rem;border-radius:50%;border:0;background:rgba(31,60,136,.08);color:var(--ink);font-size:1rem;cursor:pointer}
+.pc-x:hover{background:rgba(31,60,136,.16)}
+.pc-body{display:grid;grid-template-columns:minmax(0,1.15fr) 1px minmax(0,1fr);gap:1.8rem}
+.pc-sep{background:rgba(31,60,136,.45)}
+.pc-lbl{display:block;font:600 .72rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:rgba(31,60,136,.6);margin:0 0 .2rem}
+.pc textarea,.pc input{display:block;width:100%;border:0;border-radius:0;background:transparent;color:var(--ink);font:600 1.45rem/2.1rem "Caveat",cursive;padding:0 .2rem;outline:none}
+.pc textarea{height:12.6rem;resize:none;background-image:repeating-linear-gradient(180deg,transparent 0,transparent calc(2.1rem - 1px),rgba(31,60,136,.4) calc(2.1rem - 1px),rgba(31,60,136,.4) 2.1rem);background-attachment:local}
+.pc textarea::placeholder,.pc input::placeholder{color:rgba(31,60,136,.38)}
+.pc textarea:focus,.pc input:focus{background-color:rgba(255,255,255,.28)}
+.pc-right{display:flex;flex-direction:column}
+.pc-stamps{display:flex;justify-content:flex-end;align-items:center;gap:.2rem;margin-bottom:1rem}
+.pc-postmark{width:7.5rem;height:auto;color:rgba(31,60,136,.5);margin-right:-1.6rem;position:relative;z-index:1}
+.pc-stamp{width:4.8rem;height:5.8rem;border:2px dashed rgba(31,60,136,.5);padding:5px;transform:rotate(3deg)}
+.pc-stamp svg{display:block;width:100%;height:100%}
+.pc-addr{display:grid;gap:.35rem;margin-top:auto}
+.pc-line{display:grid;grid-template-columns:auto 1fr;align-items:end;gap:.6rem;border-bottom:1px solid rgba(31,60,136,.45)}
+.pc-line .pc-lbl{margin:0 0 .55rem;white-space:nowrap}
+.pc-to{font:700 1.45rem/2.1rem "Caveat",cursive;padding:0 .2rem}
+.pc-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.6rem 1rem;margin-top:1.2rem}
+.pc-send{border:0;border-radius:999px;background:var(--ink);color:#fff;font:600 1rem var(--sans);padding:.85rem 1.5rem;cursor:pointer;box-shadow:0 4px 0 #142a63}
+.pc-send:hover{background:#28499f}
+.pc-send:active{transform:translateY(2px);box-shadow:0 2px 0 #142a63}
+.pc-send[disabled]{opacity:.65;cursor:wait}
+.pc-err{flex-basis:100%;text-align:right;margin:0;font:700 1.25rem "Caveat",cursive;color:#a12b1a}
+.pc-err[hidden]{display:none}
 .mb-hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.pc-thanks .pc-body{align-items:center}
+.pc-thanks h3{font:700 3.2rem/1 "Caveat",cursive;margin:0 0 .6rem}
+.pc-thanks p{font:600 1.45rem/1.4 "Caveat",cursive;margin:0}
+.pc-recu{justify-self:center;width:9rem;height:9rem;color:var(--red);transform:rotate(-12deg);opacity:.85}
+.pc-thanks .pc-foot{margin-top:1.6rem}
+@media (max-width:640px){
+ .pc{border-width:9px;transform:none;animation-name:pcInM}
+ @keyframes pcInM{from{transform:translateY(30px) scale(.8);opacity:0}to{transform:none;opacity:1}}
+ .pc-in{padding:1.1rem 1.1rem 1.3rem}
+ .pc-top{grid-template-columns:1fr;justify-items:start;gap:.4rem;margin:0 2.4rem 1rem 0}
+ .pc-title{text-align:left;font-size:1.6rem}
+ .pc-body{grid-template-columns:1fr;gap:1.1rem}
+ .pc-sep{height:1px}
+ .pc textarea{height:8.4rem}
+ .pc-stamps{position:absolute;top:.9rem;right:3.1rem;margin:0}
+ .pc-postmark{display:none}
+ .pc-stamp{width:3rem;height:3.6rem;padding:3px}
+ .pc-send{width:100%}
+ .pc-err{text-align:left}
+ .pc-recu{width:6rem;height:6rem;justify-self:end;margin-top:-1rem}
+}
+
+/* Enveloppe */
+.env{position:fixed;left:50%;top:50%;z-index:2;width:min(26rem,78vw);aspect-ratio:1.6;transform:translate(-50%,-50%);perspective:900px;pointer-events:none}
+.env[hidden]{display:none}
+.env>*{position:absolute}
+.env-back{inset:0;border-radius:6px;background:#E7EAF0;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.env-card{left:7%;right:7%;top:9%;height:78%;border:6px solid transparent;border-radius:3px;background:linear-gradient(#F8E7C4,#F8E7C4) padding-box,repeating-linear-gradient(135deg,#D8402C 0 9px,#F8E7C4 9px 15px,#1F3C88 15px 24px,#F8E7C4 24px 30px) border-box;z-index:2}
+.env-card::before{content:"";position:absolute;left:10%;right:10%;top:22%;height:44%;background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(31,60,136,.35) 10px 11px)}
+.env-front{inset:0;z-index:3;border-radius:6px;background:linear-gradient(160deg,#fff 0%,#F3F5F9 100%);clip-path:polygon(0 0,50% 54%,100% 0,100% 100%,0 100%);filter:drop-shadow(0 -1px 0 rgba(0,0,0,.06))}
+.env-flap{left:0;right:0;top:0;height:60%;z-index:1;background:linear-gradient(180deg,#F7F8FB,#E3E7EE);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0;transform:rotateX(180deg)}
+.env-seal{left:50%;top:60%;width:2.6rem;height:2.6rem;margin:-1.3rem 0 0 -1.3rem;border-radius:50%;z-index:5;background:radial-gradient(circle at 35% 30%,#F3CC6E,#C9962F);color:#5b3f08;display:grid;place-items:center;font:700 .9rem var(--serif);box-shadow:0 2px 6px rgba(0,0,0,.3);opacity:0}
+.mb-box.mb-got svg{animation:mbGot .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes mbGot{0%{transform:none}30%{transform:translateY(4px) scale(1.04,.97)}60%{transform:translateY(-6px) rotate(-2deg)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.pc{animation:none}.mb-box svg,.mb-letter{transition:none}.mb-box.mb-got svg{animation:none}}
 </style>
 </head>
 <body>
@@ -293,45 +337,99 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
     </button>
   </div></section>
 
-  <div id="mbModal" class="mb-modal" role="dialog" aria-modal="true" aria-labelledby="mbT" hidden>
-    <form class="postit" id="mbForm" novalidate>
-      <span class="tape" aria-hidden="true"></span>
-      <button type="button" class="postit-x" id="mbX" aria-label="Fermer">✕</button>
-      <h3 id="mbT">Un petit mot pour Amine</h3>
-      <label class="pl"><span>Votre message</span><textarea id="mbMsg" required placeholder="Une question, une remarque, une idée…"></textarea></label>
-      <div class="prow">
-        <label class="pl"><span>Votre nom <em>(facultatif)</em></span><input id="mbName" autocomplete="name"></label>
-        <label class="pl"><span>Votre e-mail <em>(pour une réponse)</em></span><input id="mbMail" type="email" autocomplete="email"></label>
+  <div id="mbModal" class="mb-modal" role="dialog" aria-modal="true" aria-label="Laisser un message à Amine" hidden>
+    <form class="pc" id="mbForm" novalidate>
+      <button type="button" class="pc-x" id="mbX" aria-label="Fermer">✕</button>
+      <div class="pc-in">
+        <div class="pc-top">
+          <span class="pc-air"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>Par avion</span>
+        </div>
+        <div class="pc-body">
+          <label class="pc-left"><span class="pc-lbl">Votre message</span><textarea id="mbMsg" required placeholder="Une question, une remarque, une idée…"></textarea></label>
+          <span class="pc-sep" aria-hidden="true"></span>
+          <div class="pc-right">
+            <div class="pc-stamps" aria-hidden="true">
+              <svg class="pc-postmark" viewBox="0 0 150 80"><circle cx="40" cy="40" r="32" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="40" cy="40" r="25" fill="none" stroke="currentColor" stroke-width="1"/><text x="40" y="37" text-anchor="middle" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="8" font-weight="600" fill="currentColor" letter-spacing="1">PARIS</text><text x="40" y="49" text-anchor="middle" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="7" fill="currentColor" data-mb-year>2026</text><path d="M76 28c9-6 18 6 27 0s18 6 27 0 14 4 18 2M76 40c9-6 18 6 27 0s18 6 27 0 14 4 18 2M76 52c9-6 18 6 27 0s18 6 27 0 14 4 18 2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span class="pc-stamp"><svg viewBox="0 0 60 72"><rect width="60" height="72" fill="#1F3C88"/><rect x="14" y="10" width="32" height="24" rx="5" fill="#FFE14F"/><rect x="20" y="15" width="20" height="3" rx="1.5" fill="#1F3C88"/><rect x="21" y="25" width="18" height="2" rx="1" fill="#B8890A"/><rect x="26" y="34" width="8" height="20" fill="#F2C824"/><path d="M22 54h16l2 4H20z" fill="#F2C824"/><text x="30" y="67" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="7" font-weight="700" fill="#FFE14F">AA</text></svg></span>
+            </div>
+            <div class="pc-addr">
+              <div class="pc-line"><span class="pc-lbl">À</span><span class="pc-to">Amine Admane</span></div>
+              <label class="pc-line"><span class="pc-lbl">De</span><input id="mbName" autocomplete="name" placeholder="Votre nom (facultatif)"></label>
+              <label class="pc-line"><span class="pc-lbl">E-mail</span><input id="mbMail" type="email" autocomplete="email" placeholder="Pour recevoir une réponse"></label>
+            </div>
+          </div>
+        </div>
+        <div class="pc-foot">
+          <input type="checkbox" name="botcheck" id="mbBot" class="mb-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="pc-send" id="mbSend">Envoyer ✉</button>
+          <p class="pc-err" id="mbErr" hidden></p>
+        </div>
       </div>
-      <input type="checkbox" name="botcheck" id="mbBot" class="mb-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button type="submit" class="postit-send" id="mbSend">Poster dans la boîte ✉</button>
-      <p class="postit-err" id="mbErr" hidden>Écrivez au moins un petit mot avant de poster.</p>
     </form>
-    <div class="postit thanks" id="mbThanks" hidden>
-      <span class="tape" aria-hidden="true"></span>
-      <h3>Merci&nbsp;!</h3>
-      <p>Votre mot est bien dans la boîte. Si vous avez laissé votre e-mail, je vous réponds sous 48&nbsp;heures.</p>
-      <button type="button" class="postit-send" id="mbDone">Fermer</button>
+    <div class="env" id="mbEnv" hidden aria-hidden="true"><div class="env-back"></div><div class="env-flap"></div><div class="env-card"></div><div class="env-front"></div><div class="env-seal">AA</div></div>
+    <div class="pc pc-thanks" id="mbThanks" hidden>
+      <div class="pc-in">
+        <div class="pc-top"><span class="pc-air"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>Par avion</span><span></span><span></span></div>
+        <div class="pc-body">
+          <div><h3>Merci&nbsp;!</h3><p>Votre message est bien arrivé. Si vous avez laissé votre e-mail, je vous réponds sous 48&nbsp;heures.</p></div>
+          <span class="pc-sep" aria-hidden="true"></span>
+          <svg class="pc-recu" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="60" y="68" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="24" font-weight="700" fill="currentColor" letter-spacing="2">REÇU</text><text x="60" y="38" text-anchor="middle" font-size="12" fill="currentColor">★ ★ ★</text><text x="60" y="90" text-anchor="middle" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="9" font-weight="600" fill="currentColor" letter-spacing="1.5" data-mb-year>2026</text></svg>
+        </div>
+        <div class="pc-foot"><button type="button" class="pc-send" id="mbDone">Fermer</button></div>
+      </div>
     </div>
   </div>
 
-<script>(function(){var K="5a5225c4-0fe9-4a75-abf9-876cbb8e397e",m=document.getElementById("mbModal"),f=document.getElementById("mbForm"),t=document.getElementById("mbThanks"),er=document.getElementById("mbErr"),sb=document.getElementById("mbSend"),lbl=sb.textContent,last=null,busy=false;
-function open(){last=document.activeElement;m.hidden=false;f.hidden=false;f.classList.remove("fly");t.hidden=true;er.hidden=true;document.documentElement.style.overflow="hidden";setTimeout(function(){document.getElementById("mbMsg").focus()},50);if(window.uTrack)uTrack("Ouverture boîte aux lettres")}
-function close(){if(busy)return;m.hidden=true;document.documentElement.style.overflow="";if(last)last.focus()}
+<script>(function(){var K="5a5225c4-0fe9-4a75-abf9-876cbb8e397e",DEMO=false,T={"empty": "Écrivez au moins un petit mot avant de poster.", "fail": "Désolé, le message n’a pas pu partir. Réessayez, ou écrivez-moi par e-mail.", "subj": "Nouvelle carte dans la boîte aux lettres du portfolio", "lang": "FR", "sending": "Envoi…"},
+$=function(i){return document.getElementById(i)},m=$("mbModal"),f=$("mbForm"),th=$("mbThanks"),er=$("mbErr"),sb=$("mbSend"),env=$("mbEnv"),lbl=sb.textContent,last=null,busy=false;
+document.querySelectorAll("[data-mb-year]").forEach(function(e){e.textContent=new Date().getFullYear()});
+function q(s){return env.querySelector(s)}
+function anim(el,k,o){o.fill="forwards";return el.animate(k,o).finished}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function reset(){[f,env].concat([].slice.call(env.children)).forEach(function(e){e.getAnimations().forEach(function(a){a.cancel()})});q(".env-flap").style.zIndex="";env.hidden=true;m.classList.remove("mb-clear")}
+function open(){last=document.activeElement;reset();m.hidden=false;f.hidden=false;th.hidden=true;er.hidden=true;document.documentElement.style.overflow="hidden";setTimeout(function(){$("mbMsg").focus()},60);if(window.uTrack)uTrack("Ouverture boîte aux lettres")}
+function close(){if(busy)return;m.hidden=true;reset();document.documentElement.style.overflow="";if(last)last.focus()}
+function thanks(){reset();f.hidden=true;th.hidden=false;$("mbDone").focus()}
+async function play(){
+ if(!f.animate||matchMedia("(prefers-reduced-motion: reduce)").matches){thanks();return}
+ var card=q(".env-card"),flap=q(".env-flap"),seal=q(".env-seal"),C="translate(-50%,-50%)";
+ env.hidden=false;
+ await Promise.all([
+  anim(f,[{transform:getComputedStyle(f).transform,opacity:1},{transform:"translateY(-12%) scale(.42)",opacity:0}],{duration:500,easing:"cubic-bezier(.5,0,.6,1)"}),
+  anim(env,[{transform:C+" translateY(40px) scale(.92)",opacity:0},{transform:C,opacity:1}],{duration:500,easing:"ease-out"}),
+  anim(card,[{transform:"translateY(-80%)",opacity:0},{transform:"translateY(-80%)",opacity:1}],{duration:500,easing:"ease-in"})]);
+ f.hidden=true;
+ await anim(card,[{transform:"translateY(-80%)"},{transform:"translateY(0)"}],{duration:550,easing:"cubic-bezier(.5,0,.3,1)"});
+ flap.style.zIndex=4;
+ await anim(flap,[{transform:"rotateX(180deg)"},{transform:"rotateX(0deg)"}],{duration:450,easing:"ease-in-out"});
+ await anim(seal,[{opacity:0,transform:"scale(1.8)"},{opacity:1,transform:"scale(1)"}],{duration:250,easing:"ease-out"});
+ await wait(200);
+ m.classList.add("mb-clear");
+ var box=document.querySelector(".mb-box"),svg=box&&box.querySelector("svg"),er2=env.getBoundingClientRect(),cx=er2.left+er2.width/2,cy=er2.top+er2.height/2,tx=innerWidth/2,ty=innerHeight+120,s=.1;
+ if(svg){var r=svg.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight&&r.width){tx=r.left+r.width*.5;ty=r.top+r.height*(160/400);s=Math.max(.08,r.width*.32/er2.width)}}
+ var dx=tx-cx,dy=ty-cy;
+ await anim(env,[{transform:C+" scale(1) rotate(0)"},{offset:.3,transform:C+" translate("+dx*.15+"px,"+(dy*.15-50)+"px) scale(.7) rotate(-8deg)"},{transform:C+" translate("+dx+"px,"+dy+"px) scale("+s+") rotate(0)"}],{duration:1100,easing:"cubic-bezier(.45,0,.3,1)"});
+ await anim(env,[{transform:C+" translate("+dx+"px,"+dy+"px) scale("+s+")",opacity:1},{transform:C+" translate("+dx+"px,"+(dy+14)+"px) scale("+s*.6+","+s*.2+")",opacity:0}],{duration:220,easing:"ease-in"});
+ env.hidden=true;
+ if(box){box.classList.remove("mb-got");void box.offsetWidth;box.classList.add("mb-got")}
+ await wait(650);
+ m.classList.remove("mb-clear");await wait(250);thanks();
+}
+$("mbMsg").addEventListener("input",function(){if(!busy)er.hidden=true});
 document.querySelectorAll("[data-mb-open]").forEach(function(b){b.addEventListener("click",open)});
-document.getElementById("mbX").onclick=close;document.getElementById("mbDone").onclick=function(){f.reset();close()};
+$("mbX").onclick=close;$("mbDone").onclick=function(){f.reset();close()};
 m.addEventListener("click",function(e){if(e.target===m)close()});addEventListener("keydown",function(e){if(e.key==="Escape"&&!m.hidden)close()});
-f.addEventListener("submit",function(e){e.preventDefault();if(busy)return;var msg=document.getElementById("mbMsg").value.trim();
- if(!msg){er.textContent="Écrivez au moins un petit mot avant de poster.";er.hidden=false;return}
- if(document.getElementById("mbBot").checked)return;
- var nm=document.getElementById("mbName").value.trim(),ml=document.getElementById("mbMail").value.trim();
- var d={access_key:K,subject:"Nouveau mot dans la boîte aux lettres du portfolio",from_name:nm||"Visiteur du portfolio",message:msg,"Nom":nm||"—","E-mail":ml||"—","Page":document.title+" — "+location.href,"Langue":"FR"};
+f.addEventListener("submit",function(e){e.preventDefault();if(busy)return;var msg=$("mbMsg").value.trim();
+ if(!msg){er.textContent=T.empty;er.hidden=false;return}
+ if($("mbBot").checked)return;
+ var nm=$("mbName").value.trim(),ml=$("mbMail").value.trim();
+ var d={access_key:K,subject:T.subj,from_name:nm||"Visiteur du portfolio",message:msg,"Nom":nm||"—","E-mail":ml||"—","Page":document.title+" — "+location.href,"Langue":T.lang};
  if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ml))d.email=ml;
- busy=true;er.hidden=true;sb.disabled=true;sb.textContent="Envoi…";
- fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(d)})
- .then(function(r){return r.json().then(function(j){if(!r.ok||!j.success)throw 0})})
- .then(function(){busy=false;sb.disabled=false;sb.textContent=lbl;if(window.uTrack)uTrack("Message envoyé boîte aux lettres");f.classList.add("fly");setTimeout(function(){f.hidden=true;t.hidden=false;document.getElementById("mbDone").focus()},600)})
- .catch(function(){busy=false;sb.disabled=false;sb.textContent=lbl;er.textContent="Désolé, le message n’a pas pu partir. Réessayez, ou écrivez-moi par e-mail.";er.hidden=false;if(window.uTrack)uTrack("Erreur boîte aux lettres")})});})();</script>
+ busy=true;er.hidden=true;sb.disabled=true;sb.textContent=T.sending;
+ var req=DEMO?wait(500):fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(d)}).then(function(r){return r.json().then(function(j){if(!r.ok||!j.success)throw 0})});
+ req.then(function(){sb.disabled=false;sb.textContent=lbl;if(window.uTrack)uTrack("Message envoyé boîte aux lettres");return play().catch(thanks)})
+ .then(function(){busy=false},function(){busy=false;sb.disabled=false;sb.textContent=lbl;er.textContent=T.fail;er.hidden=false;if(window.uTrack)uTrack("Erreur boîte aux lettres")});});})();</script>
+
 <footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
     <div>
