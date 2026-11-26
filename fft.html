@@ -8,7 +8,7 @@
 <title>Fédération Française de Tennis – Mission de Amine Admane</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Schibsted+Grotesk:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#060B1A; --ink:#EEF1F8; --muted:#97A3BF; --line:#1C2848; --gold:#E2B655; --glow:rgba(226,182,85,.18);
@@ -186,6 +186,55 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
 <script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
 <script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
 <link rel="alternate" hreflang="fr" href="fft.html"><link rel="alternate" hreflang="en" href="fft-en.html">
+<style>
+
+/* ====== Boîte aux lettres ====== */
+.mb{border-top:1px solid var(--line);background:radial-gradient(50% 70% at 85% 50%,rgba(255,228,92,.10),transparent 70%)}
+.mb-grid{display:grid;grid-template-columns:minmax(0,34rem) auto;justify-content:start;gap:3.5rem;align-items:center}
+.mb-kicker{color:var(--gold);font-weight:600;margin:0 0 1rem}
+.mb h2{font:700 clamp(1.8rem,4vw,2.8rem)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 1.2rem}
+.mb-sub{color:var(--muted);font-size:1.12rem;max-width:30rem;margin:0 0 2rem}
+.mb-open{font:600 1.02rem var(--sans);cursor:pointer}
+.mb-box{position:relative;justify-self:start;padding-top:.6rem!important;background:none;border:0;padding:0;cursor:pointer;width:min(17rem,70vw);color:var(--muted)}
+.mb-box svg{display:block;width:100%;height:auto;transition:transform .35s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.mb-box:hover svg,.mb-box:focus-visible svg{transform:translateY(-6px) rotate(-1.5deg)}
+.mb-letter{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.mb-box:hover .mb-letter{transform:translateY(10px)}
+.mb-hint{display:block;text-align:center;font:500 .85rem var(--sans);margin-top:.6rem}
+@media (max-width:760px){.mb-grid{grid-template-columns:1fr;gap:2rem}.mb-box{justify-self:center}.mb-box{width:min(13rem,60vw)}}
+
+/* Post-it */
+.mb-modal{position:fixed;inset:0;z-index:9995;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(3,6,16,.78);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.mb-modal[hidden]{display:none}
+.postit{position:relative;width:min(30rem,100%);max-height:100%;overflow:auto;background:linear-gradient(180deg,#FFF07A 0%,#FFE45C 100%);color:#2B2410;padding:2.4rem 2rem 1.8rem;border-radius:2px 2px 4px 30px/2px 2px 4px 14px;box-shadow:0 2px 0 rgba(0,0,0,.05),0 30px 60px rgba(0,0,0,.45);transform:rotate(-1.6deg);animation:pop .45s cubic-bezier(.2,1.3,.4,1)}
+.postit[hidden]{display:none}
+@keyframes pop{from{transform:rotate(-8deg) scale(.6);opacity:0}to{transform:rotate(-1.6deg) scale(1);opacity:1}}
+.tape{position:absolute;top:-14px;left:50%;width:7.5rem;height:1.9rem;transform:translateX(-50%) rotate(2deg);background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.postit h3{font:700 2.1rem/1.05 "Caveat",cursive;margin:0 0 1.1rem;color:#1F3C88}
+.postit-x{position:absolute;top:.7rem;right:.8rem;width:2.2rem;height:2.2rem;border-radius:50%;border:0;background:rgba(43,36,16,.08);color:#2B2410;font-size:1rem;cursor:pointer}
+.postit-x:hover{background:rgba(43,36,16,.16)}
+.pl{display:block;margin:0 0 1rem}
+.pl span{display:block;font:700 1.25rem "Caveat",cursive;color:#5a4a12;margin-bottom:.15rem}
+.pl em{font-style:normal;font-weight:500;opacity:.75}
+.postit textarea,.postit input{display:block;width:100%;border:0;background:transparent;color:#2B2410;font:500 1.35rem/2rem "Caveat",cursive;padding:0 .2rem;outline:none}
+.postit textarea{min-height:8rem;resize:vertical;background-image:repeating-linear-gradient(180deg,transparent 0,transparent calc(2rem - 1px),rgba(31,60,136,.28) calc(2rem - 1px),rgba(31,60,136,.28) 2rem);background-attachment:local}
+.postit input{border-bottom:1px solid rgba(31,60,136,.35);height:2.2rem}
+.postit textarea::placeholder,.postit input::placeholder{color:rgba(43,36,16,.45)}
+.postit textarea:focus,.postit input:focus{background-color:rgba(255,255,255,.18)}
+.prow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:520px){.prow{grid-template-columns:1fr}}
+.postit-send{display:inline-block;margin-top:.6rem;border:0;border-radius:999px;background:#1F3C88;color:#fff;font:600 1rem var(--sans);padding:.85rem 1.5rem;cursor:pointer;box-shadow:0 4px 0 #142a63}
+.postit-send:hover{background:#28499f}
+.postit-send:active{transform:translateY(2px);box-shadow:0 2px 0 #142a63}
+.postit-err{margin:.8rem 0 0;font:700 1.2rem "Caveat",cursive;color:#a12b1a}
+.postit.thanks p{font:500 1.4rem/1.4 "Caveat",cursive;margin:0 0 1rem}
+.postit.fly{animation:fly .6s cubic-bezier(.6,0,.8,.4) forwards}
+@keyframes fly{to{transform:translateY(40vh) rotate(12deg) scale(.15);opacity:0}}
+@media (prefers-reduced-motion:reduce){.postit,.postit.fly{animation:none}.mb-box svg,.mb-letter{transition:none}}
+
+.postit-send[disabled]{opacity:.6;cursor:wait}
+.mb-hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+</style>
 </head>
 <body>
 <header class="hero">
@@ -210,6 +259,89 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
   <section><div class="wrap"><h2 class="ttl">L’atelier</h2><p class="sub">Les outils mobilisés sur cette mission.</p><ul class="tags"><li>JavaScript</li><li>TDD</li><li>Tests fonctionnels</li><li>Non-régression</li><li>Proximis</li><li>Responsive</li></ul></div></section>
   <section style="padding:0"><div class="wrap"><a class="next" href="parcours.html"><small>Retour</small><b>Tout mon parcours</b></a></div></section>
 </main>
+  <section class="mb" id="message"><div class="wrap mb-grid">
+    <div>
+      <p class="mb-kicker">Boîte aux lettres</p>
+      <h2>Une question, une remarque&nbsp;?</h2>
+      <p class="mb-sub">Glissez-moi un mot. Je lis tout, et je réponds sous 48&nbsp;heures si vous laissez votre e-mail.</p>
+    </div>
+    <button type="button" class="mb-box" data-mb-open aria-label="Ouvrir la boîte aux lettres et laisser un message">
+      <svg viewBox="0 0 260 400" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="mbY" x1="0" x2="1"><stop offset="0" stop-color="#F7D637"/><stop offset=".55" stop-color="#FFE45C"/><stop offset="1" stop-color="#E9BE1C"/></linearGradient>
+          <linearGradient id="mbP" x1="0" x2="1"><stop offset="0" stop-color="#E9C21F"/><stop offset=".5" stop-color="#FFE14F"/><stop offset="1" stop-color="#D9AE12"/></linearGradient>
+        </defs>
+        <ellipse cx="130" cy="388" rx="78" ry="9" fill="#000" opacity=".35"/>
+        <!-- pied -->
+        <path d="M92 360h76l10 22H82z" fill="url(#mbP)"/>
+        <rect x="108" y="196" width="44" height="168" rx="6" fill="url(#mbP)"/>
+        <rect x="100" y="190" width="60" height="22" rx="5" fill="#E2B81A"/>
+        <!-- boîte -->
+        <rect x="18" y="18" width="224" height="180" rx="26" fill="url(#mbY)"/>
+        <rect x="18" y="18" width="224" height="180" rx="26" fill="none" stroke="#C99A0C" stroke-width="2"/>
+        <!-- fentes -->
+        <rect x="40" y="38" width="80" height="12" rx="4" fill="#3a3a3a"/>
+        <rect x="140" y="38" width="80" height="12" rx="4" fill="#3a3a3a"/>
+        <!-- étiquettes -->
+        <rect x="36" y="58" width="88" height="40" rx="5" fill="#1F3C88"/>
+        <rect x="136" y="58" width="88" height="40" rx="5" fill="#1F3C88"/>
+        <text x="80" y="76" text-anchor="middle" fill="#fff" font-family="Schibsted Grotesk,Arial,sans-serif" font-weight="600" font-size="11">Questions</text>
+        <text x="80" y="90" text-anchor="middle" fill="#cfd8f5" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="8.5">projets · missions</text>
+        <text x="180" y="76" text-anchor="middle" fill="#fff" font-family="Schibsted Grotesk,Arial,sans-serif" font-weight="600" font-size="11">Remarques</text>
+        <text x="180" y="90" text-anchor="middle" fill="#cfd8f5" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="8.5">idées · retours</text>
+        <!-- médaillon enveloppe -->
+        <circle cx="130" cy="128" r="22" fill="#FFF2A8" stroke="#C99A0C" stroke-width="1.5"/>
+        <rect x="117" y="119" width="26" height="18" rx="2.5" fill="none" stroke="#1F3C88" stroke-width="2.2"/>
+        <path d="M117.5 120l12.5 10 12.5-10" fill="none" stroke="#1F3C88" stroke-width="2.2" stroke-linejoin="round"/>
+        <!-- fente principale -->
+        <rect x="70" y="164" width="120" height="7" rx="3.5" fill="#B8890A"/>
+        <!-- lettre qui dépasse -->
+        <g class="mb-letter"><rect x="96" y="150" width="68" height="20" rx="2" fill="#fff"/><path d="M96 150l34 12 34-12" fill="none" stroke="#c9ced8" stroke-width="1.5"/></g>
+        <circle cx="130" cy="184" r="4" fill="#B8890A"/>
+      </svg>
+      <span class="mb-hint">Cliquez sur la boîte</span>
+    </button>
+  </div></section>
+
+  <div id="mbModal" class="mb-modal" role="dialog" aria-modal="true" aria-labelledby="mbT" hidden>
+    <form class="postit" id="mbForm" novalidate>
+      <span class="tape" aria-hidden="true"></span>
+      <button type="button" class="postit-x" id="mbX" aria-label="Fermer">✕</button>
+      <h3 id="mbT">Un petit mot pour Amine</h3>
+      <label class="pl"><span>Votre message</span><textarea id="mbMsg" required placeholder="Une question, une remarque, une idée…"></textarea></label>
+      <div class="prow">
+        <label class="pl"><span>Votre nom <em>(facultatif)</em></span><input id="mbName" autocomplete="name"></label>
+        <label class="pl"><span>Votre e-mail <em>(pour une réponse)</em></span><input id="mbMail" type="email" autocomplete="email"></label>
+      </div>
+      <input type="checkbox" name="botcheck" id="mbBot" class="mb-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" class="postit-send" id="mbSend">Poster dans la boîte ✉</button>
+      <p class="postit-err" id="mbErr" hidden>Écrivez au moins un petit mot avant de poster.</p>
+    </form>
+    <div class="postit thanks" id="mbThanks" hidden>
+      <span class="tape" aria-hidden="true"></span>
+      <h3>Merci&nbsp;!</h3>
+      <p>Votre mot est bien dans la boîte. Si vous avez laissé votre e-mail, je vous réponds sous 48&nbsp;heures.</p>
+      <button type="button" class="postit-send" id="mbDone">Fermer</button>
+    </div>
+  </div>
+
+<script>(function(){var K="5a5225c4-0fe9-4a75-abf9-876cbb8e397e",m=document.getElementById("mbModal"),f=document.getElementById("mbForm"),t=document.getElementById("mbThanks"),er=document.getElementById("mbErr"),sb=document.getElementById("mbSend"),lbl=sb.textContent,last=null,busy=false;
+function open(){last=document.activeElement;m.hidden=false;f.hidden=false;f.classList.remove("fly");t.hidden=true;er.hidden=true;document.documentElement.style.overflow="hidden";setTimeout(function(){document.getElementById("mbMsg").focus()},50);if(window.uTrack)uTrack("Ouverture boîte aux lettres")}
+function close(){if(busy)return;m.hidden=true;document.documentElement.style.overflow="";if(last)last.focus()}
+document.querySelectorAll("[data-mb-open]").forEach(function(b){b.addEventListener("click",open)});
+document.getElementById("mbX").onclick=close;document.getElementById("mbDone").onclick=function(){f.reset();close()};
+m.addEventListener("click",function(e){if(e.target===m)close()});addEventListener("keydown",function(e){if(e.key==="Escape"&&!m.hidden)close()});
+f.addEventListener("submit",function(e){e.preventDefault();if(busy)return;var msg=document.getElementById("mbMsg").value.trim();
+ if(!msg){er.textContent="Écrivez au moins un petit mot avant de poster.";er.hidden=false;return}
+ if(document.getElementById("mbBot").checked)return;
+ var nm=document.getElementById("mbName").value.trim(),ml=document.getElementById("mbMail").value.trim();
+ var d={access_key:K,subject:"Nouveau mot dans la boîte aux lettres du portfolio",from_name:nm||"Visiteur du portfolio",message:msg,"Nom":nm||"—","E-mail":ml||"—","Page":document.title+" — "+location.href,"Langue":"FR"};
+ if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ml))d.email=ml;
+ busy=true;er.hidden=true;sb.disabled=true;sb.textContent="Envoi…";
+ fetch("https://api.web3forms.com/submit",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(d)})
+ .then(function(r){return r.json().then(function(j){if(!r.ok||!j.success)throw 0})})
+ .then(function(){busy=false;sb.disabled=false;sb.textContent=lbl;if(window.uTrack)uTrack("Message envoyé boîte aux lettres");f.classList.add("fly");setTimeout(function(){f.hidden=true;t.hidden=false;document.getElementById("mbDone").focus()},600)})
+ .catch(function(){busy=false;sb.disabled=false;sb.textContent=lbl;er.textContent="Désolé, le message n’a pas pu partir. Réessayez, ou écrivez-moi par e-mail.";er.hidden=false;if(window.uTrack)uTrack("Erreur boîte aux lettres")})});})();</script>
 <footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
     <div>
