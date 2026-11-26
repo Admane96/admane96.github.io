@@ -209,6 +209,24 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
  .ft #rdvInfo{text-align:center;margin-top:.45rem}
  .ft-bottom{margin-top:1.6rem;padding-top:1rem}
 }
+
+/* ====== Référents ====== */
+.refs{border-top:1px solid var(--line)}
+.refs h2{margin-bottom:1rem}
+.refs-sub{color:var(--muted);max-width:36rem;margin:0 0 2.6rem}
+.refs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:1.2rem}
+.ref{position:relative;display:flex;flex-direction:column;gap:1.1rem;border:1px solid var(--line);border-radius:1.1rem;padding:1.8rem;background:rgba(11,20,48,.45);transition:border-color .25s,transform .25s}
+.ref:hover{border-color:var(--gold);transform:translateY(-3px)}
+.ref-top{display:flex;align-items:center;gap:1rem}
+.ref-ini{flex:none;width:3.4rem;height:3.4rem;border-radius:50%;display:grid;place-items:center;background:rgba(226,182,85,.14);border:1px solid rgba(226,182,85,.5);color:var(--gold);font:700 1.15rem var(--serif)}
+.ref h3{font:700 1.45rem/1.15 var(--serif);margin:0;letter-spacing:-.01em}
+.ref-role{color:var(--muted);margin:.25rem 0 0;font-size:.96rem}
+.ref-role b{color:var(--ink);font-weight:600}
+.ref-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.8rem;margin-top:auto;padding-top:1.1rem;border-top:1px solid var(--line);font-size:.92rem}
+.ref-foot a{text-decoration:none;font-weight:600}
+.ref-mis{color:var(--muted)}.ref-mis:hover{color:var(--gold)}
+.ref-li{color:var(--gold);border-bottom:2px solid var(--gold);padding-bottom:.1rem}
+.ref-li:hover{color:var(--ink);border-color:var(--ink)}
 </style>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="47dacccf-f83d-449a-bba7-92ec6f5054c2"></script>
 <script>window.uTrack=function(n,d){try{if(window.umami)window.umami.track(n,d)}catch(e){}};</script>
@@ -236,6 +254,24 @@ footer.ft::before{content:"";position:absolute;top:-1px;left:0;right:0;height:1p
   <section id="clients"><div class="wrap"><h2>Ils m’ont fait confiance</h2></div>
     <div class="marquee" aria-label="Clients chez qui je suis intervenue"><div class="track" id="track"></div></div>
   </section>
+  <section class="refs" id="references"><div class="wrap">
+    <h2>Demandez-leur</h2>
+    <p class="refs-sub">Des responsables avec qui j’ai travaillé en mission, joignables sur LinkedIn.</p>
+    <div class="refs-grid">
+      <article class="ref">
+        <div class="ref-top"><span class="ref-ini" aria-hidden="true">MB</span><div><h3>Mathieu Brisson</h3><p class="ref-role">Head of QA · <b>Edenred</b></p></div></div>
+        <div class="ref-foot"><a class="ref-mis" href="edenred.html">Mission Edenred →</a><a class="ref-li" href="https://www.linkedin.com/in/mathieu-brisson/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn référent" data-umami-event-referent="Mathieu Brisson">LinkedIn ↗</a></div>
+      </article>
+      <article class="ref">
+        <div class="ref-top"><span class="ref-ini" aria-hidden="true">MZ</span><div><h3>Malik Zahid</h3><p class="ref-role">Data Service Delivery Manager, Europe · <b>L’Oréal</b></p></div></div>
+        <div class="ref-foot"><a class="ref-mis" href="loreal.html">Mission L’Oréal →</a><a class="ref-li" href="https://www.linkedin.com/in/zahid-malik-51718b208/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn référent" data-umami-event-referent="Malik Zahid">LinkedIn ↗</a></div>
+      </article>
+      <article class="ref">
+        <div class="ref-top"><span class="ref-ini" aria-hidden="true">YE</span><div><h3>Younès El Garrai</h3><p class="ref-role">Senior Data Engineer, Lead Tech Data · <b>Disneyland Paris</b></p></div></div>
+        <div class="ref-foot"><a class="ref-mis" href="disneyland.html">Mission Disneyland Paris →</a><a class="ref-li" href="https://www.linkedin.com/in/yelg/" target="_blank" rel="noopener" data-umami-event="Clic LinkedIn référent" data-umami-event-referent="Younès El Garrai">LinkedIn ↗</a></div>
+      </article>
+    </div>
+  </div></section>
 </main>
 <footer class="ft" id="contact"><div class="wrap">
   <div class="ft-grid">
